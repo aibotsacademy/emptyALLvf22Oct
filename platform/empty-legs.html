@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empty-Leg Engine — AERO</title>
+  <meta name="description" content="Core empty-leg engine: detection, availability validation, demand matching, explainable pricing, publishing, broker inquiries." />
+  <meta name="theme-color" content="#081321" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/platform.css" />
+  <link rel="stylesheet" href="../assets/css/motion.css" />
+</head>
+<body class="platform" data-page="empty-legs" data-root="..">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="app" id="app">
+    <aside id="sidebar" aria-label="Sidebar"><div class="sb-top"><a class="sb-brand" href="../index.html"><span class="sb-mark" aria-hidden="true">✦</span><span class="sb-text">AERO</span></a></div><nav class="sb-nav" aria-label="Platform modules"><div class="sb-group"><p class="sb-group-label">Operate</p><ul role="list"><li><a class="sb-link" href="../platform/dashboard.html"><span class="sb-text">Command Center</span></a></li><li><a class="sb-link" href="../platform/fleet.html"><span class="sb-text">Fleet</span></a></li><li><a class="sb-link" href="../platform/operations.html"><span class="sb-text">Operations</span></a></li><li><a class="sb-link" href="../platform/crew.html"><span class="sb-text">Crew</span></a></li><li><a class="sb-link" href="../platform/maintenance.html"><span class="sb-text">Maintenance</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Revenue</p><ul role="list"><li><a class="sb-link active" href="../platform/empty-legs.html" aria-current="page"><span class="sb-text">Empty-Leg Engine</span></a></li><li><a class="sb-link" href="../platform/charter-crm.html"><span class="sb-text">Charter CRM</span></a></li><li><a class="sb-link" href="../platform/marketplace.html"><span class="sb-text">Marketplace</span></a></li><li><a class="sb-link" href="../platform/finance.html"><span class="sb-text">Finance</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Intelligence</p><ul role="list"><li><a class="sb-link" href="../platform/ai-copilot.html"><span class="sb-text">AI Copilot</span></a></li><li><a class="sb-link" href="../platform/analytics.html"><span class="sb-text">Analytics</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Portals</p><ul role="list"><li><a class="sb-link" href="../platform/owner-portal.html"><span class="sb-text">Owner Portal</span></a></li><li><a class="sb-link" href="../portal/passenger.html"><span class="sb-text">Passenger Portal</span></a></li><li><a class="sb-link" href="../aeroflow.html"><span class="sb-text">AeroFlow (public)</span></a></li><li><a class="sb-link" href="../platform/settings.html"><span class="sb-text">Settings</span></a></li></ul></div></nav></aside>
+    <div class="app-main">
+      <header id="topbar"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../platform/dashboard.html">AERO</a></li><li aria-current="page">Empty-Leg Engine</li></ol></nav></header>
+      <div class="demo-banner" id="demo-banner" role="note"><span class="demo-pill">Demo</span><span>Synthetic data. Not live availability, tracking or transactions.</span></div>
+      <main id="main" tabindex="-1">
+        <noscript><p class="notice">The AERO workspace needs JavaScript (ES modules) served from a local web server. See README.md — e.g. <code>python3 -m http.server 8000</code>.</p></noscript>
+      <header class="page-head">
+        <div><p class="eyebrow">Revenue</p><h1>Empty-Leg Engine</h1><p class="lede">Detects repositioning legs in your schedule, validates them against aircraft status and trips, scores demand and recommends a price with visible assumptions. Publishing always requires a person.</p></div>
+        <div class="page-actions"><button class="btn" id="el-validate-all">Validate all candidates</button><button class="btn btn-primary" id="el-run">Run detection</button></div>
+      </header>
+      <section class="kpis" id="el-kpis" aria-label="Engine metrics"></section>
+      <p class="notice info" style="margin-bottom:16px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3l9.5 17h-19zM12 10v4M12 17.5v.5"/></svg><span>Validation checks only what AERO knows (aircraft status, schedule overlap, grounding items). Crew duty legality, slots and permits always require qualified human verification. Demand signals are synthetic.</span></p>
+      <div class="tabs" id="el-tabs" role="tablist" aria-label="Leg status">
+        <button role="tab" data-tab="all" aria-selected="true">All</button><button role="tab" data-tab="candidate" aria-selected="false">Candidates</button><button role="tab" data-tab="validated" aria-selected="false">Validated</button><button role="tab" data-tab="blocked" aria-selected="false">Blocked</button><button role="tab" data-tab="published" aria-selected="false">Published</button><button role="tab" data-tab="converted" aria-selected="false">Converted</button>
+      </div>
+      
+      <div class="row-between" style="margin-bottom:12px">
+        <p class="muted" id="el-summary" aria-live="polite"></p>
+        <button class="btn" id="el-trigger" aria-expanded="false" aria-controls="el-panel">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+          Filter <span class="count-badge" id="el-badge" hidden>0</span></button>
+      </div>
+      <div class="active-tags" id="el-tags" aria-label="Active filters"></div>
+      <div class="filter-panel" id="el-panel" hidden>
+        <div>
+          <p class="fp-label" id="el-route-lbl">Route</p>
+          <div class="fp-route-row">
+            <div class="fp-airport-field field"><label class="field-label" for="el-from">From</label><input type="text" id="el-from" placeholder="Any departure…" autocomplete="off" aria-controls="el-from-dd" /><div class="fp-dropdown" id="el-from-dd" role="listbox" hidden></div></div>
+            <button type="button" class="fp-route-swap" id="el-swap" aria-label="Swap origin and destination"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg></button>
+            <div class="fp-airport-field field"><label class="field-label" for="el-to">To</label><input type="text" id="el-to" placeholder="Any destination…" autocomplete="off" aria-controls="el-to-dd" /><div class="fp-dropdown" id="el-to-dd" role="listbox" hidden></div></div>
+          </div>
+        </div>
+        <div>
+          <p class="fp-label">Departure Window</p>
+          <div class="pills" id="el-dates" role="group" aria-label="Departure window">
+            <button type="button" class="pill" data-range="any" aria-pressed="true">Any Date</button><button type="button" class="pill" data-range="today" aria-pressed="false">Today</button><button type="button" class="pill" data-range="7" aria-pressed="false">Next 7 Days</button><button type="button" class="pill" data-range="30" aria-pressed="false">Next 30 Days</button><button type="button" class="pill" data-range="custom" aria-pressed="false">Custom Range</button>
+          </div>
+          <div class="fp-custom" id="el-custom" hidden>
+            <label class="field"><span>From Date</span><input type="date" id="el-dfrom" /></label>
+            <label class="field"><span>To Date</span><input type="date" id="el-dto" /></label>
+          </div>
+        </div>
+        <div><p class="fp-label">Jet Class</p><div class="pills" id="el-classes" role="group" aria-label="Jet class"><button type="button" class="chip" data-class="" aria-pressed="true">All Classes</button><button type="button" class="chip" data-class="light" aria-pressed="false">✈ Light Jet<small>4–8 pax · Short haul</small></button><button type="button" class="chip" data-class="midsize" aria-pressed="false">✈ Midsize<small>6–9 pax · Mid range</small></button><button type="button" class="chip" data-class="heavy" aria-pressed="false">✈ Heavy Jet<small>8–14 pax · Long haul</small></button><button type="button" class="chip" data-class="ultra" aria-pressed="false">✈ Ultra Long Range<small>10–17 pax · Global</small></button><button type="button" class="chip" data-class="rotor" aria-pressed="false">◎ Helicopter<small>5–8 pax · City & island hops</small></button><button type="button" class="chip" data-class="vip" aria-pressed="false">♛ VIP Airliner<small>14–19 pax · Executive airliner</small></button><button type="button" class="chip" data-class="cargo" aria-pressed="false">▣ Cargo<small>Freight · by payload</small></button></div></div>
+        <div class="cols-2">
+          <div><p class="fp-label">Max Price</p><div class="pills" id="el-prices" role="group" aria-label="Maximum price">
+            <button type="button" class="pill" data-price="" aria-pressed="true">Any</button><button type="button" class="pill" data-price="5000" aria-pressed="false">Under $5K</button><button type="button" class="pill" data-price="15000" aria-pressed="false">Under $15K</button><button type="button" class="pill" data-price="50000" aria-pressed="false">Under $50K</button></div></div>
+          <div><p class="fp-label">Region</p><div class="pills" id="el-regions" role="group" aria-label="Region">
+            <button type="button" class="pill" data-region="" aria-pressed="true">Anywhere</button><button type="button" class="pill" data-region="europe" aria-pressed="false">Europe</button><button type="button" class="pill" data-region="americas" aria-pressed="false">Americas</button><button type="button" class="pill" data-region="mideast" aria-pressed="false">Middle East</button><button type="button" class="pill" data-region="asia" aria-pressed="false">Asia</button></div></div>
+        </div>
+        <div class="fp-actions"><button type="button" class="btn btn-ghost" id="el-clear">Clear All</button><button type="button" class="btn btn-primary" id="el-apply">Show Results <span class="count-badge" id="el-apply-count">0</span></button></div>
+      </div>
+      <div id="el-grid"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="../assets/js/app.js"></script>
+</body>
+</html>

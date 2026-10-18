@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics — AERO</title>
+  <meta name="description" content="Business intelligence: utilization, revenue per aircraft, trip profitability, empty-leg funnel, date filters, CSV export." />
+  <meta name="theme-color" content="#081321" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/platform.css" />
+  <link rel="stylesheet" href="../assets/css/motion.css" />
+</head>
+<body class="platform" data-page="analytics" data-root="..">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="app" id="app">
+    <aside id="sidebar" aria-label="Sidebar"><div class="sb-top"><a class="sb-brand" href="../index.html"><span class="sb-mark" aria-hidden="true">✦</span><span class="sb-text">AERO</span></a></div><nav class="sb-nav" aria-label="Platform modules"><div class="sb-group"><p class="sb-group-label">Operate</p><ul role="list"><li><a class="sb-link" href="../platform/dashboard.html"><span class="sb-text">Command Center</span></a></li><li><a class="sb-link" href="../platform/fleet.html"><span class="sb-text">Fleet</span></a></li><li><a class="sb-link" href="../platform/operations.html"><span class="sb-text">Operations</span></a></li><li><a class="sb-link" href="../platform/crew.html"><span class="sb-text">Crew</span></a></li><li><a class="sb-link" href="../platform/maintenance.html"><span class="sb-text">Maintenance</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Revenue</p><ul role="list"><li><a class="sb-link" href="../platform/empty-legs.html"><span class="sb-text">Empty-Leg Engine</span></a></li><li><a class="sb-link" href="../platform/charter-crm.html"><span class="sb-text">Charter CRM</span></a></li><li><a class="sb-link" href="../platform/marketplace.html"><span class="sb-text">Marketplace</span></a></li><li><a class="sb-link" href="../platform/finance.html"><span class="sb-text">Finance</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Intelligence</p><ul role="list"><li><a class="sb-link" href="../platform/ai-copilot.html"><span class="sb-text">AI Copilot</span></a></li><li><a class="sb-link active" href="../platform/analytics.html" aria-current="page"><span class="sb-text">Analytics</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Portals</p><ul role="list"><li><a class="sb-link" href="../platform/owner-portal.html"><span class="sb-text">Owner Portal</span></a></li><li><a class="sb-link" href="../portal/passenger.html"><span class="sb-text">Passenger Portal</span></a></li><li><a class="sb-link" href="../aeroflow.html"><span class="sb-text">AeroFlow (public)</span></a></li><li><a class="sb-link" href="../platform/settings.html"><span class="sb-text">Settings</span></a></li></ul></div></nav></aside>
+    <div class="app-main">
+      <header id="topbar"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../platform/dashboard.html">AERO</a></li><li aria-current="page">Analytics</li></ol></nav></header>
+      <div class="demo-banner" id="demo-banner" role="note"><span class="demo-pill">Demo</span><span>Synthetic data. Not live availability, tracking or transactions.</span></div>
+      <main id="main" tabindex="-1">
+        <noscript><p class="notice">The AERO workspace needs JavaScript (ES modules) served from a local web server. See README.md — e.g. <code>python3 -m http.server 8000</code>.</p></noscript>
+      <header class="page-head">
+        <div><p class="eyebrow">Intelligence</p><h1>Analytics</h1><p class="lede">Utilization, profitability and empty-leg conversion over any date range. Export to CSV for your own reporting.</p></div>
+        <div class="page-actions"><button class="btn" id="an-export-util">Export utilization CSV</button><button class="btn btn-primary" id="an-export">Export trips CSV</button></div>
+      </header>
+      <div class="toolbar" role="group" aria-label="Date range">
+        <div class="field"><span>Date range</span><div class="pills" id="an-ranges"><button type="button" class="pill" data-range="30" aria-pressed="false">30 days</button><button type="button" class="pill" data-range="90" aria-pressed="true">90 days</button><button type="button" class="pill" data-range="ytd" aria-pressed="false">Year to date</button><button type="button" class="pill" data-range="custom" aria-pressed="false">Custom</button></div></div>
+        <div class="fp-custom" id="an-custom" hidden style="margin:0"><label class="field"><span>From</span><input type="date" id="an-from" /></label><label class="field"><span>To</span><input type="date" id="an-to" /></label></div>
+        <span class="result-count" id="an-range" aria-live="polite"></span>
+      </div>
+      <section class="kpis" id="an-kpis" aria-label="Analytics metrics"></section>
+      <div class="cols-2">
+        <section class="card" aria-labelledby="h-an-util"><div class="card-head"><h2 class="card-title" id="h-an-util">Fleet utilization</h2><span class="card-sub">Bars: hours flown · tick: target pace</span></div><div id="an-util"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+        <section class="card" aria-labelledby="h-an-rev"><div class="card-head"><h2 class="card-title" id="h-an-rev">Revenue per aircraft <span class='sim'>Sim</span></h2></div><div id="an-rev"></div></section>
+      </div>
+      <div class="cols-main mt">
+        <section class="card" aria-labelledby="h-an-trend"><div class="card-head"><h2 class="card-title" id="h-an-trend">Monthly trend</h2></div><div id="an-trend"></div></section>
+        <section class="card" aria-labelledby="h-an-funnel"><div class="card-head"><h2 class="card-title" id="h-an-funnel">Empty-leg conversion funnel</h2></div><div id="an-funnel"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+      </div>
+      <section class="card card-flush mt" aria-labelledby="h-an-t"><div class="card-head"><h2 class="card-title" id="h-an-t">Trip profitability</h2></div><div id="an-table" style="padding:0 18px 18px"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="../assets/js/app.js"></script>
+</body>
+</html>

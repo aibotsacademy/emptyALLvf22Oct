@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Owner Portal — AERO</title>
+  <meta name="description" content="Owner experience: aircraft overview, utilization, schedule, trip requests, financial summaries and approval inbox." />
+  <meta name="theme-color" content="#081321" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/platform.css" />
+  <link rel="stylesheet" href="../assets/css/motion.css" />
+</head>
+<body class="platform" data-page="owner-portal" data-root="..">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="app" id="app">
+    <aside id="sidebar" aria-label="Sidebar"><div class="sb-top"><a class="sb-brand" href="../index.html"><span class="sb-mark" aria-hidden="true">✦</span><span class="sb-text">AERO</span></a></div><nav class="sb-nav" aria-label="Platform modules"><div class="sb-group"><p class="sb-group-label">Operate</p><ul role="list"><li><a class="sb-link" href="../platform/dashboard.html"><span class="sb-text">Command Center</span></a></li><li><a class="sb-link" href="../platform/fleet.html"><span class="sb-text">Fleet</span></a></li><li><a class="sb-link" href="../platform/operations.html"><span class="sb-text">Operations</span></a></li><li><a class="sb-link" href="../platform/crew.html"><span class="sb-text">Crew</span></a></li><li><a class="sb-link" href="../platform/maintenance.html"><span class="sb-text">Maintenance</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Revenue</p><ul role="list"><li><a class="sb-link" href="../platform/empty-legs.html"><span class="sb-text">Empty-Leg Engine</span></a></li><li><a class="sb-link" href="../platform/charter-crm.html"><span class="sb-text">Charter CRM</span></a></li><li><a class="sb-link" href="../platform/marketplace.html"><span class="sb-text">Marketplace</span></a></li><li><a class="sb-link" href="../platform/finance.html"><span class="sb-text">Finance</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Intelligence</p><ul role="list"><li><a class="sb-link" href="../platform/ai-copilot.html"><span class="sb-text">AI Copilot</span></a></li><li><a class="sb-link" href="../platform/analytics.html"><span class="sb-text">Analytics</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Portals</p><ul role="list"><li><a class="sb-link active" href="../platform/owner-portal.html" aria-current="page"><span class="sb-text">Owner Portal</span></a></li><li><a class="sb-link" href="../portal/passenger.html"><span class="sb-text">Passenger Portal</span></a></li><li><a class="sb-link" href="../aeroflow.html"><span class="sb-text">AeroFlow (public)</span></a></li><li><a class="sb-link" href="../platform/settings.html"><span class="sb-text">Settings</span></a></li></ul></div></nav></aside>
+    <div class="app-main">
+      <header id="topbar"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../platform/dashboard.html">AERO</a></li><li aria-current="page">Owner Portal</li></ol></nav></header>
+      <div class="demo-banner" id="demo-banner" role="note"><span class="demo-pill">Demo</span><span>Synthetic data. Not live availability, tracking or transactions.</span></div>
+      <main id="main" tabindex="-1">
+        <noscript><p class="notice">The AERO workspace needs JavaScript (ES modules) served from a local web server. See README.md — e.g. <code>python3 -m http.server 8000</code>.</p></noscript>
+      <header class="page-head">
+        <div><p class="eyebrow">Portals</p><h1>Owner Portal</h1><p class="lede">What your aircraft is doing, earning and costing — with an inbox for decisions only you can make.</p></div>
+        <div class="page-actions"><label class="field" style="min-width:240px"><span>Viewing as owner</span><select id="owner-select"></select></label></div>
+      </header>
+      <section class="kpis" id="own-kpis" aria-label="Owner metrics"></section>
+      <section aria-labelledby="h-of"><h2 class="card-title" id="h-of" style="margin-bottom:12px">Your aircraft</h2><div id="own-fleet"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+      <div class="cols-main mt">
+        <div class="stack">
+          <section class="card" aria-labelledby="h-own-util"><div class="card-head"><h2 class="card-title" id="h-own-util">Utilization · monthly hours</h2></div><div id="own-util"></div></section>
+          <section class="card" aria-labelledby="h-own-fin"><div class="card-head"><h2 class="card-title" id="h-own-fin">Financial summary <span class='sim'>Sim</span></h2></div><div id="own-fin"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+        </div>
+        <div class="stack">
+          <section class="card" aria-labelledby="h-own-inbox"><div class="card-head"><h2 class="card-title" id="h-own-inbox">Approval inbox</h2></div><div id="own-inbox"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+          <section class="card" aria-labelledby="h-own-schedule"><div class="card-head"><h2 class="card-title" id="h-own-schedule">Schedule · next 3 weeks</h2></div><div id="own-schedule"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+          <section class="card" aria-labelledby="h-req"><div class="card-head"><h2 class="card-title" id="h-req">Request a trip</h2></div>
+            <form id="own-req" class="form-grid" novalidate>
+              <label class="field span-2"><span>Aircraft</span><select name="aircraftId" id="own-req-ac" required></select></label>
+              <label class="field"><span>From</span><select name="from" required><option value="TEB">TEB — New York</option><option value="BED">BED — Boston</option><option value="IAD">IAD — Washington DC</option><option value="PBI">PBI — West Palm Beach</option><option value="OPF">OPF — Miami</option><option value="PWK">PWK — Chicago</option><option value="DAL">DAL — Dallas</option><option value="HOU">HOU — Houston</option><option value="APA">APA — Denver</option><option value="ASE">ASE — Aspen</option><option value="EGE">EGE — Vail</option><option value="SDL">SDL — Scottsdale</option><option value="LAS">LAS — Las Vegas</option><option value="VNY">VNY — Los Angeles</option><option value="SJC">SJC — San Jose</option><option value="NAS">NAS — Nassau</option><option value="CUN">CUN — Cancún</option><option value="SJO">SJO — San José</option><option value="LIR">LIR — Guanacaste</option><option value="FAB">FAB — London</option><option value="LBG">LBG — Paris</option><option value="GVA">GVA — Geneva</option><option value="NCE">NCE — Nice</option><option value="IBZ">IBZ — Ibiza</option><option value="DWC">DWC — Dubai</option><option value="DOH">DOH — Doha</option><option value="HKG">HKG — Hong Kong</option><option value="SIN">SIN — Singapore</option></select></label>
+              <label class="field"><span>To</span><select name="to" required><option value="TEB">TEB — New York</option><option value="BED">BED — Boston</option><option value="IAD">IAD — Washington DC</option><option value="PBI" selected>PBI — West Palm Beach</option><option value="OPF">OPF — Miami</option><option value="PWK">PWK — Chicago</option><option value="DAL">DAL — Dallas</option><option value="HOU">HOU — Houston</option><option value="APA">APA — Denver</option><option value="ASE">ASE — Aspen</option><option value="EGE">EGE — Vail</option><option value="SDL">SDL — Scottsdale</option><option value="LAS">LAS — Las Vegas</option><option value="VNY">VNY — Los Angeles</option><option value="SJC">SJC — San Jose</option><option value="NAS">NAS — Nassau</option><option value="CUN">CUN — Cancún</option><option value="SJO">SJO — San José</option><option value="LIR">LIR — Guanacaste</option><option value="FAB">FAB — London</option><option value="LBG">LBG — Paris</option><option value="GVA">GVA — Geneva</option><option value="NCE">NCE — Nice</option><option value="IBZ">IBZ — Ibiza</option><option value="DWC">DWC — Dubai</option><option value="DOH">DOH — Doha</option><option value="HKG">HKG — Hong Kong</option><option value="SIN">SIN — Singapore</option></select></label>
+              <label class="field"><span>Departure</span><input name="depart" type="datetime-local" required /></label>
+              <label class="field"><span>Passengers</span><input name="pax" type="number" min="1" max="19" value="2" required /></label>
+              <label class="field span-2"><span>Notes</span><textarea name="notes" maxlength="300"></textarea></label>
+              <div class="span-2"><button class="btn btn-primary" type="submit">Send to Operations</button></div>
+            </form></section>
+        </div>
+      </div>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="../assets/js/app.js"></script>
+</body>
+</html>

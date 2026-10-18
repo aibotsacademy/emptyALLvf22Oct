@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command Center — AERO</title>
+  <meta name="description" content="Operations command center: availability, flights, fleet map, empty-leg opportunities, alerts and tasks." />
+  <meta name="theme-color" content="#081321" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/platform.css" />
+  <link rel="stylesheet" href="../assets/css/motion.css" />
+</head>
+<body class="platform" data-page="dashboard" data-root="..">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="app" id="app">
+    <aside id="sidebar" aria-label="Sidebar"><div class="sb-top"><a class="sb-brand" href="../index.html"><span class="sb-mark" aria-hidden="true">✦</span><span class="sb-text">AERO</span></a></div><nav class="sb-nav" aria-label="Platform modules"><div class="sb-group"><p class="sb-group-label">Operate</p><ul role="list"><li><a class="sb-link active" href="../platform/dashboard.html" aria-current="page"><span class="sb-text">Command Center</span></a></li><li><a class="sb-link" href="../platform/fleet.html"><span class="sb-text">Fleet</span></a></li><li><a class="sb-link" href="../platform/operations.html"><span class="sb-text">Operations</span></a></li><li><a class="sb-link" href="../platform/crew.html"><span class="sb-text">Crew</span></a></li><li><a class="sb-link" href="../platform/maintenance.html"><span class="sb-text">Maintenance</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Revenue</p><ul role="list"><li><a class="sb-link" href="../platform/empty-legs.html"><span class="sb-text">Empty-Leg Engine</span></a></li><li><a class="sb-link" href="../platform/charter-crm.html"><span class="sb-text">Charter CRM</span></a></li><li><a class="sb-link" href="../platform/marketplace.html"><span class="sb-text">Marketplace</span></a></li><li><a class="sb-link" href="../platform/finance.html"><span class="sb-text">Finance</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Intelligence</p><ul role="list"><li><a class="sb-link" href="../platform/ai-copilot.html"><span class="sb-text">AI Copilot</span></a></li><li><a class="sb-link" href="../platform/analytics.html"><span class="sb-text">Analytics</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Portals</p><ul role="list"><li><a class="sb-link" href="../platform/owner-portal.html"><span class="sb-text">Owner Portal</span></a></li><li><a class="sb-link" href="../portal/passenger.html"><span class="sb-text">Passenger Portal</span></a></li><li><a class="sb-link" href="../aeroflow.html"><span class="sb-text">AeroFlow (public)</span></a></li><li><a class="sb-link" href="../platform/settings.html"><span class="sb-text">Settings</span></a></li></ul></div></nav></aside>
+    <div class="app-main">
+      <header id="topbar"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../platform/dashboard.html">AERO</a></li><li aria-current="page">Command Center</li></ol></nav></header>
+      <div class="demo-banner" id="demo-banner" role="note"><span class="demo-pill">Demo</span><span>Synthetic data. Not live availability, tracking or transactions.</span></div>
+      <main id="main" tabindex="-1">
+        <noscript><p class="notice">The AERO workspace needs JavaScript (ES modules) served from a local web server. See README.md — e.g. <code>python3 -m http.server 8000</code>.</p></noscript>
+      <header class="page-head">
+        <div><p class="eyebrow">Operations</p><h1>Command Center</h1><p class="lede">Fleet availability, today’s flights, opportunities and what needs attention — from one screen.</p></div>
+        <div class="page-actions"><a class="btn" href="operations.html">Open Operations</a><a class="btn btn-primary" href="empty-legs.html">Empty-Leg Engine</a></div>
+      </header>
+      <section class="kpis" id="kpis" aria-label="Key metrics"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></section>
+      <section class="card" aria-labelledby="h-today"><div class="card-head"><h2 class="card-title" id="h-today">Flight status timeline · <span id="today-label"></span></h2><span class="card-sub">Gold charter · blue owner · dashed reposition · red line now</span></div><div id="today-gantt"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+      <div class="cols-main mt">
+        <div class="stack">
+          <section class="card card-flush" aria-labelledby="h-map"><div class="card-head"><h2 class="card-title" id="h-map">Fleet map</h2><span class="demo-pill">Schematic · not live tracking</span></div><div style="padding:0 18px 18px"><div class="map-box"><div id="fleet-map"></div><div class="map-note"><span><i style="background:var(--success)"></i>On ground · available</span><span><i style="background:var(--series-2)"></i>Airborne (scheduled)</span><span><i style="background:var(--warning)"></i>Maintenance</span><span><i style="background:var(--danger)"></i>AOG</span><span>Positions derived from the schedule.</span></div></div></div></section>
+          <section class="card" aria-labelledby="h-upcoming"><div class="card-head"><h2 class="card-title" id="h-upcoming">Upcoming flights · 7 days</h2><a class="btn btn-sm" href="operations.html">Calendar</a></div><div id="upcoming"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+          <section class="card" aria-labelledby="h-revenue-chart"><div class="card-head"><h2 class="card-title" id="h-revenue-chart">Revenue · weekly <span class='sim'>Sim</span></h2><span class="card-sub">Completed trips at rate card</span></div><div id="revenue-chart"></div></section>
+        </div>
+        <div class="stack">
+          <section class="card" aria-labelledby="h-alerts"><div class="card-head"><h2 class="card-title" id="h-alerts">Alerts</h2></div><div id="alerts"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+          <section class="card" aria-labelledby="h-opps"><div class="card-head"><h2 class="card-title" id="h-opps">Empty-leg opportunities</h2><a class="btn btn-sm" href="empty-legs.html">Engine</a></div><div id="opps"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+          <section class="card" aria-labelledby="h-tasks"><div class="card-head"><h2 class="card-title" id="h-tasks">Tasks</h2></div><div id="tasks"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+        </div>
+      </div>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="../assets/js/app.js"></script>
+</body>
+</html>

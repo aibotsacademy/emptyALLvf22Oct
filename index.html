@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AERO — Aircraft Management Platform</title>
+  <meta name="description" content="AERO unifies aircraft operations, fleet intelligence and empty-leg revenue for business aviation. One Platform. Every Aircraft. Every Opportunity." />
+  <meta name="theme-color" content="#081321" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/motion.css" />
+</head>
+<body class="site" data-page="home" data-root=".">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Shared jet silhouette (side profile) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="jet" viewBox="0 0 810 210">
+      <path fill="currentColor" d="M28 132C40 116 78 104 140 100L560 96C610 96 650 100 690 108L744 54C750 48 758 46 766 46L784 46C788 46 790 50 788 54L752 118C746 128 730 134 700 136L150 142C90 142 46 140 28 132Z"/>
+      <path fill="currentColor" d="M736 50L800 40L804 48L744 60Z"/>
+      <path fill="currentColor" d="M560 78C560 68 572 62 590 62L660 62C676 62 684 68 684 76C684 84 676 90 660 90L590 90C572 90 560 86 560 78Z"/>
+      <path fill="currentColor" d="M600 90L620 98L650 98L640 90Z"/>
+      <path fill="currentColor" opacity=".72" d="M330 134L470 132L560 190C562 194 558 196 552 196L528 196Z"/>
+      <path fill="currentColor" opacity=".72" d="M548 196L566 170L572 172L560 198Z"/>
+      <g fill="#081321" opacity=".85">
+        <rect x="200" y="106" width="14" height="17" rx="6"/><rect x="238" y="106" width="14" height="17" rx="6"/><rect x="276" y="106" width="14" height="17" rx="6"/><rect x="314" y="105" width="14" height="17" rx="6"/><rect x="352" y="105" width="14" height="17" rx="6"/><rect x="390" y="105" width="14" height="17" rx="6"/><rect x="428" y="104" width="14" height="17" rx="6"/><rect x="466" y="104" width="14" height="17" rx="6"/>
+        <path d="M70 116C84 108 104 104 124 104L128 116Z"/>
+      </g>
+      <path class="cheat" fill="none" stroke="#C9A76A" stroke-width="2" d="M60 128C200 124 500 120 722 113"/>
+    </symbol>
+  </svg>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="site-header" data-header>
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="AERO home"><span aria-hidden="true">✦</span>AERO</a>
+      <button class="btn btn-ghost btn-icon nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a href="#product" class="accent-line">Product</a>
+        <a href="#solutions" class="accent-line">Solutions</a>
+        <a href="#empty-legs" class="accent-line">Empty Legs</a>
+        <a href="#ai" class="accent-line">AI</a>
+        <a href="aeroflow.html" class="accent-line">AeroFlow</a>
+        <a href="platform/dashboard.html" class="accent-line">Open Demo Workspace</a>
+        <a href="#demo" class="btn btn-primary">Request Demo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ===================== HERO (original file.mp4 preserved) ===================== -->
+    <section class="hero" id="hero" data-hero aria-labelledby="hero-title">
+      <div class="hero-media" aria-hidden="true">
+        <div class="hero-fallback"><img class="hero-photo" src="https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=2400&q=72 2400w" sizes="100vw" alt="" fetchpriority="high" decoding="async" onerror="this.style.opacity=0" /></div>
+        <!-- Original AERO hero video. Place file.mp4 in assets/media/ (or next to index.html). Not generated or renamed. -->
+        <video class="hero-video" id="hero-video" poster="https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=1600&q=72" autoplay muted loop playsinline preload="metadata" tabindex="-1">
+          <source src="assets/media/file.mp4" type="video/mp4" />
+          <source src="file.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+      <div class="wrap hero-content">
+        <p class="eyebrow hero-eyebrow load-fade"><span class="dot" aria-hidden="true"></span>Aircraft Management Platform · Business Aviation</p>
+        <h1 class="hero-title" id="hero-title" data-text="One Platform.|Every Aircraft.|Every Opportunity.">One Platform. Every Aircraft. Every Opportunity.</h1>
+        <p class="hero-sub load-fade d1">Unified aircraft operations, fleet intelligence and AI-assisted empty-leg revenue — built for owners, Part 135 operators, Part 91 flight departments, brokers and crews.</p>
+        <div class="hero-ctas load-fade d2">
+          <a class="btn btn-primary" href="#demo">Request a Demo
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a class="btn" href="platform/dashboard.html">Explore the Workspace</a>
+          <a class="btn btn-ghost" href="aeroflow.html">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M7 12h10M11 18h2"/></svg>Browse Empty Legs</a>
+        </div>
+        <div class="hero-facts load-fade d3" aria-label="Platform facts">
+          <div><b>12</b><span>Integrated modules</span></div>
+          <div><b>1</b><span>Source of truth</span></div>
+          <div><b>0</b><span>Spreadsheets to reconcile</span></div>
+        </div>
+      </div>
+
+      <div class="hero-controls">
+        <button class="btn btn-sm" id="video-toggle" aria-pressed="false" hidden>Pause video</button>
+        <a class="scroll-cue" href="#product"><i aria-hidden="true"></i>Scroll</a>
+      </div>
+    </section>
+
+    <!-- ===================== PLATFORM REVEAL: aircraft → flight data → fleet ===================== -->
+    <section class="reveal-seq" id="product" data-sequence data-steps="3" aria-label="Platform overview">
+      <div class="wrap seq-stage">
+        <div class="seq-copy">
+          <article class="seq-text is-active" data-seq-step="0">
+            <p class="eyebrow">01 · The aircraft</p>
+            <h3>Every tail, <em>fully understood.</em></h3>
+            <p>Specifications, documents, costs and maintenance status live with the aircraft profile — not in inboxes and spreadsheets.</p>
+          </article>
+          <article class="seq-text" data-seq-step="1">
+            <p class="eyebrow">02 · The flight data</p>
+            <h3>Schedules, crews and margins, <em>in context.</em></h3>
+            <p>Trips, crew assignments, ground handling requests and estimated trip economics attach to each leg the moment it is planned.</p>
+          </article>
+          <article class="seq-text" data-seq-step="2">
+            <p class="eyebrow">03 · The fleet</p>
+            <h3>One command center <em>for the whole fleet.</em></h3>
+            <p>Availability, utilization, conflicts and revenue opportunities across every aircraft you manage — on one screen.</p>
+          </article>
+          <div class="seq-dots" aria-hidden="true"><span data-seq-dot="0" aria-current="step"></span><span data-seq-dot="1"></span><span data-seq-dot="2"></span></div>
+        </div>
+        <div class="seq-visual" aria-hidden="true">
+          <div class="seq-photo"><img class="" src="https://images.unsplash.com/photo-1684838200815-36eef38f353c?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1684838200815-36eef38f353c?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1684838200815-36eef38f353c?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1684838200815-36eef38f353c?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1684838200815-36eef38f353c?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 100vw, 60vw" alt="Private jet parked on an airport apron" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div>
+          <div class="callout c1"><b>3,260 h</b>Airframe total time</div>
+          <div class="callout c2"><b>TEB → PBI</b>Next leg · 2.4 h block</div>
+          <div class="callout c3"><b>2 crew</b>Assigned · qualified</div>
+          <div class="callout c4"><b>34%</b>Est. trip margin</div>
+          <div class="mini-dash">
+            <div class="md-kpis">
+              <div><b>12</b>Aircraft</div><div><b>8</b>Available</div><div><b>17</b>Trips · 7 days</div><div><b>6</b>Empty legs</div>
+            </div>
+            <div class="md-rows">
+              <div class="md-row"><span>N512AE</span><div class="bar"><i style="left:8%;width:22%"></i><i class="r" style="left:44%;width:14%"></i></div></div>
+              <div class="md-row"><span>N350AE</span><div class="bar"><i class="b" style="left:20%;width:30%"></i></div></div>
+              <div class="md-row"><span>N600AE</span><div class="bar"><i style="left:5%;width:18%"></i><i style="left:55%;width:25%"></i></div></div>
+              <div class="md-row"><span>N65GA</span><div class="bar"><i style="left:30%;width:48%"></i></div></div>
+              <div class="md-row"><span>N901AE</span><div class="bar"><i class="r" style="left:12%;width:20%"></i><i class="b" style="left:60%;width:22%"></i></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 12 MODULES ===================== -->
+    <section class="section" id="modules" aria-labelledby="modules-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow" data-reveal>The platform</p>
+          <h2 id="modules-title" data-reveal data-reveal-delay="1">Twelve modules. <em>One operating picture.</em></h2>
+          <p class="lede" data-reveal data-reveal-delay="2">Each module works on its own and shares the same aircraft, trip, crew and customer records — so a status change in one place updates everywhere it matters.</p>
+        </header>
+        <div class="modules">
+          <a class="module light-shift" href="platform/dashboard.html" data-reveal><span class="m-n">01</span><span class="m-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><h3>Command Center</h3><p>Availability, today’s flights, alerts and revenue at a glance.</p><span class="m-go">Open module →</span></a>
+          <a class="module light-shift" href="platform/fleet.html" data-reveal data-reveal-delay="1"><span class="m-n">02</span><span class="m-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.5 21l1.5-1v-5.5l8 2.5v-2l-8-5V4.5a1.5 1.5 0 0 0-3 0V10l-8 5v2l8-2.5V20l1.5 1z"/></svg></span><h3>Fleet</h3><p>Directory of every tail with status, base and utilization.</p><span class="m-go">Open module →</span></a>
+          <a class="module light-shift" href="platform/operations.html" data-reveal data-reveal-delay="2"><span class="m-n">03</span><span class="m-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><h3>Operations</h3><p>Scheduling, dispatch coordination and conflict detection.</p><span class="m-go">Open module →</span></a>
+          <a class="module light-shift" href="platform/empty-legs.html" data-reveal data-reveal-delay="3"><span class="m-n">04</span><span class="m-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5" stroke-dasharray="2 2.5"/></svg></span><h3>Empty-Leg Engine</h3><p>Detect repositioning, match demand, recommend a price.</p><span class="m-go">Open module →</span></a>
+          <a class="module light-shift" href="platform/charter-crm.html" data-reveal><span class="m-n">05</span><span class="m-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="10" rx="1.5"/><rect x="17" y="4" width="4" height="13" rx="1.5"/></svg></span><h3>Charter CRM</h3><p>Pipeline, quote builder and follow-ups in one flow.</p><span class="m-go">Open module →</span></a>
+          <a class="module light-shift" href="platform/crew.html" data-reveal data-reveal-delay="1"><span class="m-n">06</span><span class="m-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/></svg></span><h3>Crew</h3><p>Roster, qualifications, expirations and duty inputs.</p><span class="m-go">Open module →</span></a>
+          <a class="module light-shift" href="platform/maintenance.html" data-reveal data-reveal-delay="2"><span class="m-n">07</span><span class="m-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a4 4 0 0 0 5 5L21 13l-8 8-3.5-3.5 8-8M14.7 6.3L13 4.5a4 4 0 0 0-5.6 5.6L3 14.5 6.5 18l4.4-4.4"/></svg></span><h3>Maintenance</h3><p>Due items, grounding indicators and human review.</p><span class="m-go">Open module →</span></a>
+          <a class="module light-shift" href="platform/finance.html" data-reveal data-reveal-delay="3"><span class="m-n">08</span><span class="m-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M15 9.2c-.6-.9-1.7-1.4-3-1.4-1.8 0-3 .9-3 2.1 0 3 6 1.5 6 4.4 0 1.2-1.3 2.1-3 2.1-1.4 0-2.6-.6-3.1-1.6"/></svg></span><h3>Finance</h3><p>Aircraft P&amp;L, trip margins, invoices and statements.</p><span class="m-go">Open module →</span></a>
+          <a class="module light-shift" href="platform/owner-portal.html" data-reveal><span class="m-n">09</span><span class="m-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/></svg></span><h3>Owner Portal</h3><p>Utilization, finances and an approval inbox for owners.</p><span class="m-go">Open module →</span></a>
+          <a class="module light-shift" href="platform/ai-copilot.html" data-reveal data-reveal-delay="1"><span class="m-n">10</span><span class="m-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></span><h3>AI Copilot</h3><p>Explainable answers with evidence and approval gates.</p><span class="m-go">Open module →</span></a>
+          <a class="module light-shift" href="platform/marketplace.html" data-reveal data-reveal-delay="2"><span class="m-n">11</span><span class="m-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 9l1.5-5h13L20 9M4 9h16v11H4z"/></svg></span><h3>Marketplace</h3><p>Broker-facing listings and empty-leg inventory.</p><span class="m-go">Open module →</span></a>
+          <a class="module light-shift" href="platform/analytics.html" data-reveal data-reveal-delay="3"><span class="m-n">12</span><span class="m-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-6M20 16V6"/></svg></span><h3>Analytics</h3><p>Utilization, profitability and conversion, exportable.</p><span class="m-go">Open module →</span></a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================== FILM STRIP: jets, cabins, helicopters (horizontal, scroll-linked) ===================== -->
+    <section class="film" id="fleet-gallery" data-sequence data-hscroll data-steps="1" aria-labelledby="film-title">
+      <div class="film-stage">
+        <div class="film-track" data-hscroll-track>
+          <div class="film-intro">
+            <p class="eyebrow">Every airframe</p>
+            <h2 id="film-title">Jets. Helicopters.<br><em>Every cabin in between.</em></h2>
+            <p>From light jets to ultra-long-range flagships and the helicopters that meet them on the ramp, AERO manages fixed-wing and rotor fleets in one place.</p>
+            <a class="btn" href="aeroflow.html">Browse empty legs in AeroFlow →</a>
+          </div>
+            <figure class="film-card">
+              <div class="film-img"><img class="" src="https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 80vw, 34vw" alt="White private jet on the tarmac at golden hour" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div>
+              <figcaption><span class="film-n">01</span><b>Ultra-long-range</b><span>Nonstop between continents.</span></figcaption>
+            </figure>
+            <figure class="film-card">
+              <div class="film-img"><img class="" src="https://images.unsplash.com/photo-1684838200815-36eef38f353c?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1684838200815-36eef38f353c?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1684838200815-36eef38f353c?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1684838200815-36eef38f353c?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1684838200815-36eef38f353c?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 80vw, 34vw" alt="Private jet parked on an airport apron" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div>
+              <figcaption><span class="film-n">02</span><b>Super-midsize</b><span>The workhorse of every managed fleet.</span></figcaption>
+            </figure>
+            <figure class="film-card">
+              <div class="film-img"><img class="" src="https://images.unsplash.com/photo-1772354967311-167285eaa5f5?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1772354967311-167285eaa5f5?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1772354967311-167285eaa5f5?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1772354967311-167285eaa5f5?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1772354967311-167285eaa5f5?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 80vw, 34vw" alt="Luxurious cabin interior of a private jet" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div>
+              <figcaption><span class="film-n">03</span><b>The cabin</b><span>Configurations, amenities and seat maps on every tail.</span></figcaption>
+            </figure>
+            <figure class="film-card">
+              <div class="film-img"><img class="" src="https://images.unsplash.com/photo-1661954864180-e61dea14208a?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1661954864180-e61dea14208a?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1661954864180-e61dea14208a?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1661954864180-e61dea14208a?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1661954864180-e61dea14208a?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 80vw, 34vw" alt="Table set with food and wine on board" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div>
+              <figcaption><span class="film-n">04</span><b>On-board service</b><span>Catering and handling requests attached to the trip.</span></figcaption>
+            </figure>
+            <figure class="film-card">
+              <div class="film-img"><img class="" src="https://images.unsplash.com/photo-1764917301484-f5c0c8fcc844?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1764917301484-f5c0c8fcc844?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1764917301484-f5c0c8fcc844?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1764917301484-f5c0c8fcc844?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1764917301484-f5c0c8fcc844?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 80vw, 34vw" alt="Cockpit with digital flight displays" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div>
+              <figcaption><span class="film-n">05</span><b>The flight deck</b><span>Crew qualifications and duty inputs, in context.</span></figcaption>
+            </figure>
+            <figure class="film-card">
+              <div class="film-img"><img class="" src="https://images.unsplash.com/photo-1607525884336-66ccfac7ab56?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1607525884336-66ccfac7ab56?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1607525884336-66ccfac7ab56?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1607525884336-66ccfac7ab56?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1607525884336-66ccfac7ab56?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 80vw, 34vw" alt="Gray and black helicopter in flight" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div>
+              <figcaption><span class="film-n">06</span><b>Helicopters</b><span>City, island and heliport transfers.</span></figcaption>
+            </figure>
+            <figure class="film-card">
+              <div class="film-img"><img class="" src="https://images.unsplash.com/photo-1542042839913-3bc2c8e229c9?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1542042839913-3bc2c8e229c9?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1542042839913-3bc2c8e229c9?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1542042839913-3bc2c8e229c9?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1542042839913-3bc2c8e229c9?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 80vw, 34vw" alt="Helicopter flying near city buildings" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div>
+              <figcaption><span class="film-n">07</span><b>Urban rotor</b><span>Short hops that connect to the jet.</span></figcaption>
+            </figure>
+            <figure class="film-card">
+              <div class="film-img"><img class="" src="https://images.unsplash.com/photo-1576725386266-5c4b8c63da66?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1576725386266-5c4b8c63da66?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1576725386266-5c4b8c63da66?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1576725386266-5c4b8c63da66?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1576725386266-5c4b8c63da66?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 80vw, 34vw" alt="Helicopters parked on a concrete apron" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div>
+              <figcaption><span class="film-n">08</span><b>Rotor fleet</b><span>Helicopters share the same schedule, crew and maintenance views.</span></figcaption>
+            </figure>
+            <figure class="film-card">
+              <div class="film-img"><img class="" src="https://images.unsplash.com/photo-1764547167359-277e66c9ac74?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1764547167359-277e66c9ac74?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1764547167359-277e66c9ac74?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1764547167359-277e66c9ac74?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1764547167359-277e66c9ac74?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 80vw, 34vw" alt="White aircraft parked in a hangar" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div>
+              <figcaption><span class="film-n">09</span><b>Maintenance, tracked</b><span>Due items and grounding indicators per airframe.</span></figcaption>
+            </figure>
+        </div>
+        <div class="film-progress" aria-hidden="true"><i></i></div>
+      </div>
+    </section>
+
+    <!-- ===================== EMPTY-LEG STORY: route → demand → quote → revenue ===================== -->
+    <section class="story" id="empty-legs" data-sequence data-steps="4" aria-labelledby="story-title">
+      <div class="wrap story-stage">
+        <div class="story-copy">
+          <header class="section-head">
+            <p class="eyebrow">Empty-leg monetization</p>
+            <h2 id="story-title">Turn repositioning <em>into revenue.</em></h2>
+            <p class="lede">Every one-way trip leaves an aircraft somewhere it doesn’t need to be. AERO finds those legs, checks them against the schedule, matches demand and recommends a price you can explain.</p>
+          </header>
+          <ol class="story-progress">
+            <li class="is-active" data-seq-step="0"><span class="k">01</span><div><b>Detect the route</b><small>Repositioning legs are found automatically from the schedule — explicit ferries and implied returns to base.</small></div></li>
+            <li data-seq-step="1"><span class="k">02</span><div><b>Match demand</b><small>Route searches, open CRM leads and saved passenger routes are scored against each leg.</small></div></li>
+            <li data-seq-step="2"><span class="k">03</span><div><b>Quote with reasons</b><small>A recommended price with its assumptions — never below direct operating cost.</small></div></li>
+            <li data-seq-step="3"><span class="k">04</span><div><b>Recover revenue</b><small>Published legs feed the marketplace and broker inquiries flow into the CRM.</small></div></li>
+          </ol>
+        </div>
+        <div class="story-visual" aria-hidden="true">
+          <span class="demo-pill illus">Illustrative example</span>
+          <div class="sv-map">
+            <svg viewBox="0 0 760 480" preserveAspectRatio="xMidYMid slice">
+              <defs><pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="rgba(244,241,234,0.08)"/></pattern></defs>
+              <rect width="760" height="480" fill="url(#dots)"/>
+              <path d="M40 120 C 160 90, 260 160, 300 220 S 380 360, 520 330 S 700 300, 740 360" fill="none" stroke="rgba(244,241,234,0.08)" stroke-width="1"/>
+              <path class="sv-route" d="M120 380 Q 360 120 620 210" pathLength="1000"/>
+              <circle cx="120" cy="380" r="6" fill="#C9A76A"/>
+              <circle cx="620" cy="210" r="6" fill="#F4F1EA"/>
+              <circle class="pulse" cx="620" cy="210" r="10" fill="none" stroke="#C9A76A" stroke-width="1.5"/>
+              <text x="100" y="412" fill="#C8CFD8" font-size="14" font-family="DM Sans" letter-spacing="2">TEB · NEW YORK</text>
+              <text x="500" y="250" fill="#C8CFD8" font-size="14" font-family="DM Sans" letter-spacing="2">PBI · PALM BEACH</text>
+              <g class="sv-plane"><path d="M-10 -4 L10 0 L-10 4 L-6 0Z" fill="#C9A76A"/></g>
+            </svg>
+          </div>
+          <div class="sv-panel is-active" data-seq-step="0">
+            <h4>Repositioning detected</h4>
+            <div class="rowx"><span>Aircraft</span><b>N350AE · Challenger 350</b></div>
+            <div class="rowx"><span>Leg</span><b>TEB → PBI</b></div>
+            <div class="rowx"><span>Window</span><b>Thu 14:00 ± 3 h</b></div>
+            <div class="rowx"><span>Source</span><b>Implied return after one-way</b></div>
+          </div>
+          <div class="sv-panel" data-seq-step="1">
+            <h4>Demand match · score 82</h4>
+            <div class="sv-match">
+              <div><span>Route searches · 30 days</span><b>44</b></div>
+              <div><span>Open CRM lead · 4 pax</span><b>L201</b></div>
+              <div><span>Saved passenger route</span><b>TEB → PBI</b></div>
+            </div>
+          </div>
+          <div class="sv-panel" data-seq-step="2">
+            <h4>Recommended price</h4>
+            <p class="big">$14,800</p>
+            <div class="rowx"><span>Retail one-way</span><b>$29,600</b></div>
+            <div class="rowx"><span>Direct cost floor (+10%)</span><b>$10,360</b></div>
+            <div class="rowx"><span>Discount applied</span><b>50%</b></div>
+            <p class="muted" style="font-size:12px;margin-top:8px">Publishing requires dispatcher approval.</p>
+          </div>
+          <div class="sv-panel" data-seq-step="3">
+            <h4>Recovered revenue · 6 months</h4>
+            <p class="big" data-seq-count="38400" data-seq-from="0.75" data-prefix="+$">+$38,400</p>
+            <div class="sv-bars">
+              <span style="height:58%;--g:18%"><i></i></span><span style="height:64%;--g:22%"><i></i></span><span style="height:52%;--g:30%"><i></i></span><span style="height:70%;--g:26%"><i></i></span><span style="height:76%;--g:34%"><i></i></span><span style="height:82%;--g:40%"><i></i></span>
+            </div>
+            <p class="muted" style="font-size:12px;margin-top:8px">Gold = revenue from published empty legs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== OPERATOR WORKFLOW ===================== -->
+    <section class="section" id="workflow" aria-labelledby="wf-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow" data-reveal>Operator workflow</p>
+          <h2 id="wf-title" data-reveal data-reveal-delay="1">From request to settlement, <em>without re-keying.</em></h2>
+        </header>
+        <div class="workflow" data-draw-host>
+          <div class="wf-line" aria-hidden="true"><svg viewBox="0 0 1000 6" preserveAspectRatio="none"><path d="M28 3 H 972" stroke="#C9A76A" stroke-width="1.5" fill="none" data-draw vector-effect="non-scaling-stroke"/></svg></div>
+          <ol class="wf-steps">
+            <li data-reveal><span class="wf-n">1</span><p class="wf-mod">CRM · Marketplace</p><h3>Request</h3><p>Inquiries arrive from clients, brokers and empty-leg listings.</p></li>
+            <li data-reveal data-reveal-delay="1"><span class="wf-n">2</span><p class="wf-mod">Quote builder</p><h3>Quote</h3><p>Block time, rate, fees and taxes estimated with clear assumptions.</p></li>
+            <li data-reveal data-reveal-delay="2"><span class="wf-n">3</span><p class="wf-mod">Operations</p><h3>Schedule</h3><p>Trips placed on the calendar with conflict checks.</p></li>
+            <li data-reveal data-reveal-delay="3"><span class="wf-n">4</span><p class="wf-mod">Crew · Maintenance</p><h3>Prepare</h3><p>Crew, maintenance and ground handling flagged for human sign-off.</p></li>
+            <li data-reveal data-reveal-delay="4"><span class="wf-n">5</span><p class="wf-mod">Command Center</p><h3>Fly</h3><p>Status timeline and alerts keep everyone on the same page.</p></li>
+            <li data-reveal data-reveal-delay="5"><span class="wf-n">6</span><p class="wf-mod">Finance · Owner</p><h3>Settle</h3><p>Invoices, commissions and owner statements from the same record.</p></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== INTERACTIVE DASHBOARD PREVIEW ===================== -->
+    <section class="section" id="preview" aria-labelledby="pv-title" style="padding-top:0">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow" data-reveal>Try it</p>
+          <h2 id="pv-title" data-reveal data-reveal-delay="1">An interactive look <em>at the workspace.</em></h2>
+          <p class="lede" data-reveal data-reveal-delay="2">This preview reads the same synthetic demo dataset as the full workspace. Switch views, then open the real thing.</p>
+        </header>
+        <div class="preview" data-mask>
+          <div class="mask-inner">
+            <div class="preview-bar">
+              <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <div class="preview-tabs" role="tablist" aria-label="Preview views">
+                <button role="tab" id="pvt-fleet" aria-selected="true" aria-controls="pv-body" data-view="fleet">Fleet</button>
+                <button role="tab" id="pvt-revenue" aria-selected="false" aria-controls="pv-body" data-view="revenue" tabindex="-1">Revenue</button>
+                <button role="tab" id="pvt-legs" aria-selected="false" aria-controls="pv-body" data-view="legs" tabindex="-1">Empty legs</button>
+              </div>
+              <span class="demo-pill" style="margin-left:auto">Synthetic data</span>
+              <a class="btn btn-sm" href="platform/dashboard.html">Open workspace →</a>
+            </div>
+            <div class="preview-body" id="pv-body" role="tabpanel" aria-labelledby="pvt-fleet" aria-live="polite">
+              <p class="muted">Loading preview…</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PERSONA SOLUTIONS ===================== -->
+    <section class="section" id="solutions" aria-labelledby="sol-title" style="padding-top:0">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow" data-reveal>Solutions</p>
+          <h2 id="sol-title" data-reveal data-reveal-delay="1">Built around <em>the people who fly.</em></h2>
+        </header>
+        <div class="personas">
+          <div class="persona-tabs" role="tablist" aria-label="Personas" aria-orientation="vertical">
+            <button role="tab" id="pt-owners" aria-controls="pp-owners" aria-selected="true">Aircraft owners</button>
+            <button role="tab" id="pt-135" aria-controls="pp-135" aria-selected="false" tabindex="-1">Part 135 operators</button>
+            <button role="tab" id="pt-91" aria-controls="pp-91" aria-selected="false" tabindex="-1">Part 91 flight departments</button>
+            <button role="tab" id="pt-fleet" aria-controls="pp-fleet" aria-selected="false" tabindex="-1">Fleet managers</button>
+            <button role="tab" id="pt-brokers" aria-controls="pp-brokers" aria-selected="false" tabindex="-1">Charter brokers</button>
+            <button role="tab" id="pt-crews" aria-controls="pp-crews" aria-selected="false" tabindex="-1">Flight crews</button>
+          </div>
+          <div>
+            <div class="persona-panel" role="tabpanel" id="pp-owners" aria-labelledby="pt-owners">
+              <div><h3>See what your aircraft earns — and costs.</h3>
+                <ul><li>Utilization against target hours, by month</li><li>Owner statements with revenue, direct costs and fees</li><li>Approval inbox for charter use and empty-leg publishing</li><li>Trip requests that land directly in operations</li></ul>
+                <p style="margin-top:20px"><a class="btn" href="platform/owner-portal.html">Open the Owner Portal</a></p></div>
+              <div class="persona-art zoom" data-mask><div class="mask-inner zoom-target"><img class="" src="https://images.unsplash.com/photo-1625513123245-fcb02d69ad12?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1625513123245-fcb02d69ad12?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1625513123245-fcb02d69ad12?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1625513123245-fcb02d69ad12?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1625513123245-fcb02d69ad12?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 100vw, 40vw" alt="Quilted tan leather seats inside a private jet cabin" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div></div>
+            </div>
+            <div class="persona-panel" role="tabpanel" id="pp-135" aria-labelledby="pt-135" hidden>
+              <div><h3>Run charter like a revenue operation.</h3>
+                <ul><li>Pipeline from inquiry to won trip, with follow-up reminders</li><li>Quote builder with transparent block-time assumptions</li><li>Empty-leg engine that turns repositioning into inventory</li><li>Approval states before anything is confirmed to a client</li></ul>
+                <p style="margin-top:20px"><a class="btn" href="platform/charter-crm.html">Open Charter CRM</a></p></div>
+              <div class="persona-art zoom" data-mask><div class="mask-inner zoom-target"><img class="" src="https://images.unsplash.com/photo-1720511580427-b12ed27b2e82?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1720511580427-b12ed27b2e82?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1720511580427-b12ed27b2e82?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1720511580427-b12ed27b2e82?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1720511580427-b12ed27b2e82?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 100vw, 40vw" alt="Passenger standing in front of a private jet" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div></div>
+            </div>
+            <div class="persona-panel" role="tabpanel" id="pp-91" aria-labelledby="pt-91" hidden>
+              <div><h3>A calmer flight department.</h3>
+                <ul><li>One calendar for aircraft, crew and ground handling</li><li>Crew qualification and expiration tracking</li><li>Maintenance due list with grounding indicators</li><li>Cost per hour and per trip, without spreadsheet math</li></ul>
+                <p style="margin-top:20px"><a class="btn" href="platform/operations.html">Open Operations</a></p></div>
+              <div class="persona-art zoom" data-mask><div class="mask-inner zoom-target"><img class="" src="https://images.unsplash.com/photo-1764917301484-f5c0c8fcc844?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1764917301484-f5c0c8fcc844?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1764917301484-f5c0c8fcc844?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1764917301484-f5c0c8fcc844?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1764917301484-f5c0c8fcc844?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 100vw, 40vw" alt="Cockpit with digital flight displays" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div></div>
+            </div>
+            <div class="persona-panel" role="tabpanel" id="pp-fleet" aria-labelledby="pt-fleet" hidden>
+              <div><h3>Every tail, every base, one view.</h3>
+                <ul><li>Fleet directory filtered by class, base and status</li><li>Status changes ripple through dashboards instantly</li><li>Revenue per aircraft and profitability by trip</li><li>CSV export for your own reporting</li></ul>
+                <p style="margin-top:20px"><a class="btn" href="platform/fleet.html">Open Fleet</a></p></div>
+              <div class="persona-art zoom" data-mask><div class="mask-inner zoom-target"><img class="" src="https://images.unsplash.com/photo-1576725386266-5c4b8c63da66?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1576725386266-5c4b8c63da66?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1576725386266-5c4b8c63da66?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1576725386266-5c4b8c63da66?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1576725386266-5c4b8c63da66?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 100vw, 40vw" alt="Helicopters parked on a concrete apron" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div></div>
+            </div>
+            <div class="persona-panel" role="tabpanel" id="pp-brokers" aria-labelledby="pt-brokers" hidden>
+              <div><h3>Inventory you can actually sell.</h3>
+                <ul><li>Marketplace of published empty legs and charter aircraft</li><li>Route and date search with the original AERO filters</li><li>Quote requests that reach the operator’s CRM</li><li>Clear “pending operator confirmation” status — no false availability</li></ul>
+                <p style="margin-top:20px"><a class="btn" href="platform/marketplace.html">Open Marketplace</a></p></div>
+              <div class="persona-art zoom" data-mask><div class="mask-inner zoom-target"><img class="" src="https://images.unsplash.com/photo-1635672033288-0d05f2062105?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1635672033288-0d05f2062105?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1635672033288-0d05f2062105?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1635672033288-0d05f2062105?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1635672033288-0d05f2062105?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 100vw, 40vw" alt="Business jet parked on a wet runway" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div></div>
+            </div>
+            <div class="persona-panel" role="tabpanel" id="pp-crews" aria-labelledby="pt-crews" hidden>
+              <div><h3>Know where you’re going — and when you rest.</h3>
+                <ul><li>Assignments and 14-day availability at a glance</li><li>Qualification and medical expiry reminders</li><li>Duty and rest inputs with configurable warnings</li><li>Human sign-off remains the authority — always</li></ul>
+                <p style="margin-top:20px"><a class="btn" href="platform/crew.html">Open Crew</a></p></div>
+              <div class="persona-art zoom" data-mask><div class="mask-inner zoom-target"><img class="" src="https://images.unsplash.com/photo-1764547167359-277e66c9ac74?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1764547167359-277e66c9ac74?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1764547167359-277e66c9ac74?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1764547167359-277e66c9ac74?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1764547167359-277e66c9ac74?auto=format&fit=crop&w=2400&q=72 2400w" sizes="(max-width:900px) 100vw, 40vw" alt="White aircraft parked in a hangar" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== AI COPILOT TEASER ===================== -->
+    <section class="section" id="ai" aria-labelledby="ai-title" style="padding-top:0">
+      <div class="wrap ai-grid">
+        <div>
+          <header class="section-head" style="margin-bottom:0">
+            <p class="eyebrow" data-reveal>AI Copilot</p>
+            <h2 id="ai-title" data-reveal data-reveal-delay="1">Answers you can <em>check.</em></h2>
+            <p class="lede" data-reveal data-reveal-delay="2">The Copilot answers from your own records, shows the evidence and assumptions behind each answer, and proposes actions — it never takes them without approval.</p>
+          </header>
+          <ul class="ai-points">
+            <li data-reveal><span class="i" aria-hidden="true">◇</span><div><b>Evidence first</b><span>Every answer links to the trips, leads and cost rules it used.</span></div></li>
+            <li data-reveal data-reveal-delay="1"><span class="i" aria-hidden="true">◇</span><div><b>Approval gates</b><span>Publishing, scheduling and pricing changes wait for a person.</span></div></li>
+            <li data-reveal data-reveal-delay="2"><span class="i" aria-hidden="true">◇</span><div><b>Not a regulator</b><span>Duty limits, airworthiness and feasibility stay with qualified people.</span></div></li>
+          </ul>
+        </div>
+        <div class="ai-chat" data-reveal aria-label="Example Copilot exchange (simulated)">
+          <div class="row-between" style="display:flex;justify-content:space-between;align-items:center"><span class="eyebrow">Copilot</span><span class="demo-pill">Simulated</span></div>
+          <p class="q">Which aircraft could earn from repositioning this week?</p>
+          <p class="a"><span class="sr-only">Three repositioning legs this week look marketable. N350AE TEB to PBI on Thursday has the strongest demand — score 82 from 44 route searches and one open lead. Recommended price $14,800, above the $10,360 cost floor. I can draft the listing; publishing needs dispatcher approval.</span><span aria-hidden="true" data-type="Three repositioning legs this week look marketable. N350AE TEB → PBI on Thursday has the strongest demand — score 82 from 44 route searches and one open lead. Recommended price $14,800, above the $10,360 cost floor. I can draft the listing; publishing needs dispatcher approval.">Three repositioning legs this week look marketable. N350AE TEB → PBI on Thursday has the strongest demand — score 82 from 44 route searches and one open lead. Recommended price $14,800, above the $10,360 cost floor. I can draft the listing; publishing needs dispatcher approval.</span><span class="caret" aria-hidden="true"></span></p>
+          <div class="ev" aria-label="Evidence"><span>Trip T4182</span><span>Demand signals · 30d</span><span>Rate card</span><span>Cost-floor rule</span></div>
+          <div class="approve"><a class="btn btn-sm btn-primary" href="platform/ai-copilot.html">Try the Copilot</a><span>Nothing is published without approval.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== COMMERCIAL PACKAGES ===================== -->
+    <section class="section" id="pricing" aria-labelledby="pkg-title" style="padding-top:0">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow" data-reveal>Packages</p>
+          <h2 id="pkg-title" data-reveal data-reveal-delay="1">Sized to your fleet.</h2>
+          <p class="lede" data-reveal data-reveal-delay="2">Annual per-aircraft licensing, quoted on fleet size and integrations. No setup surprises.</p>
+        </header>
+        <div class="packages">
+          <article class="pkg" data-reveal>
+            <p class="eyebrow">Essentials</p><h3>Owner &amp; Part 91</h3>
+            <p class="for">For owners and flight departments with up to 3 aircraft.</p>
+            <p class="price-note">Per-aircraft annual licence · quoted</p>
+            <ul>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Fleet, Operations, Crew, Maintenance</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Owner Portal &amp; statements</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Analytics with CSV export</li>
+            </ul>
+            <a class="btn" href="#demo">Talk to us</a>
+          </article>
+          <article class="pkg featured" data-reveal data-reveal-delay="1">
+            <p class="eyebrow">Operator</p><h3>Part 135 charter</h3>
+            <p class="for">For charter operators and managed fleets up to 15 aircraft.</p>
+            <p class="price-note">Per-aircraft annual licence · quoted</p>
+            <ul>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Everything in Essentials</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Empty-Leg Engine &amp; Marketplace</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Charter CRM &amp; quote builder</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>AI Copilot</li>
+            </ul>
+            <a class="btn btn-primary" href="#demo">Request a demo</a>
+          </article>
+          <article class="pkg" data-reveal data-reveal-delay="2">
+            <p class="eyebrow">Enterprise</p><h3>Fleets &amp; networks</h3>
+            <p class="for">For large fleets, multi-base operators and broker networks.</p>
+            <p class="price-note">Custom agreement · quoted</p>
+            <ul>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Everything in Operator</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Authorized integrations (scheduling, tracking, maintenance, payments, CRM)</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>SSO, tenancy isolation, audit exports</li>
+            </ul>
+            <a class="btn" href="#demo">Talk to us</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== NBAA-BACE DEMO CTA ===================== -->
+    <section class="section" id="demo" aria-labelledby="demo-title" style="padding-top:0">
+      <div class="wrap">
+        <div class="cta" data-reveal>
+          <div class="cta-photo" aria-hidden="true" data-parallax="0.08"><img class="" src="https://images.unsplash.com/photo-1684838200888-192e2a163cc9?auto=format&fit=crop&w=1600&q=72" srcset="https://images.unsplash.com/photo-1684838200888-192e2a163cc9?auto=format&fit=crop&w=640&q=72 640w, https://images.unsplash.com/photo-1684838200888-192e2a163cc9?auto=format&fit=crop&w=1080&q=72 1080w, https://images.unsplash.com/photo-1684838200888-192e2a163cc9?auto=format&fit=crop&w=1600&q=72 1600w, https://images.unsplash.com/photo-1684838200888-192e2a163cc9?auto=format&fit=crop&w=2400&q=72 2400w" sizes="100vw" alt="" loading="lazy" decoding="async" onerror="this.style.opacity=0" /></div>
+          <div>
+            <p class="eyebrow">NBAA-BACE · Private demos</p>
+            <h2 id="demo-title">See AERO with <em>your</em> fleet in mind.</h2>
+            <p>Meet the team at NBAA-BACE or book a virtual walkthrough. We’ll map your aircraft, bases and charter workflow to the platform in 30 minutes.</p>
+          </div>
+          <form id="demo-form" novalidate>
+            <label class="field"><span>Full name</span><input name="name" type="text" required autocomplete="name" /></label>
+            <label class="field"><span>Company</span><input name="company" type="text" required autocomplete="organization" /></label>
+            <label class="field span-2"><span>Work email</span><input name="email" type="email" required autocomplete="email" /></label>
+            <label class="field"><span>Role</span>
+              <select name="role" required><option value="">Select…</option><option>Aircraft owner</option><option>Part 135 operator</option><option>Part 91 flight department</option><option>Fleet manager</option><option>Charter broker</option><option>Flight crew</option></select></label>
+            <label class="field"><span>Fleet size</span>
+              <select name="fleet" required><option value="">Select…</option><option>1–3</option><option>4–10</option><option>11–25</option><option>26+</option></select></label>
+            <label class="field span-2"><span>Preferred meeting</span>
+              <select name="meeting" required><option value="NBAA-BACE">In person at NBAA-BACE</option><option value="Virtual">Virtual walkthrough</option></select></label>
+            <div class="span-2" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Request demo</button><p class="form-note">Prototype: requests stay in this browser and are not sent anywhere.</p></div>
+            <div class="span-2" id="demo-result" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div><a class="brand" href="index.html"><span aria-hidden="true">✦</span>AERO</a><p class="muted" style="margin-top:14px;max-width:34ch;font-size:14px">One Platform. Every Aircraft. Every Opportunity.</p></div>
+        <div><h4>Operate</h4><ul><li><a href="platform/dashboard.html">Command Center</a></li><li><a href="platform/fleet.html">Fleet</a></li><li><a href="platform/operations.html">Operations</a></li><li><a href="platform/crew.html">Crew</a></li><li><a href="platform/maintenance.html">Maintenance</a></li></ul></div>
+        <div><h4>Revenue &amp; insight</h4><ul><li><a href="platform/empty-legs.html">Empty-Leg Engine</a></li><li><a href="platform/charter-crm.html">Charter CRM</a></li><li><a href="platform/marketplace.html">Marketplace</a></li><li><a href="platform/finance.html">Finance</a></li><li><a href="platform/analytics.html">Analytics</a></li><li><a href="platform/ai-copilot.html">AI Copilot</a></li></ul></div>
+        <div><h4>Portals</h4><ul><li><a href="platform/owner-portal.html">Owner Portal</a></li><li><a href="aeroflow.html">AeroFlow — empty legs</a></li><li><a href="portal/passenger.html">Passenger Portal</a></li><li><a href="platform/aircraft-detail.html?id=a4">Aircraft profile</a></li><li><a href="platform/settings.html">Settings</a></li><li><a href="#demo">Request Demo</a></li></ul></div>
+      </div>
+      <p class="disclaimer">AERO is a software prototype. It is not an FAA-approved dispatch system, maintenance release, or regulatory compliance authority. Duty limits, airworthiness and flight feasibility require verified data and qualified human sign-off. Figures on this page are illustrative; the demo workspace uses synthetic data and does not show live availability, aircraft positions or completed transactions. “NBAA-BACE” is referenced only as a meeting venue.<br>Photography via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a> (Unsplash License): Andy Wang · Cassio Nunes · Chris Leipelt · Horizon flights · Jakob Rosen · Niklas Jonasson · Nitish Suri · Oskar Kadaksoo · Rebecca Leitner · Royce Fonseca · Walter Gaspar · Yaroslav Muzychenko · Yiran Ding · mona Masoumi. Aircraft shown are illustrative and not the demo fleet’s tail numbers.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance — AERO</title>
+  <meta name="description" content="Aircraft economics: revenue and costs, trip margin estimator, aircraft P&amp;L, invoices, commissions and owner statements." />
+  <meta name="theme-color" content="#081321" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/tokens.css" />
+  <link rel="stylesheet" href="../assets/css/platform.css" />
+  <link rel="stylesheet" href="../assets/css/motion.css" />
+</head>
+<body class="platform" data-page="finance" data-root="..">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="app" id="app">
+    <aside id="sidebar" aria-label="Sidebar"><div class="sb-top"><a class="sb-brand" href="../index.html"><span class="sb-mark" aria-hidden="true">✦</span><span class="sb-text">AERO</span></a></div><nav class="sb-nav" aria-label="Platform modules"><div class="sb-group"><p class="sb-group-label">Operate</p><ul role="list"><li><a class="sb-link" href="../platform/dashboard.html"><span class="sb-text">Command Center</span></a></li><li><a class="sb-link" href="../platform/fleet.html"><span class="sb-text">Fleet</span></a></li><li><a class="sb-link" href="../platform/operations.html"><span class="sb-text">Operations</span></a></li><li><a class="sb-link" href="../platform/crew.html"><span class="sb-text">Crew</span></a></li><li><a class="sb-link" href="../platform/maintenance.html"><span class="sb-text">Maintenance</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Revenue</p><ul role="list"><li><a class="sb-link" href="../platform/empty-legs.html"><span class="sb-text">Empty-Leg Engine</span></a></li><li><a class="sb-link" href="../platform/charter-crm.html"><span class="sb-text">Charter CRM</span></a></li><li><a class="sb-link" href="../platform/marketplace.html"><span class="sb-text">Marketplace</span></a></li><li><a class="sb-link active" href="../platform/finance.html" aria-current="page"><span class="sb-text">Finance</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Intelligence</p><ul role="list"><li><a class="sb-link" href="../platform/ai-copilot.html"><span class="sb-text">AI Copilot</span></a></li><li><a class="sb-link" href="../platform/analytics.html"><span class="sb-text">Analytics</span></a></li></ul></div><div class="sb-group"><p class="sb-group-label">Portals</p><ul role="list"><li><a class="sb-link" href="../platform/owner-portal.html"><span class="sb-text">Owner Portal</span></a></li><li><a class="sb-link" href="../portal/passenger.html"><span class="sb-text">Passenger Portal</span></a></li><li><a class="sb-link" href="../aeroflow.html"><span class="sb-text">AeroFlow (public)</span></a></li><li><a class="sb-link" href="../platform/settings.html"><span class="sb-text">Settings</span></a></li></ul></div></nav></aside>
+    <div class="app-main">
+      <header id="topbar"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../platform/dashboard.html">AERO</a></li><li aria-current="page">Finance</li></ol></nav></header>
+      <div class="demo-banner" id="demo-banner" role="note"><span class="demo-pill">Demo</span><span>Synthetic data. Not live availability, tracking or transactions.</span></div>
+      <main id="main" tabindex="-1">
+        <noscript><p class="notice">The AERO workspace needs JavaScript (ES modules) served from a local web server. See README.md — e.g. <code>python3 -m http.server 8000</code>.</p></noscript>
+      <header class="page-head">
+        <div><p class="eyebrow">Revenue</p><h1>Aircraft economics</h1><p class="lede">Revenue, direct costs and margins by aircraft and trip, with invoices, broker commissions and owner statements. All figures are simulated.</p></div>
+        <div class="page-actions"><div class="seg" id="fin-period" role="group" aria-label="Period"><button type="button" data-days="30" aria-pressed="true">30 days</button><button type="button" data-days="90" aria-pressed="false">90 days</button></div></div>
+      </header>
+      <section class="kpis" id="fin-kpis" aria-label="Finance metrics"></section>
+      <div class="cols-main">
+        <section class="card" aria-labelledby="h-fin-chart"><div class="card-head"><h2 class="card-title" id="h-fin-chart">Revenue vs direct cost <span class='sim'>Sim</span></h2></div><div id="fin-chart"></div></section>
+        <section class="card" aria-labelledby="h-est"><div class="card-head"><h2 class="card-title" id="h-est">Trip margin estimator</h2></div>
+          <form id="estimator" class="form-grid" novalidate>
+            <label class="field span-2"><span>Preset from aircraft</span><select name="aircraftId"></select></label>
+            <label class="field"><span>Billable hours</span><input name="hours" type="number" min="0" step="0.1" value="3.2" /></label>
+            <label class="field"><span>Hourly rate (USD)</span><input name="rate" type="number" min="0" step="50" /></label>
+            <label class="field"><span>Fuel burn (gal/h)</span><input name="burn" type="number" min="0" /></label>
+            <label class="field"><span>Fuel price (USD/gal)</span><input name="fuel" type="number" min="0" step="0.05" value="6.5" /></label>
+            <label class="field"><span>Reserves (USD/h)</span><input name="reserve" type="number" min="0" step="50" /></label>
+            <label class="field"><span>Repositioning hours (unpaid)</span><input name="repo" type="number" min="0" step="0.1" value="1.6" /></label>
+            <label class="field"><span>Crew cost / day</span><input name="crewDay" type="number" min="0" step="50" value="1800" /></label>
+            <label class="field"><span>Duty days</span><input name="days" type="number" min="0" value="1" /></label>
+            <label class="field span-2"><span>Fees (landing, handling, catering)</span><input name="fees" type="number" min="0" step="50" value="1300" /></label>
+          </form>
+          <div id="est-out" class="mt" aria-live="polite"></div></section>
+      </div>
+      <section class="card card-flush mt" aria-labelledby="h-pl"><div class="card-head"><h2 class="card-title" id="h-pl">Aircraft P&amp;L</h2></div><div id="pl" style="padding:0 18px 18px"></div></section>
+      <div class="cols-main mt">
+        <section class="card card-flush" aria-labelledby="h-inv"><div class="card-head"><h2 class="card-title" id="h-inv">Invoices</h2><label class="field" style="width:auto"><span class="sr-only">Filter invoices</span><select id="inv-filter" style="min-height:32px"><option value="">All</option><option value="draft">Draft</option><option value="sent">Sent</option><option value="paid">Paid</option></select></label></div><div id="invoices" style="padding:0 18px 18px"></div></section>
+        <div class="stack">
+          <section class="card" aria-labelledby="h-commissions"><div class="card-head"><h2 class="card-title" id="h-commissions">Broker commissions</h2></div><div id="commissions"><div class="state-loading" aria-busy="true"><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
+          <section class="card" aria-labelledby="h-os"><div class="card-head"><h2 class="card-title" id="h-os">Owner statements</h2></div>
+            <div class="row"><label class="field" style="flex:1"><span>Owner</span><select id="fin-owner"></select></label><button class="btn btn-primary" id="fin-statement" style="align-self:end">Preview statement</button></div></section>
+        </div>
+      </div>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="../assets/js/app.js"></script>
+</body>
+</html>
