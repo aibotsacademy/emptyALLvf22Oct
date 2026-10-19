@@ -206,6 +206,33 @@
 
 
 
+
+    /* Synced configuration card */
+    .ag-cfgmsg { padding:14px; }
+    .cf-h { display:flex; align-items:center; gap:8px; margin:0 0 10px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--pr-gold); flex-wrap:wrap; }
+    .cf-h em { font-style:normal; margin-left:auto; text-transform:none; letter-spacing:0; color:var(--pr-dim); font-size:11px; }
+    .cf-sync { display:inline-block; animation:agspin 1.1s linear 1; }
+    .cf-plan { display:flex; align-items:baseline; justify-content:space-between; gap:10px; padding:10px 12px; border-radius:12px; background:linear-gradient(90deg,rgba(201,167,106,.18),rgba(201,167,106,.04)); border:1px solid rgba(201,167,106,.35); }
+    .cf-plan b { font:400 24px "Cormorant Garamond",serif; color:var(--pr-ivory); }
+    .cf-plan span { font-size:12px; color:var(--pr-gold); }
+    .cf-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px 14px; margin:12px 0 0; }
+    .cf-grid dt, .cf-k { font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--pr-dim); }
+    .cf-grid dd { margin:2px 0 0; font-size:13px; color:var(--pr-ivory); }
+    .cf-k { margin:12px 0 6px; }
+    .cf-chips { display:flex; flex-wrap:wrap; gap:5px; }
+    .cf-chip { font-size:11px; padding:4px 9px; border-radius:999px; border:1px solid var(--pr-line); color:var(--pr-mute); opacity:0; animation:cfin .35s ease forwards; animation-delay:calc(var(--i) * 45ms); }
+    .cf-chip.add { border-color:var(--pr-gold); color:var(--pr-gold); background:rgba(201,167,106,.1); }
+    @keyframes cfin { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+    .cf-est { margin-top:12px; padding-top:12px; border-top:1px dashed rgba(244,241,234,.18); }
+    .ag-brief dt.sync { grid-column:1 / -1; color:#7fe0b0; margin-top:6px; font-size:11px; }
+    .ag-brief dd.sync { display:none; }
+    .tk-sec { margin:0 0 8px; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--pr-gold); }
+    .tk-cfg { display:grid; grid-template-columns:1fr 1fr; gap:8px 14px; margin:0 0 14px; }
+    .tk-cfg .full { grid-column:1 / -1; }
+    .tk-cfg dt { font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--pr-dim); }
+    .tk-cfg dd { margin:2px 0 0; font-size:12px; color:var(--pr-ivory); overflow-wrap:anywhere; }
+    @media (prefers-reduced-motion: reduce) { .cf-chip { animation:none; opacity:1; } .cf-sync { animation:none; } }
+
     /* Region → airport picker */
     .ag-pick { padding:14px; }
     .ag-pick.done { opacity:.6; }
@@ -278,7 +305,8 @@
     .tk-perf::before, .tk-perf::after { content:""; position:absolute; top:-9px; width:18px; height:18px; border-radius:50%; background:#0a1626; border:1px solid var(--pr-gold); }
     .tk-perf::before { left:-10px; clip-path:inset(0 0 0 50%); } .tk-perf::after { right:-10px; clip-path:inset(0 50% 0 0); }
     .tk-est { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
-    .tk-est span { display:block; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--pr-dim); }
+    .tk-est span { display:block; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--pr-dim); white-space:nowrap; }
+    @media (max-width: 420px) { .tk-est span { font-size:9px; letter-spacing:.06em; } .tk-est b { font-size:20px; } }
     .tk-est b small { font:12px 'DM Sans',sans-serif; color:var(--pr-dim); }
     .tk-est b { font:400 22px "Cormorant Garamond",serif; color:var(--pr-ivory); }
     .tk-note { margin:6px 0 0; font-size:12px; color:var(--pr-gold); }
@@ -631,6 +659,7 @@ Authorization: Bearer &lt;api_key&gt;
         bullets: ["Live empty-leg & charter inventory via REST API + webhooks", "Quote & booking requests routed to operators' CRM", "Charter CRM, AI Copilot & Analytics for your team", "Sandbox, API keys & certification · 1 connector included"] }
     };
     const HYBRID = { acDiscount: 0.35, fee: 0.04 };
+    const PLAN_COL = { essentials: 3, operator: 4, enterprise: 5, broker: 6 };   // column of each plan in MATRIX
 
     const ADDONS = {
       emptylegs: { name: "Empty-Leg Engine + Marketplace", monthly: 790, setup: 3500, only: ["essentials"] },
@@ -845,7 +874,12 @@ Authorization: Bearer &lt;api_key&gt;
       const rate = broker ? p.fee : hybrid ? HYBRID.fee : 0;
       const variable = rate ? Math.round(state.bookings * state.avgValue * rate) : 0;
       const fixedBilled = fixed * f;
-      return { planKey: state.plan, plan: p.name, model: broker ? "broker" : state.model, aircraft: broker ? 0 : state.ac, billing,
+      const col = PLAN_COL[state.plan];
+      const includedModules = MATRIX.filter(r => !["g", "x", "api"].includes(r[0]) && (r[col] === true || (typeof r[col] === "string" && r[col] !== "addon")))
+        .map(r => typeof r[col] === "string" ? `${r[1]} (${r[col].toLowerCase()})` : r[1]);
+      const apiAccess = (ADDONS.api.incl || []).includes(state.plan) ? "Included" : state.addons.has("api") ? "Add-on" : "Not selected";
+      return { planKey: state.plan, includedModules, apiAccess, connectorsIncluded: inclC, seoKey: state.seo,
+        servicesIncluded: Object.values(SERVICES).filter(x => (x.incl || []).includes(state.plan)).map(x => x.name), plan: p.name, model: broker ? "broker" : state.model, aircraft: broker ? 0 : state.ac, billing,
         bookings: rate ? state.bookings : 0, avgValue: rate ? state.avgValue : 0, feeRate: rate,
         implementation: impl, monthlyFixed: Math.round(fixedBilled), monthlyList: fixed, brokerFeesMonthly: variable,
         firstYear: Math.round(impl + fixedBilled * 12 + variable * 12), from: !!p.from,
@@ -911,6 +945,15 @@ Authorization: Bearer &lt;api_key&gt;
       setAircraft: n => setAircraft(n), setPlan, money,
       setModel: m => { if (state.plan !== "broker") { state.model = m; renderControls(); compute(); } },
       setSeo: k => { if (SEO_GEO[k]) { state.seo = k; renderControls(); compute(); } },
+      setConnectors: n => { state.connectors = Math.max(0, Math.min(10, Math.round(n))); $("#est-int-out").textContent = state.connectors; compute(); },
+      addAddon: k => {   // returns "added" | "included" | false (not available on this plan)
+        const row = MATRIX.find(r => r[0] === k), v = row && row[PLAN_COL[state.plan]];
+        if (v === true || (typeof v === "string" && v !== "addon")) return "included";
+        if (v !== "addon" || !ADDONS[k]) return false;
+        state.addons.add(k); renderControls(); compute(); return "added";
+      },
+      addService: k => { const x = SERVICES[k]; if (!x) return false; if ((x.incl || []).includes(state.plan)) return "included";
+        state.services.add(k); renderControls(); compute(); return "added"; },
       setBookings: (b, v) => { if (b != null) state.bookings = b; if (v != null) state.avgValue = v; $("#est-bk").value = state.bookings; $("#est-val").value = state.avgValue; compute(); }
     };
   })();
@@ -939,7 +982,7 @@ Authorization: Bearer &lt;api_key&gt;
       { key: "company", req: true, label: ["Company", "Empresa"], q: () => L(`Nice to meet you${lead.name ? ", " + first(lead.name) : ""}. Which company or operator are you with?`, `Mucho gusto${lead.name ? ", " + first(lead.name) : ""}. ¿De qué empresa u operador nos escribes?`) },
       { key: "email", req: true, label: ["Email", "Correo"], validate: isEmail, q: () => L("What's the best email to send the proposal to?", "¿A qué correo te enviamos la propuesta?"),
         err: () => L("That doesn't look like a valid email — could you check it?", "Ese correo no parece válido — ¿lo revisas?") },
-      { key: "role", req: true, label: ["Role", "Rol"], q: () => L("Which best describes you?", "¿Qué te describe mejor?"),
+      { key: "role", req: true, label: ["Role", "Rol"], q: () => "Which best describes you?",
         chips: () => lang === "es" ? ["Dueño de aeronave", "Operador Part 135", "Departamento de vuelo Part 91", "Gestor de flota", "Broker de chárter", "Otro"]
                                    : ["Aircraft owner", "Part 135 operator", "Part 91 flight department", "Fleet manager", "Charter broker", "Other"] },
       { key: "country", req: true, label: ["Region / bases", "Región / bases"], widget: "region",
@@ -947,7 +990,10 @@ Authorization: Bearer &lt;api_key&gt;
         chips: () => Object.keys(REGIONS) },
       { key: "tools", label: ["Current tools", "Herramientas"], q: () => L("What do you use today to run operations?", "¿Qué usan hoy para gestionar la operación?"),
         chips: () => lang === "es" ? ["Hojas de cálculo", "Otro software", "Correo / papel", "Nada aún"] : ["Spreadsheets", "Another software", "Email / paper", "Nothing yet"] },
-      { key: "integrations", label: ["Integrations", "Integraciones"], multi: true, q: () => L("Which systems should AERO connect to via API? Pick all that apply, then tap Continue.", "¿Con qué sistemas debería conectarse AERO vía API? Elige todos los que apliquen y toca Continuar."),
+      { key: "integrations", label: ["Integrations", "Integraciones"], multi: true, q: () => { const e = P.estimate();
+          return (e.apiAccess !== "Not selected" || e.connectors)
+            ? `Your configuration already has **Open API ${e.apiAccess === "Not selected" ? "access" : e.apiAccess.toLowerCase()}**${e.connectors ? ` and **${e.connectors} connector${e.connectors > 1 ? "s" : ""}**` : ""}. Which of your systems should we connect? Pick all that apply, then tap Continue.`
+            : "Which systems should AERO connect to via API? Pick all that apply, then tap Continue — I'll size the connectors for you."; },
         chips: () => lang === "es" ? ["Programación de vuelos", "Rastreo de vuelos", "Mantenimiento", "Pagos", "CRM", "Contabilidad / ERP", "Ninguno"]
                                    : ["Scheduling", "Flight tracking", "Maintenance", "Payments", "CRM", "Accounting / ERP", "None"] },
       { key: "timeline", req: true, label: ["Go-live", "Arranque"], q: () => L("When would you like to go live?", "¿Para cuándo quisieran arrancar?"),
@@ -1088,7 +1134,9 @@ Authorization: Bearer &lt;api_key&gt;
     function renderBrief() {
       $("#ag-brief-label").textContent = L("Proposal brief", "Resumen de la propuesta");
       ui.fields.innerHTML = FIELDS.map(f => `<dt>${f.label[lang === "es" ? 1 : 0]}</dt><dd class="${lead[f.key] ? "" : "empty"}">${esc(lead[f.key] || "—")}</dd>`).join("")
-        + `<dt>${L("Estimate", "Estimado")}</dt><dd>${esc(estimateLine(P.estimate()))}</dd>`;
+        + `<dt class="sync" colspan="2">✓ Synced from estimator</dt><dd class="sync"></dd>`
+        + configRows(P.estimate()).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")
+        + `<dt>Estimate</dt><dd>${esc(estimateLine(P.estimate()))}</dd>`;
       const done = REQ.filter(f => lead[f.key]).length;
       ui.bar.style.width = (done / REQ.length * 100) + "%";
       ui.count.textContent = `${done}/${REQ.length}`;
@@ -1111,6 +1159,72 @@ Authorization: Bearer &lt;api_key&gt;
       return out.join("\n");
     }
 
+
+    /* ---------- configuration synced from the estimator ---------- */
+    const PLAN_ROLE = { essentials: "Aircraft owner / Part 91", operator: "Part 135 operator", enterprise: "Fleet manager · multi-base operator", broker: "Charter broker" };
+    let autoRole = false;
+    const modelLabel = e => e.model === "broker" ? `Broker · ${Math.round(e.feeRate * 100)}% per confirmed booking` : e.model === "hybrid" ? `Hybrid · ${Math.round(e.feeRate * 100)}% broker fee` : "Subscription";
+    function configRows(e) {
+      return [
+        ["Plan", e.model === "broker" ? "Broker / API" : e.plan],
+        ["Aircraft", e.aircraft ? String(e.aircraft) : "No per-aircraft fee"],
+        ["Pricing model", modelLabel(e)],
+        ["Billing", e.billing === "annual" ? "Annual · 2 months free" : "Monthly"],
+        ["Modules", `${e.includedModules.length} included${e.modules.length ? ` + ${e.modules.length} add-on${e.modules.length > 1 ? "s" : ""}` : ""}`],
+        ["Open API", e.apiAccess],
+        ["API connectors", e.connectors ? `${e.connectors}${e.connectorsIncluded ? ` (${Math.min(e.connectors, e.connectorsIncluded)} included)` : ""}` : e.connectorsIncluded ? `0 (${e.connectorsIncluded} available)` : "None"],
+        ["Services", [...e.services, ...e.servicesIncluded.map(x => x + " (included)")].join(", ") || "None"],
+        ["SEO & GEO", e.seoGeo || "Not selected"]
+      ];
+    }
+    function configText(e) {
+      return [...configRows(e).map(([k, v]) => `${k}: ${v}`),
+        `Included modules: ${e.includedModules.join(", ")}`, `Add-on modules: ${e.modules.join(", ") || "—"}`,
+        e.feeRate ? `Bookings assumption: ${e.bookings}/mo × ${P.money(e.avgValue)}` : "",
+        `Implementation: ${P.money(e.implementation)} · Monthly: ${P.money(e.monthlyFixed)} · First year: ${P.money(e.firstYear)}`].filter(Boolean).join("\n");
+    }
+    function configCard(e, title) {
+      const m = P.money, chip = (t, cls, i) => `<span class="cf-chip ${cls || ""}" style="--i:${i}">${esc(t)}</span>`;
+      let i = 0;
+      const mods = e.includedModules.map(x => chip(x, "", i++)).join("") + e.modules.map(x => chip("+ " + x, "add", i++)).join("");
+      const svc = [...e.services.map(x => chip(x, "add", i++)), ...e.servicesIncluded.map(x => chip(x + " · incl.", "", i++))].join("");
+      const rows = configRows(e).filter(([k]) => !["Plan", "Modules", "Services"].includes(k));
+      return `<div class="cf">
+        <p class="cf-h"><span class="cf-sync" aria-hidden="true">⟳</span>${esc(title || "Synced from your estimator")}<em>${e.includedModules.length + e.modules.length} modules · live pricing</em></p>
+        <div class="cf-plan"><b>${e.model === "broker" ? "Broker / API" : esc(e.plan)}</b><span>${e.aircraft ? e.aircraft + " aircraft" : "API partner"}</span></div>
+        <dl class="cf-grid">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+        <p class="cf-k">Modules</p><div class="cf-chips">${mods}</div>
+        ${svc ? `<p class="cf-k">Services</p><div class="cf-chips">${svc}</div>` : ""}
+        <div class="tk-est cf-est">
+          <div><span>Implementation</span><b>${e.from ? "<small>from</small> " : ""}${m(e.implementation)}</b></div>
+          <div><span>Monthly</span><b>${m(e.monthlyFixed)}</b></div>
+          <div><span>First year</span><b>${m(e.firstYear)}</b></div>
+        </div>
+        ${e.feeRate ? `<p class="tk-note">+ ${Math.round(e.feeRate * 100)}% broker fee on confirmed bookings (≈ ${m(e.brokerFeesMonthly)}/mo at ${e.bookings} bookings × ${m(e.avgValue)})</p>` : ""}
+      </div>`;
+    }
+    function addCard(html, plain) {
+      const d = document.createElement("div");
+      d.className = "ag-msg bot ag-wide ag-cfgmsg"; d.innerHTML = html;
+      ui.log.appendChild(d); scroll();
+      transcript.push({ role: "assistant", text: plain, t: new Date().toISOString() });
+    }
+    async function showConfig(title) {
+      typing(true); await new Promise(r => setTimeout(r, 550)); typing(false);
+      const e = P.estimate(); addCard(configCard(e, title), configText(e));
+    }
+    function syncKnown() {   // fill what the estimator already tells us, so the agent never asks it
+      const e = P.estimate(), known = [];
+      if (!lead.role || autoRole) { const r = PLAN_ROLE[e.planKey]; if (lead.role !== r) { lead.role = r; autoRole = true; known.push(`role (${r})`); } }
+      if (e.seoGeo && lead.seoGeo !== e.seoGeo) { lead.seoGeo = e.seoGeo; known.push(`SEO & GEO (${e.seoGeo.replace("SEO & GEO ", "")})`); }
+      renderBrief(); return known;
+    }
+    async function beginCollect() {
+      const known = syncKnown();
+      add("note", `Already known from your estimator — plan, aircraft, modules, API, services${known.length ? ", " + known.join(", ") : ""}. I won't ask those again.`);
+      return askNext();
+    }
+
     /* ---------- extraction from free text ---------- */
     const STOP = /^(from|at|with|interested|looking|a|an|the|here|in|de|en|con|interesado|interesada|buscando)$/i;
     function extract(text) {
@@ -1129,6 +1243,14 @@ Authorization: Bearer &lt;api_key&gt;
     // Lets the user change the estimate in plain language ("we have 25 jets", "use the hybrid model", "add GEO")
     function applyEstimateChange(text) {
       const changes = [];
+      if (phase !== "collect" && /\b(add|include|plus|with|need|want)\b/i.test(text)) {
+        [["api", /\bapi\b|webhook/i, "Open API"], ["emptylegs", /empty.?leg|marketplace/i, "Empty-Leg Engine + Marketplace"], ["crm", /\bcrm\b/i, "Charter CRM"],
+         ["finance", /\bfinance\b/i, "Finance"], ["copilot", /copilot/i, "AI Copilot"]].forEach(([k, re, n]) => { if (!re.test(text)) return;
+          const r = P.addAddon(k); changes.push(r === "added" ? `+ ${n}` : r === "included" ? `${n} (already included)` : `${n} isn't available on this plan`); });
+        [["aeroflow", /aeroflow|booking portal/i, "AeroFlow portal"], ["migration", /migration/i, "Data migration"], ["support", /24\/7|premium support/i, "Premium support 24/7"],
+         ["onsite", /on.?site|training/i, "On-site training"]].forEach(([k, re, n]) => { if (!re.test(text)) return;
+          const r = P.addService(k); changes.push(r === "added" ? `+ ${n}` : `${n} (already included)`); });
+      }
       const ac = text.match(/(\d{1,3})\s*(?:aircraft|planes|jets|tails|helicopters|aviones|aeronaves|helic[óo]pteros|jets)/i);
       if (ac) { const n = +ac[1]; if (n > 100) changes.push(L(`more than 100 aircraft — we'll quote that as a custom agreement`, `más de 100 aeronaves — eso lo cotizamos como acuerdo a medida`)); else { if (P.estimate().model === "broker") P.setPlan("operator"); P.setAircraft(n); changes.push(`${n} ${L("aircraft", "aeronaves")}`); } }
       if (/\bbroker\b/i.test(text) && /plan|model|modelo|we are|somos|i'?m a|soy/i.test(text)) { P.setPlan("broker"); changes.push(L("Broker / API plan", "plan Broker / API")); }
@@ -1152,10 +1274,10 @@ Authorization: Bearer &lt;api_key&gt;
     async function review() {
       phase = "review";
       const e = P.estimate();
-      const who = FIELDS.filter(f => lead[f.key] && lead[f.key] !== "—").map(f => `• **${f.label[lang === "es" ? 1 : 0]}:** ${lead[f.key]}`).join("\n");
-      await say(L(`Here's what I'll send to the AERO team:\n${who}\n\n**Estimate**\n${estimateSummary(e)}\n\nShall I send it?`,
-                  `Esto es lo que enviaré al equipo de AERO:\n${who}\n\n**Estimado**\n${estimateSummary(e)}\n\n¿Lo envío?`),
-                [L("Send request", "Enviar solicitud"), L("Edit something", "Editar algo")], { primary: true });
+      const who = FIELDS.filter(f => lead[f.key] && lead[f.key] !== "—").map(f => `• **${f.label[0]}:** ${lead[f.key]}`).join("\n");
+      await say(`Here's your complete request, ${first(lead.name)}:\n${who}`);
+      await showConfig("Configuration & pricing");
+      await say("Everything checks out. Shall I send it to the AERO team?", ["Send request", "Edit something"], { primary: true });
     }
 
     async function guidedTurn(text) {
@@ -1163,16 +1285,16 @@ Authorization: Bearer &lt;api_key&gt;
       const got = extract(text);
 
       if (phase === "confirm" || phase === "adjust") {
-        if (changes.length) { await say(L(`Updated: ${changes.join(", ")}.\n${estimateSummary(P.estimate())}\n\nDoes this look right?`, `Actualizado: ${changes.join(", ")}.\n${estimateSummary(P.estimate())}\n\n¿Se ve bien?`), [L("Looks right", "Se ve bien"), L("Change something", "Cambiar algo")], { primary: true }); phase = "confirm"; return; }
-        if (YES_RE.test(text)) return askNext();
+        if (changes.length) { await say(`Done — ${changes.join(", ")}. The estimator on the page is updated too:`); await showConfig("Updated configuration");
+          await say("Does this look right?", ["Looks right", "Change something"], { primary: true }); phase = "confirm"; return; }
+        if (YES_RE.test(text)) return beginCollect();
         if (NO_RE.test(text) || phase === "adjust") {
           phase = "adjust";
-          return say(L("Sure — tell me what to change, for example **\"25 aircraft\"**, **\"hybrid model\"**, **\"we are a broker\"** or **\"add SEO & GEO\"**. You can also adjust the estimator on the page.",
+          return say(L("Sure — just tell me, e.g. **\"25 aircraft\"**, **\"hybrid model\"**, **\"add Open API and Finance\"**, **\"add AeroFlow\"** or **\"add SEO & GEO\"**. You can also adjust the estimator on the page.",
                        "Claro — dime qué cambiar, por ejemplo **\"25 aviones\"**, **\"modelo híbrido\"**, **\"somos broker\"** o **\"agregar SEO y GEO\"**. También puedes ajustar el estimador en la página."),
                      [L("Keep it as is", "Dejarlo así")]);
         }
-        if (got.length) return askNext();
-        return askNext();
+        return beginCollect();
       }
 
       if (phase === "collect") {
@@ -1187,8 +1309,17 @@ Authorization: Bearer &lt;api_key&gt;
           if (SKIP_RE.test(v) && !f.req) v = "—";
           else if (SKIP_RE.test(v) && f.req) { return say(L("I need this one to prepare the proposal — " , "Este dato lo necesito para la propuesta — ") + f.q(), f.chips ? f.chips() : null, { multi: f.multi }); }
           if (f.validate && v !== "—" && !f.validate(v)) { renderBrief(); return say(f.err(), null); }
-          if (f.key === "seoGeo" && /^(y|s)/i.test(v)) P.setSeo("growth");
+          const before = P.estimate();
+          if (f.key === "seoGeo" && /^(y|s)/i.test(v)) { P.setSeo("growth"); v = "SEO & GEO Growth"; }
           lead[f.key] = v.slice(0, 500);
+          if (f.key === "integrations") {
+            const n = v.split(/\s*,\s*/).filter(x => x && !/^(none|—|ninguno)$/i.test(x)).length;
+            if (n > before.connectors) P.setConnectors(n);
+          }
+          const after = P.estimate(), di = after.implementation - before.implementation, dm = after.monthlyFixed - before.monthlyFixed;
+          if (f.key === "integrations" && after.connectors !== before.connectors)
+            add("note", `Estimate updated → ${after.connectors} API connector${after.connectors > 1 ? "s" : ""}${after.connectorsIncluded ? ` (${after.connectorsIncluded} included in ${after.plan})` : ""} · ${di || dm ? `+${P.money(di)} setup, +${P.money(dm)}/mo` : "no extra cost"}`);
+          if (f.key === "seoGeo" && after.seoGeo && !before.seoGeo) add("note", `Estimate updated → SEO & GEO Growth · +${P.money(di)} setup, +${P.money(dm)}/mo`);
         }
         renderBrief();
         const extra = got.filter(k => !f || k !== f.key);
@@ -1207,7 +1338,7 @@ Authorization: Bearer &lt;api_key&gt;
         if (!got.length && !changes.length) {   // free-form edit: "company is X", "role: operator"
           const kv = text.match(/^(name|company|role|country|phone|notes|timeline|nombre|empresa|rol|pa[ií]s|tel[eé]fono|notas)\s*(?:is|es|:|=)?\s+(.+)$/i);
           const map = { nombre: "name", empresa: "company", rol: "role", "país": "country", pais: "country", "teléfono": "phone", telefono: "phone", notas: "notes" };
-          if (kv) lead[map[kv[1].toLowerCase()] || kv[1].toLowerCase()] = kv[2].trim();
+          if (kv) { const key = map[kv[1].toLowerCase()] || kv[1].toLowerCase(); lead[key] = kv[2].trim(); if (key === "role") autoRole = false; }
           else lead.notes = (lead.notes && lead.notes !== "—" ? lead.notes + " | " : "") + text.trim();
         }
         renderBrief(); return review();
@@ -1222,16 +1353,17 @@ Authorization: Bearer &lt;api_key&gt;
       typing(true);
       try {
         const res = await fetch(CFG.agentEndpoint, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: "chat", sessionId, lang, messages: transcript.slice(-24).map(m => ({ role: m.role, text: m.text })), lead, estimate: strip(P.estimate()) }) });
+          body: (syncKnown(), JSON.stringify({ action: "chat", sessionId, lang, messages: transcript.slice(-24).map(m => ({ role: m.role, text: m.text })), lead, estimate: strip(P.estimate()) })) });
         const d = await res.json();
         typing(false);
         if (!d || !d.ok) throw new Error(d && d.error || "Agent error");
         if (d.lead) Object.keys(lead).forEach(k => { if (typeof d.lead[k] === "string" && d.lead[k].trim()) lead[k] = d.lead[k].trim().slice(0, 500); });
         if (d.estimateChange) { const c = d.estimateChange;
-          if (c.plan) P.setPlan(c.plan); if (c.aircraft) P.setAircraft(c.aircraft); if (c.model) P.setModel(c.model); if (c.seoGeo) P.setSeo(c.seoGeo); }
+          if (c.plan) P.setPlan(c.plan); if (c.aircraft) P.setAircraft(c.aircraft); if (c.model) P.setModel(c.model); if (c.seoGeo) P.setSeo(c.seoGeo);
+          if (c.connectors != null) P.setConnectors(c.connectors); (c.addons || []).forEach(k => P.addAddon(k)); (c.services || []).forEach(k => P.addService(k)); }
         renderBrief();
         add("bot", String(d.reply || "").slice(0, 2000));
-        if (d.ready && REQ.every(f => lead[f.key]) && isEmail(lead.email)) { phase = "review"; chips([L("Send request", "Enviar solicitud"), L("Edit something", "Editar algo")], { primary: true }); }
+        if (d.ready && REQ.every(f => lead[f.key]) && isEmail(lead.email)) { phase = "review"; await showConfig("Configuration & pricing"); chips([L("Send request", "Enviar solicitud"), L("Edit something", "Editar algo")], { primary: true }); }
         else if (!lead.country && /\b(based|airport|region|operate|location|base)\b/i.test(d.reply || "")) chips(Object.keys(REGIONS), { onPick: pickRegion });
         else chips(Array.isArray(d.chips) ? d.chips.slice(0, 6) : null);
       } catch (err) {
@@ -1293,11 +1425,11 @@ Authorization: Bearer &lt;api_key&gt;
       const captured = Object.values(lead).filter(v => v && v !== "—").length;
 
       const pl = pipeline([
-        { k: "v", t: "Validating contact details" }, { k: "p", t: "Pricing your configuration" },
+        { k: "v", t: "Validating contact details" }, { k: "p", t: "Locking your configuration & pricing" },
         { k: "b", t: "Compiling the proposal brief" }, { k: "r", t: "Registering the request" },
         { k: "a", t: "Routing to the account team" }, { k: "s", t: "Setting the response SLA" }]);
       pl.run("v"); await wait(650); pl.done("v", `${lead.email} · format verified`);
-      pl.run("p"); await wait(700); pl.done("p", `${e.model === "broker" ? "Broker / API" : `${e.plan} · ${e.aircraft} aircraft`} · ${m(e.firstYear)} first-year value`);
+      pl.run("p"); await wait(700); pl.done("p", `${e.model === "broker" ? "Broker / API" : `${e.plan} · ${e.aircraft} aircraft`} · ${e.includedModules.length + e.modules.length} modules · API ${e.apiAccess.toLowerCase()}${e.connectors ? ` · ${e.connectors} connectors` : ""}${e.seoGeo ? " · " + e.seoGeo : ""} · ${m(e.firstYear)} first year`);
       pl.run("b"); await wait(650); pl.done("b", `${captured} data points · ${transcript.filter(x => x.role === "user").length} answers · full transcript attached`);
       pl.run("r");
       const [d] = await Promise.all([remote, wait(900)]);
@@ -1329,7 +1461,7 @@ Authorization: Bearer &lt;api_key&gt;
       const body = [`Request ID: ${t.ref}`, `Timestamp (UTC): ${t.received.toISOString()}`, `Priority: ${t.priority}`, "",
         `Name: ${lead.name}`, `Company: ${lead.company}`, `Email: ${lead.email}`, `Phone: ${lead.phone}`, `Role: ${lead.role}`, `Country / bases: ${lead.country}`,
         `Current tools: ${lead.tools}`, `Integrations: ${lead.integrations}`, `Go-live: ${lead.timeline}`, `SEO & GEO: ${lead.seoGeo || e.seoGeo}`, `Notes: ${lead.notes}`, "",
-        `Estimate: ${estimateLine(e)}`, `First-year total: ${m(e.firstYear)}`, `Integrity (SHA-256): ${t.hash}`].join("\n");
+        "CONFIGURATION", configText(e), "", `Integrity (SHA-256): ${t.hash}`].join("\n");
       const mailto = `mailto:${CFG.salesEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       const receiptUrl = URL.createObjectURL(new Blob([JSON.stringify(t.receipt, null, 2)], { type: "application/json" }));
       const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//AERO//Proposal Agent//EN", "BEGIN:VEVENT", `UID:${t.ref}@aeroaiops.com`,
@@ -1357,6 +1489,9 @@ Authorization: Bearer &lt;api_key&gt;
           <div class="full"><dt>Integrity · SHA-256</dt><dd class="mono" title="${t.hash}">${t.hash.slice(0, 20)}…${t.hash.slice(-8)}</dd></div>
         </dl>
         <div class="tk-perf" aria-hidden="true"></div>
+        <p class="tk-sec">Configuration</p>
+        <dl class="tk-cfg">${configRows(e).map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}
+          <div class="full"><dt>Modules</dt><dd>${esc([...e.includedModules, ...e.modules.map(x => "+ " + x)].join(" · "))}</dd></div></dl>
         <div class="tk-est">
           <div><span>Implementation</span><b>${e.from ? "<small>from</small> " : ""}${m(e.implementation)}</b></div>
           <div><span>Monthly</span><b>${m(e.monthlyFixed)}</b></div>
@@ -1403,9 +1538,10 @@ Authorization: Bearer &lt;api_key&gt;
       started = true; renderBrief();
       ui.status.textContent = useLLM ? L("AI assistant · online", "Asistente IA · en línea") : L("AI assistant · guided mode", "Asistente IA · modo guiado");
       ui.input.placeholder = L("Type your answer…", "Escribe tu respuesta…");
-      await say(L(`Hi! I'm the AERO proposal agent ✦ I'll prepare your proposal in about two minutes.\n\nHere's the estimate you built:\n${estimateSummary(P.estimate())}\n\nDoes this look right?`,
-                  `¡Hola! Soy el agente de propuestas de AERO ✦ Preparo tu propuesta en unos dos minutos.\n\nEste es el estimado que armaste:\n${estimateSummary(P.estimate())}\n\n¿Se ve bien?`),
-                [L("Looks right", "Se ve bien"), L("Change something", "Cambiar algo")], { primary: true });
+      syncKnown();
+      await say("Hi! I'm the AERO proposal agent ✦ I've already read the configuration you built in the estimator — plan, aircraft, modules, API, services and SEO & GEO — so you won't have to repeat any of it.");
+      await showConfig();
+      await say("Does this look right? If so, I only need a few details about you and we're done in about a minute.", ["Looks right", "Change something"], { primary: true });
       phase = "confirm";
     }
     function open() {
