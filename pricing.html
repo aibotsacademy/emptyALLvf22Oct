@@ -205,6 +205,39 @@
     .ag-launch[hidden] { display:none; }
 
 
+
+    /* Region → airport picker */
+    .ag-pick { padding:14px; }
+    .ag-pick.done { opacity:.6; }
+    .pk-head { display:flex; align-items:center; gap:8px; margin-bottom:10px; position:relative; overflow:hidden; }
+    .pk-head b { font-weight:500; color:var(--pr-gold); font-size:13px; letter-spacing:.04em; }
+    .pk-head small { margin-left:auto; font-size:11px; color:var(--pr-dim); }
+    .pk-scan { position:absolute; left:0; right:0; bottom:-6px; height:1px; background:linear-gradient(90deg,transparent,var(--pr-gold),transparent); animation:pkscan 1.6s ease-in-out 2; opacity:.7; }
+    @keyframes pkscan { from { transform:translateX(-100%); } to { transform:translateX(100%); } }
+    .pk-search { display:flex; align-items:center; gap:8px; border:1px solid var(--pr-line); border-radius:10px; padding:0 10px; color:var(--pr-dim); background:rgba(244,241,234,.04); }
+    .pk-search:focus-within { border-color:var(--pr-gold); }
+    .pk-search input { flex:1; background:none; border:0; outline:0; color:var(--pr-ivory); font:14px "DM Sans",sans-serif; padding:10px 0; min-width:0; }
+    .pk-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:10px; max-height:260px; overflow-y:auto; padding-right:2px; }
+    .pk-tile { text-align:left; display:grid; gap:1px; background:rgba(244,241,234,.035); border:1px solid var(--pr-line); border-radius:10px; padding:9px 10px; cursor:pointer; color:var(--pr-mute); font-family:"DM Sans",sans-serif; position:relative; transition:border-color .15s, background .15s; }
+    .pk-tile:hover { border-color:rgba(201,167,106,.6); }
+    .pk-tile.on { border-color:var(--pr-gold); background:rgba(201,167,106,.14); }
+    .pk-tile.on::after { content:"✓"; position:absolute; top:7px; right:9px; width:16px; height:16px; border-radius:50%; background:var(--pr-gold); color:var(--pr-navy); font-size:10px; display:grid; place-items:center; font-weight:700; }
+    .pk-code { font:600 15px ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--pr-gold); letter-spacing:.04em; }
+    .pk-city { font-size:12px; color:var(--pr-ivory); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .pk-meta { font-size:10px; color:var(--pr-dim); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .pk-meta em { font-style:normal; color:var(--pr-gold); }
+    .pk-custom { grid-column:1 / -1; border-style:dashed; }
+    .pk-empty { grid-column:1 / -1; font-size:12px; color:var(--pr-dim); margin:4px 0; }
+    .pk-tray { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; min-height:24px; align-items:center; }
+    .pk-tray span { display:inline-flex; align-items:center; gap:4px; font:600 12px ui-monospace,monospace; color:var(--pr-navy); background:var(--pr-gold); border-radius:999px; padding:3px 4px 3px 9px; }
+    .pk-tray span button { background:rgba(8,19,33,.18); border:0; color:var(--pr-navy); width:16px; height:16px; border-radius:50%; cursor:pointer; line-height:1; font-size:12px; }
+    .pk-tray small { font-size:11px; color:var(--pr-dim); }
+    .pk-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .pk-go { background:var(--pr-gold); color:var(--pr-navy); border:0; border-radius:999px; padding:8px 14px; font:600 13px "DM Sans",sans-serif; cursor:pointer; }
+    .pk-go:disabled { opacity:.4; cursor:default; }
+    .pk-alt { background:none; border:1px solid var(--pr-line); color:var(--pr-mute); border-radius:999px; padding:7px 12px; font:12px "DM Sans",sans-serif; cursor:pointer; }
+    @media (prefers-reduced-motion: reduce) { .pk-scan { animation:none; } }
+
     /* Agent run + registration ticket */
     .ag-msg.ag-wide { max-width:100%; align-self:stretch; }
     .ag-pipe-h { margin:0 0 10px; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--pr-gold); }
@@ -909,7 +942,9 @@ Authorization: Bearer &lt;api_key&gt;
       { key: "role", req: true, label: ["Role", "Rol"], q: () => L("Which best describes you?", "¿Qué te describe mejor?"),
         chips: () => lang === "es" ? ["Dueño de aeronave", "Operador Part 135", "Departamento de vuelo Part 91", "Gestor de flota", "Broker de chárter", "Otro"]
                                    : ["Aircraft owner", "Part 135 operator", "Part 91 flight department", "Fleet manager", "Charter broker", "Other"] },
-      { key: "country", req: true, label: ["Country / bases", "País / bases"], q: () => L("Where are you based — country and main base airport(s)?", "¿Dónde operan — país y aeropuerto(s) base?") },
+      { key: "country", req: true, label: ["Region / bases", "Región / bases"], widget: "region",
+        q: () => "Where do you operate? Pick your main region — I'll pull up the business-aviation airports there so you can tap your bases.",
+        chips: () => Object.keys(REGIONS) },
       { key: "tools", label: ["Current tools", "Herramientas"], q: () => L("What do you use today to run operations?", "¿Qué usan hoy para gestionar la operación?"),
         chips: () => lang === "es" ? ["Hojas de cálculo", "Otro software", "Correo / papel", "Nada aún"] : ["Spreadsheets", "Another software", "Email / paper", "Nothing yet"] },
       { key: "integrations", label: ["Integrations", "Integraciones"], multi: true, q: () => L("Which systems should AERO connect to via API? Pick all that apply, then tap Continue.", "¿Con qué sistemas debería conectarse AERO vía API? Elige todos los que apliquen y toca Continuar."),
@@ -924,6 +959,85 @@ Authorization: Bearer &lt;api_key&gt;
       { key: "notes", label: ["Notes", "Notas"], q: () => L("Anything else we should know — aircraft types, routes, deadlines?", "¿Algo más que debamos saber — tipos de aeronave, rutas, plazos?"), chips: () => [L("Nothing else", "Nada más")] }
     ];
     const REQ = FIELDS.filter(f => f.req);
+
+
+    /* ---------- Region → airport picker ---------- */
+    // [IATA, ICAO, city, country/state, hub?]
+    const REGIONS = {
+      "🇺🇸 United States": [["TEB","KTEB","Teterboro","NJ",1],["VNY","KVNY","Van Nuys","CA",1],["PBI","KPBI","West Palm Beach","FL",1],["OPF","KOPF","Miami–Opa-locka","FL"],["HPN","KHPN","White Plains","NY",1],["FXE","KFXE","Fort Lauderdale Exec.","FL"],["DAL","KDAL","Dallas Love Field","TX"],["HOU","KHOU","Houston Hobby","TX"],["SDL","KSDL","Scottsdale","AZ"],["LAS","KLAS","Las Vegas","NV"],["APA","KAPA","Denver Centennial","CO"],["ASE","KASE","Aspen","CO"],["PDK","KPDK","Atlanta DeKalb-Peachtree","GA"],["MDW","KMDW","Chicago Midway","IL"],["BED","KBED","Bedford / Hanscom","MA"],["IAD","KIAD","Washington Dulles","VA"],["SJC","KSJC","San Jose","CA"]],
+      "🇨🇦 Canada": [["YYZ","CYYZ","Toronto Pearson","ON",1],["YTZ","CYTZ","Toronto Billy Bishop","ON"],["YUL","CYUL","Montréal–Trudeau","QC",1],["YVR","CYVR","Vancouver","BC",1],["YYC","CYYC","Calgary","AB"],["YEG","CYEG","Edmonton","AB"],["YOW","CYOW","Ottawa","ON"],["YHZ","CYHZ","Halifax","NS"],["YWG","CYWG","Winnipeg","MB"],["YLW","CYLW","Kelowna","BC"]],
+      "🇬🇧 United Kingdom": [["FAB","EGLF","Farnborough","England",1],["LTN","EGGW","London Luton","England",1],["BQH","EGKB","London Biggin Hill","England",1],["LCY","EGLC","London City","England"],["STN","EGSS","London Stansted","England"],["LHR","EGLL","London Heathrow","England"],["OXF","EGTK","Oxford","England"],["MAN","EGCC","Manchester","England"],["BHX","EGBB","Birmingham","England"],["EDI","EGPH","Edinburgh","Scotland"],["GLA","EGPF","Glasgow","Scotland"]],
+      "🇪🇺 Europe": [["LBG","LFPB","Paris–Le Bourget","France",1],["NCE","LFMN","Nice Côte d'Azur","France",1],["CEQ","LFMD","Cannes–Mandelieu","France"],["GVA","LSGG","Geneva","Switzerland",1],["ZRH","LSZH","Zurich","Switzerland"],["LIN","LIML","Milan Linate","Italy"],["CIA","LIRA","Rome Ciampino","Italy"],["OLB","LIEO","Olbia","Italy"],["MAD","LEMD","Madrid","Spain"],["BCN","LEBL","Barcelona","Spain"],["PMI","LEPA","Palma de Mallorca","Spain"],["IBZ","LEIB","Ibiza","Spain"],["MUC","EDDM","Munich","Germany"],["FRA","EDDF","Frankfurt","Germany"],["VIE","LOWW","Vienna","Austria"],["AMS","EHAM","Amsterdam","Netherlands"],["LIS","LPPT","Lisbon","Portugal"],["DUB","EIDW","Dublin","Ireland"],["ATH","LGAV","Athens","Greece"],["JMK","LGMK","Mykonos","Greece"]],
+      "🌎 LATAM": [["SJO","MROC","San José","Costa Rica",1],["LIR","MRLB","Liberia","Costa Rica",1],["TLC","MMTO","Toluca","Mexico",1],["MEX","MMMX","Mexico City","Mexico"],["CUN","MMUN","Cancún","Mexico"],["SJD","MMSD","Los Cabos","Mexico"],["PTY","MPTO","Panama City–Tocumen","Panama"],["PAC","MPMG","Panama City–Albrook","Panama"],["SAL","MSLP","San Salvador","El Salvador"],["GUA","MGGT","Guatemala City","Guatemala"],["BOG","SKBO","Bogotá","Colombia"],["MDE","SKRG","Medellín","Colombia"],["CGH","SBSP","São Paulo–Congonhas","Brazil"],["GRU","SBGR","São Paulo–Guarulhos","Brazil"],["EZE","SAEZ","Buenos Aires–Ezeiza","Argentina"],["SCL","SCEL","Santiago","Chile"],["LIM","SPJC","Lima","Peru"],["PUJ","MDPC","Punta Cana","Dominican Rep."],["NAS","MYNN","Nassau","Bahamas"]],
+      "🌍 MENA": [["DXB","OMDB","Dubai International","UAE",1],["DWC","OMDW","Dubai Al Maktoum","UAE",1],["AUH","OMAA","Abu Dhabi","UAE"],["DOH","OTHH","Doha","Qatar",1],["RUH","OERK","Riyadh","Saudi Arabia"],["JED","OEJN","Jeddah","Saudi Arabia"],["BAH","OBBI","Bahrain","Bahrain"],["KWI","OKKK","Kuwait City","Kuwait"],["MCT","OOMS","Muscat","Oman"],["AMM","OJAI","Amman","Jordan"],["TLV","LLBG","Tel Aviv","Israel"],["CAI","HECA","Cairo","Egypt"],["CMN","GMMN","Casablanca","Morocco"],["RAK","GMMX","Marrakech","Morocco"]],
+      "🌏 Asia": [["HKG","VHHH","Hong Kong","Hong Kong",1],["XSP","WSSL","Singapore Seletar","Singapore",1],["HND","RJTT","Tokyo Haneda","Japan",1],["PEK","ZBAA","Beijing Capital","China"],["SHA","ZSSS","Shanghai Hongqiao","China"],["PVG","ZSPD","Shanghai Pudong","China"],["MFM","VMMC","Macau","Macau"],["GMP","RKSS","Seoul Gimpo","South Korea"],["ICN","RKSI","Seoul Incheon","South Korea"],["TSA","RCSS","Taipei Songshan","Taiwan"],["DMK","VTBD","Bangkok Don Mueang","Thailand"],["SZB","WMSA","Kuala Lumpur–Subang","Malaysia"],["HLP","WIHH","Jakarta Halim","Indonesia"],["DPS","WADD","Bali","Indonesia"],["MNL","RPLL","Manila","Philippines"],["DEL","VIDP","Delhi","India"],["BOM","VABB","Mumbai","India"]]
+    };
+    const MAX_BASES = 6;
+    const regionName = k => k.replace(/^\S+\s/, "");          // "🇪🇺 Europe" -> "Europe"
+    const findRegion = t => Object.keys(REGIONS).find(k => k === t.trim() || regionName(k).toLowerCase() === t.trim().toLowerCase()
+      || ({ us: "🇺🇸 United States", usa: "🇺🇸 United States", uk: "🇬🇧 United Kingdom", canada: "🇨🇦 Canada", latam: "🌎 LATAM", "latin america": "🌎 LATAM", mena: "🌍 MENA", "middle east": "🌍 MENA", asia: "🌏 Asia", europe: "🇪🇺 Europe" })[t.trim().toLowerCase()] === k);
+    let picker = null;   // { region, el, sel:Set }
+
+    async function showAirportPicker(region) {
+      const list = REGIONS[region].slice().sort((x, y) => (y[4] || 0) - (x[4] || 0));   // FBO hubs first
+      typing(true); chips(null);
+      await new Promise(r => setTimeout(r, 650));
+      typing(false);
+      add("bot", `Scanning business-aviation airports in **${regionName(region)}**… found **${list.length}**, FBO hubs first. Tap your base airports (up to ${MAX_BASES}), or search any city, IATA or ICAO code.`);
+      const el = document.createElement("div");
+      el.className = "ag-msg bot ag-wide ag-pick";
+      el.innerHTML = `
+        <div class="pk-head"><span class="pk-scan" aria-hidden="true"></span><b>✦ ${regionName(region)}</b><small>${list.length} airports indexed</small></div>
+        <label class="pk-search"><span class="sr-only">Search airports</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input type="search" placeholder="City, IATA or ICAO…" autocomplete="off" /></label>
+        <div class="pk-grid" role="listbox" aria-multiselectable="true" aria-label="Airports in ${regionName(region)}"></div>
+        <div class="pk-tray" aria-live="polite"></div>
+        <div class="pk-actions">
+          <button type="button" class="pk-go" disabled>Confirm bases</button>
+          <button type="button" class="pk-alt" data-act="region">Change region</button>
+          <button type="button" class="pk-alt" data-act="none">No fixed base</button>
+        </div>`;
+      ui.log.appendChild(el); scroll();
+      picker = { region, el, sel: new Map() };
+      const grid = el.querySelector(".pk-grid"), input = el.querySelector("input"), tray = el.querySelector(".pk-tray"), go = el.querySelector(".pk-go");
+      const tile = a => `<button type="button" role="option" class="pk-tile${picker.sel.has(a[0]) ? " on" : ""}" aria-selected="${picker.sel.has(a[0])}" data-iata="${a[0]}">
+          <span class="pk-code">${a[0]}</span><span class="pk-city">${esc(a[2])}</span><span class="pk-meta">${a[1]} · ${esc(a[3])}${a[4] ? ' · <em>FBO hub</em>' : ""}</span></button>`;
+      function render() {
+        const q = input.value.trim().toLowerCase();
+        const hits = list.filter(a => !q || a.slice(0, 4).join(" ").toLowerCase().includes(q));
+        let h = hits.map(tile).join("");
+        if (q && !hits.length) {
+          const code = q.toUpperCase().replace(/[^A-Z0-9]/g, "");
+          h = /^[A-Z0-9]{3,4}$/.test(code)
+            ? `<button type="button" class="pk-tile pk-custom" data-custom="${code}"><span class="pk-code">${code}</span><span class="pk-city">Add as custom base</span><span class="pk-meta">Not in our index — we'll verify it</span></button>`
+            : `<p class="pk-empty">No match in ${regionName(region)}. Type a 3–4 letter IATA/ICAO code to add it.</p>`;
+        }
+        grid.innerHTML = h;
+        tray.innerHTML = picker.sel.size ? [...picker.sel.values()].map(v => `<span>${v.code}<button type="button" data-rm="${v.code}" aria-label="Remove ${v.code}">×</button></span>`).join("") : '<small>No base selected yet</small>';
+        go.disabled = !picker.sel.size;
+        go.textContent = picker.sel.size ? `Confirm ${picker.sel.size} base${picker.sel.size > 1 ? "s" : ""} →` : "Confirm bases";
+      }
+      el.addEventListener("click", ev => {
+        if (!picker || picker.el !== el) return;
+        const t = ev.target.closest("[data-iata],[data-custom],[data-rm],[data-act],.pk-go");
+        if (!t) return;
+        if (t.dataset.iata) { const a = list.find(x => x[0] === t.dataset.iata);
+          if (picker.sel.has(a[0])) picker.sel.delete(a[0]); else if (picker.sel.size < MAX_BASES) picker.sel.set(a[0], { code: a[0], label: `${a[0]} ${a[2]}` }); render(); }
+        else if (t.dataset.custom) { if (picker.sel.size < MAX_BASES) picker.sel.set(t.dataset.custom, { code: t.dataset.custom, label: `${t.dataset.custom} (custom)` }); input.value = ""; render(); input.focus(); }
+        else if (t.dataset.rm) { picker.sel.delete(t.dataset.rm); render(); }
+        else if (t.dataset.act === "region") { closePicker(); add("user", "Change region"); say("No problem — which region?", Object.keys(REGIONS), { onPick: pickRegion }); }
+        else if (t.dataset.act === "none") { confirmBases(`${regionName(region)} — no fixed base`); }
+        else if (t.classList.contains("pk-go")) confirmBases(`${regionName(region)} — ${[...picker.sel.values()].map(v => v.label).join(", ")}`);
+      });
+      input.addEventListener("input", render);
+      input.addEventListener("keydown", ev => { if (ev.key === "Enter") { ev.preventDefault(); const first = grid.querySelector(".pk-tile"); if (first) first.click(); } });
+      render();
+      setTimeout(() => input.focus(), 50);
+    }
+    function closePicker() { if (picker) { picker.el.classList.add("done"); picker.el.querySelectorAll("button,input").forEach(b => b.disabled = true); picker = null; } }
+    function confirmBases(value) { closePicker(); lead.country = value; renderBrief(); userSays(value); }
+    function pickRegion(label) { add("user", label); chips(null); showAirportPicker(findRegion(label) || label); }
 
     /* ---------- utils ---------- */
     function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(String(v).trim()); }
@@ -956,7 +1070,7 @@ Authorization: Bearer &lt;api_key&gt;
       (list || []).forEach(c => { const b = document.createElement("button"); b.type = "button"; b.textContent = c;
         b.addEventListener("click", () => {
           if (opts.multi) { b.classList.toggle("on"); b.classList.contains("on") ? multiSel.add(c) : multiSel.delete(c); }
-          else userSays(c);
+          else if (opts.onPick) opts.onPick(c); else userSays(c);
         }); ui.chips.appendChild(b); });
       if (opts.multi) { const go = document.createElement("button"); go.type = "button"; go.className = "primary"; go.textContent = L("Continue →", "Continuar →");
         go.addEventListener("click", () => userSays(multiSel.size ? [...multiSel].join(", ") : L("None", "Ninguno"))); ui.chips.appendChild(go); }
@@ -1033,7 +1147,7 @@ Authorization: Bearer &lt;api_key&gt;
       const f = nextField();
       if (!f) return review();
       phase = "collect"; pending = f.key;
-      await say(f.q(), f.chips ? f.chips() : null, { multi: f.multi });
+      await say(f.q(), f.chips ? f.chips() : null, { multi: f.multi, onPick: f.widget === "region" ? pickRegion : null });
     }
     async function review() {
       phase = "review";
@@ -1063,6 +1177,11 @@ Authorization: Bearer &lt;api_key&gt;
 
       if (phase === "collect") {
         const f = FIELDS.find(x => x.key === pending) || nextField();
+        if (f && f.key === "country" && !lead.country) {
+          const reg = findRegion(text);
+          if (reg) { chips(null); return showAirportPicker(reg); }
+          if (picker) { const v = `${regionName(picker.region)} — ${text.trim()}`; closePicker(); lead.country = v; }
+        }
         if (f && !got.includes(f.key) && !(lead[f.key] && got.length)) {
           let v = text.trim();
           if (SKIP_RE.test(v) && !f.req) v = "—";
@@ -1113,6 +1232,7 @@ Authorization: Bearer &lt;api_key&gt;
         renderBrief();
         add("bot", String(d.reply || "").slice(0, 2000));
         if (d.ready && REQ.every(f => lead[f.key]) && isEmail(lead.email)) { phase = "review"; chips([L("Send request", "Enviar solicitud"), L("Edit something", "Editar algo")], { primary: true }); }
+        else if (!lead.country && /\b(based|airport|region|operate|location|base)\b/i.test(d.reply || "")) chips(Object.keys(REGIONS), { onPick: pickRegion });
         else chips(Array.isArray(d.chips) ? d.chips.slice(0, 6) : null);
       } catch (err) {
         typing(false); useLLM = false;
