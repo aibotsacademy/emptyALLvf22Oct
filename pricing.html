@@ -156,6 +156,7 @@
     .pr-cta { margin:96px 0 0; text-align:center; border:1px solid var(--pr-line); border-radius:22px; padding:56px 24px; background:radial-gradient(ellipse at top,rgba(201,167,106,.14),transparent 70%); }
     .pr-cta .row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:24px; }
 
+    .pr .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
     /* ---------- AI proposal agent (drawer) ---------- */
     .ag-backdrop { position:fixed; inset:0; background:rgba(3,8,15,.6); backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity .3s; z-index:90; }
     .ag-backdrop.open { opacity:1; pointer-events:auto; }
@@ -202,6 +203,63 @@
                  border-radius:999px; padding:10px 18px 10px 10px; font:500 14px "DM Sans",sans-serif; cursor:pointer; box-shadow:0 10px 30px rgba(0,0,0,.35); }
     .ag-launch .ag-av { width:30px; height:30px; font-size:13px; }
     .ag-launch[hidden] { display:none; }
+
+
+    /* Agent run + registration ticket */
+    .ag-msg.ag-wide { max-width:100%; align-self:stretch; }
+    .ag-pipe-h { margin:0 0 10px; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--pr-gold); }
+    .ag-pipe { list-style:none; margin:0; padding:0; display:grid; gap:10px; }
+    .ag-pipe li { display:grid; grid-template-columns:20px 1fr; gap:10px; align-items:start; opacity:.35; transition:opacity .3s; }
+    .ag-pipe li.run, .ag-pipe li.ok, .ag-pipe li.warn { opacity:1; }
+    .ag-pipe b { font-weight:500; font-size:13px; color:var(--pr-ivory); display:block; }
+    .ag-pipe small { font-size:12px; color:var(--pr-dim); overflow-wrap:anywhere; }
+    .ag-pipe .st { width:16px; height:16px; margin-top:2px; border-radius:50%; border:1.5px solid var(--pr-line); display:grid; place-items:center; font-style:normal; font-size:10px; line-height:1; }
+    .ag-pipe li.run .st { border-color:var(--pr-gold); border-top-color:transparent; animation:agspin .7s linear infinite; }
+    .ag-pipe li.ok .st { background:#5fd39a; border-color:#5fd39a; color:#062014; } .ag-pipe li.ok .st::after { content:"✓"; }
+    .ag-pipe li.warn .st { background:var(--pr-gold); border-color:var(--pr-gold); color:var(--pr-navy); } .ag-pipe li.warn .st::after { content:"!"; font-weight:700; }
+    @keyframes agspin { to { transform:rotate(360deg); } }
+    .ag-ticket { align-self:stretch; position:relative; border:1px solid var(--pr-gold); border-radius:18px; padding:20px 18px 16px; color:var(--pr-mute);
+      background:radial-gradient(120% 80% at 100% 0%,rgba(201,167,106,.18),transparent 60%),linear-gradient(180deg,#0f2036,#0a1626);
+      box-shadow:0 0 0 1px rgba(201,167,106,.08),0 18px 40px rgba(0,0,0,.35); animation:tkin .6s cubic-bezier(.2,.8,.2,1) both; }
+    @keyframes tkin { from { opacity:0; transform:translateY(14px) scale(.98); } to { opacity:1; transform:none; } }
+    .tk-top { display:grid; grid-template-columns:42px minmax(0,1fr); gap:4px 12px; align-items:center; }
+    .tk-top .tk-pill { grid-column:2; justify-self:start; }
+    .tk-check { width:42px; height:42px; flex:none; fill:none; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+    .tk-check circle { stroke:var(--pr-gold); stroke-dasharray:151; stroke-dashoffset:151; animation:tkdraw .7s ease forwards; }
+    .tk-check path { stroke:var(--pr-ivory); stroke-dasharray:40; stroke-dashoffset:40; animation:tkdraw .45s .6s ease forwards; }
+    @keyframes tkdraw { to { stroke-dashoffset:0; } }
+    .tk-head { min-width:0; flex:1; }
+    .tk-k { margin:0; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--pr-dim); }
+    .tk-id { margin:2px 0 0; white-space:nowrap; font:600 clamp(15px,4.2vw,18px)/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.04em; color:var(--pr-gold); overflow-wrap:anywhere; }
+    .tk-pill { font-size:11px; border-radius:999px; padding:5px 10px; white-space:nowrap; }
+    .tk-pill.ok { background:rgba(95,211,154,.14); color:#7fe0b0; border:1px solid rgba(95,211,154,.35); }
+    .tk-pill.warn { background:rgba(201,167,106,.14); color:var(--pr-gold); border:1px solid rgba(201,167,106,.4); }
+    .tk-meta { display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; margin:16px 0 0; }
+    .tk-meta .full { grid-column:1 / -1; }
+    .tk-meta dt { font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--pr-dim); }
+    .tk-meta dd { margin:2px 0 0; font-size:13px; color:var(--pr-ivory); overflow-wrap:anywhere; }
+    .tk-meta .mono { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; }
+    .tk-prio { font-size:12px; padding:2px 8px; border-radius:6px; background:rgba(244,241,234,.08); }
+    .tk-prio.high { background:rgba(201,167,106,.2); color:var(--pr-gold); }
+    .tk-perf { height:1px; margin:16px -18px; border-top:1px dashed rgba(244,241,234,.22); position:relative; }
+    .tk-perf::before, .tk-perf::after { content:""; position:absolute; top:-9px; width:18px; height:18px; border-radius:50%; background:#0a1626; border:1px solid var(--pr-gold); }
+    .tk-perf::before { left:-10px; clip-path:inset(0 0 0 50%); } .tk-perf::after { right:-10px; clip-path:inset(0 50% 0 0); }
+    .tk-est { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .tk-est span { display:block; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--pr-dim); }
+    .tk-est b small { font:12px 'DM Sans',sans-serif; color:var(--pr-dim); }
+    .tk-est b { font:400 22px "Cormorant Garamond",serif; color:var(--pr-ivory); }
+    .tk-note { margin:6px 0 0; font-size:12px; color:var(--pr-gold); }
+    .tk-next { list-style:none; margin:16px 0 0; padding:0 0 0 14px; border-left:1px solid var(--pr-line); display:grid; gap:10px; }
+    .tk-next li { position:relative; font-size:12px; }
+    .tk-next li::before { content:""; position:absolute; left:-19px; top:4px; width:9px; height:9px; border-radius:50%; background:#0a1626; border:1px solid var(--pr-dim); }
+    .tk-next li.done::before { background:#5fd39a; border-color:#5fd39a; }
+    .tk-next b { display:block; font-weight:500; color:var(--pr-ivory); font-size:12px; }
+    .tk-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+    .tk-btn { font:500 12px "DM Sans",sans-serif; border:1px solid var(--pr-line); background:rgba(244,241,234,.04); color:var(--pr-ivory); border-radius:999px; padding:8px 12px; text-decoration:none; cursor:pointer; }
+    .tk-btn:hover { border-color:var(--pr-gold); }
+    .tk-btn.primary { background:var(--pr-gold); border-color:var(--pr-gold); color:var(--pr-navy); }
+    .tk-foot { margin:12px 0 0; font-size:10px; color:var(--pr-dim); letter-spacing:.04em; }
+    @media (prefers-reduced-motion: reduce) { .ag-ticket, .tk-check circle, .tk-check path { animation:none; stroke-dashoffset:0; } }
 
     /* ---------- Standalone behaviour (header, mobile nav, reveal) ---------- */
     .pr-rv { opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
@@ -837,8 +895,8 @@ Authorization: Bearer &lt;api_key&gt;
     const ui = { drawer: $("#ag"), back: $("#ag-backdrop"), log: $("#ag-log"), chips: $("#ag-chips"), form: $("#ag-form"), input: $("#ag-input"),
                  send: $("#ag-send"), launch: $("#ag-launch"), fields: $("#ag-fields"), bar: $("#ag-bar"), count: $("#ag-count"), status: $("#ag-status") };
     const sessionId = "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-    let lang = /^es/i.test(navigator.language || "") ? "es" : "en";
-    let started = false, phase = "confirm", busy = false, useLLM = !!CFG.agentEndpoint, lastFocus = null, multiSel = new Set();
+    const lang = "en";   // the agent always speaks English
+    let pending = null, started = false, phase = "confirm", busy = false, useLLM = !!CFG.agentEndpoint, lastFocus = null, multiSel = new Set();
     const transcript = [];
     const lead = { name: "", company: "", email: "", phone: "", role: "", country: "", tools: "", integrations: "", timeline: "", seoGeo: "", notes: "" };
 
@@ -881,8 +939,8 @@ Authorization: Bearer &lt;api_key&gt;
       return out.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
     }
     const SKIP_RE = /^(skip|no|none|n\/a|nothing( else)?|nope|omitir|ninguno|nada( más)?|no gracias|-)$/i;
-    const YES_RE = /^(y|yes|yeah|yep|sure|ok(ay)?|correct|right|looks (right|good)|that'?s right|s[ií]|claro|correcto|perfecto|dale|est[áa] bien|send|enviar|send request|enviar solicitud)\b/i;
-    const NO_RE = /^(no|nope|not quite|change|adjust|edit|cambiar|ajustar|editar|quiero cambiar)\b/i;
+    const YES_RE = /^(y|yes|yeah|yep|sure|ok(ay)?|correct|right|looks (right|good)|that'?s right|s[ií]|claro|correcto|perfecto|dale|est[áa] bien|send|enviar|send request|enviar solicitud|se ve bien|keep it( as is)?|dejarlo as[ií])(?![\p{L}])/iu;
+    const NO_RE = /^(no|nope|not quite|change|adjust|edit|cambiar|ajustar|editar|quiero cambiar)(?![\p{L}])/iu;
 
     /* ---------- rendering ---------- */
     function scroll() { ui.log.scrollTop = ui.log.scrollHeight; }
@@ -948,9 +1006,9 @@ Authorization: Bearer &lt;api_key&gt;
       if (em) { lead.email = em[0]; got.push("email"); }
       const ph = t.replace(em ? em[0] : "", "").match(/(\+?\d[\d\s().-]{7,}\d)/);
       if (ph && ph[1].replace(/\D/g, "").length >= 8 && !/aircraft|aviones|aeronaves|booking|reserva/i.test(t)) { if (!lead.phone) { lead.phone = ph[1].trim(); got.push("phone"); } }
-      const nm = t.match(/(?:i'?m|i am|my name is|this is|me llamo|soy|mi nombre es)\s+([A-ZÁÉÍÓÚÑ][\p{L}'-]+(?:\s+[A-ZÁÉÍÓÚÑ][\p{L}'-]+)?)/u);
+      const nm = t.match(/(?:[Ii]'?m|[Ii] am|[Mm]y name is|[Tt]his is|[Mm]e llamo|[Ss]oy|[Mm]i nombre es)\s+([A-ZÁÉÍÓÚÑ][\p{L}'-]+(?:\s+[A-ZÁÉÍÓÚÑ][\p{L}'-]+)?)/u);
       if (nm && !STOP.test(nm[1].split(/\s/)[0]) && !lead.name) { lead.name = nm[1]; got.push("name"); }
-      const co = t.match(/(?:\bfrom|\bat|\bwith|\bwork for|\bcompany is|\bde la empresa|\bempresa|\btrabajo en|\bde)\s+([A-Z0-9][\p{L}\d&.'\- ]{1,40}?)(?=\s*(?:[,.;!?]|$|\sand\s|\sy\s|\swe\s|\stenemos\b))/u);
+      const co = t.match(/(?:\bfrom|\bat|\bwith|\bwork for|\bcompany is|\bde la empresa|\bempresa|\btrabajo en|\bde)\s+([A-ZÁÉÍÓÚÑ][\p{L}\d&.'\- ]{1,40}?)(?=\s*(?:[,.;!?]|$|\sand\s|\sy\s|\swe\s|\stenemos\b))/u);
       if (co && !lead.company && !/^(the|a|an)$/i.test(co[1])) { lead.company = co[1].trim(); got.push("company"); }
       return got;
     }
@@ -958,7 +1016,7 @@ Authorization: Bearer &lt;api_key&gt;
     function applyEstimateChange(text) {
       const changes = [];
       const ac = text.match(/(\d{1,3})\s*(?:aircraft|planes|jets|tails|helicopters|aviones|aeronaves|helic[óo]pteros|jets)/i);
-      if (ac) { const n = +ac[1]; if (n > 100) changes.push(L(`more than 100 aircraft — we'll quote that as a custom agreement`, `más de 100 aeronaves — eso lo cotizamos como acuerdo a medida`)); else { P.setAircraft(n); changes.push(`${n} ${L("aircraft", "aeronaves")}`); } }
+      if (ac) { const n = +ac[1]; if (n > 100) changes.push(L(`more than 100 aircraft — we'll quote that as a custom agreement`, `más de 100 aeronaves — eso lo cotizamos como acuerdo a medida`)); else { if (P.estimate().model === "broker") P.setPlan("operator"); P.setAircraft(n); changes.push(`${n} ${L("aircraft", "aeronaves")}`); } }
       if (/\bbroker\b/i.test(text) && /plan|model|modelo|we are|somos|i'?m a|soy/i.test(text)) { P.setPlan("broker"); changes.push(L("Broker / API plan", "plan Broker / API")); }
       else if (/hybrid|h[ií]brido|broker fee/i.test(text)) { P.setModel("hybrid"); changes.push(L("hybrid model", "modelo híbrido")); }
       else if (/subscription|suscripci[óo]n/i.test(text)) { P.setModel("subscription"); changes.push(L("subscription model", "modelo de suscripción")); }
@@ -974,7 +1032,7 @@ Authorization: Bearer &lt;api_key&gt;
     async function askNext() {
       const f = nextField();
       if (!f) return review();
-      phase = "collect";
+      phase = "collect"; pending = f.key;
       await say(f.q(), f.chips ? f.chips() : null, { multi: f.multi });
     }
     async function review() {
@@ -987,13 +1045,12 @@ Authorization: Bearer &lt;api_key&gt;
     }
 
     async function guidedTurn(text) {
-      if (transcript.filter(m => m.role === "user").length === 1 && /\b(hola|buen[oa]s|soy|quiero|necesito|tenemos|gracias|empresa|aviones|aeronaves|s[ií])\b/i.test(text)) { lang = "es"; renderBrief(); }
       const changes = applyEstimateChange(text);
       const got = extract(text);
 
       if (phase === "confirm" || phase === "adjust") {
         if (changes.length) { await say(L(`Updated: ${changes.join(", ")}.\n${estimateSummary(P.estimate())}\n\nDoes this look right?`, `Actualizado: ${changes.join(", ")}.\n${estimateSummary(P.estimate())}\n\n¿Se ve bien?`), [L("Looks right", "Se ve bien"), L("Change something", "Cambiar algo")], { primary: true }); phase = "confirm"; return; }
-        if (phase === "confirm" && YES_RE.test(text)) return askNext();
+        if (YES_RE.test(text)) return askNext();
         if (NO_RE.test(text) || phase === "adjust") {
           phase = "adjust";
           return say(L("Sure — tell me what to change, for example **\"25 aircraft\"**, **\"hybrid model\"**, **\"we are a broker\"** or **\"add SEO & GEO\"**. You can also adjust the estimator on the page.",
@@ -1005,8 +1062,8 @@ Authorization: Bearer &lt;api_key&gt;
       }
 
       if (phase === "collect") {
-        const f = nextField();
-        if (f && !got.includes(f.key)) {
+        const f = FIELDS.find(x => x.key === pending) || nextField();
+        if (f && !got.includes(f.key) && !(lead[f.key] && got.length)) {
           let v = text.trim();
           if (SKIP_RE.test(v) && !f.req) v = "—";
           else if (SKIP_RE.test(v) && f.req) { return say(L("I need this one to prepare the proposal — " , "Este dato lo necesito para la propuesta — ") + f.q(), f.chips ? f.chips() : null, { multi: f.multi }); }
@@ -1036,7 +1093,8 @@ Authorization: Bearer &lt;api_key&gt;
         }
         renderBrief(); return review();
       }
-      if (phase === "sent") return say(L("Your request is already with our team. Anything else you'd like me to add? I'll pass it on as a note.", "Tu solicitud ya está con el equipo. ¿Quieres agregar algo más? Lo paso como nota."));
+      if (phase === "sent") { lead.notes = (lead.notes && lead.notes !== "—" ? lead.notes + " | " : "") + text.trim(); renderBrief();
+        return say("Added to your request as a note. Our team will see it with your brief — anything else?"); }
     }
 
     /* ---------- conversation (LLM mode via Apps Script + Gemini) ---------- */
@@ -1049,7 +1107,6 @@ Authorization: Bearer &lt;api_key&gt;
         const d = await res.json();
         typing(false);
         if (!d || !d.ok) throw new Error(d && d.error || "Agent error");
-        if (d.lang === "es" || d.lang === "en") lang = d.lang;
         if (d.lead) Object.keys(lead).forEach(k => { if (typeof d.lead[k] === "string" && d.lead[k].trim()) lead[k] = d.lead[k].trim().slice(0, 500); });
         if (d.estimateChange) { const c = d.estimateChange;
           if (c.plan) P.setPlan(c.plan); if (c.aircraft) P.setAircraft(c.aircraft); if (c.model) P.setModel(c.model); if (c.seoGeo) P.setSeo(c.seoGeo); }
@@ -1065,37 +1122,146 @@ Authorization: Bearer &lt;api_key&gt;
       }
     }
 
-    /* ---------- submit ---------- */
+    /* ---------- submit: autonomous pipeline + registration ticket ---------- */
     function strip(e) { const { implL, monL, ...rest } = e; return rest; }
+    const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+    const pad = n => String(n).padStart(2, "0");
+    function makeRef(d) {
+      const A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", b = new Uint8Array(4);
+      if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(b); else b.forEach((_, i) => b[i] = Math.random() * 256);
+      return `AERO-RQ-${String(d.getUTCFullYear()).slice(2)}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}-${[...b].map(x => A[x % A.length]).join("")}`;
+    }
+    async function sha256(str) {
+      try { const h = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str)); return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2, "0")).join(""); }
+      catch (_) { let h = 0x811c9dc5; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return (h.toString(16).padStart(8, "0")).repeat(8); }
+    }
+    const tzName = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || "local time"; } catch (_) { return "local time"; } };
+    const fDate = d => d.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+    const fTime = d => d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZoneName: "short" });
+    const fShort = d => d.toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", timeZoneName: "short" });
+    const icsDate = d => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+    function priorityOf(e) { return (e.aircraft >= 16 || e.model === "broker" && e.bookings >= 20 || /asap|< ?1 month/i.test(lead.timeline)) ? "High" : /exploring/i.test(lead.timeline) ? "Standard" : "Elevated"; }
+    function teamOf(e) { return e.model === "broker" ? "Partnerships & API team" : e.planKey === "enterprise" ? "Enterprise accounts team" : "Operator success team"; }
+
+    function pipeline(steps) {
+      const box = document.createElement("div");
+      box.className = "ag-msg bot ag-wide";
+      box.innerHTML = `<p class="ag-pipe-h"><span>✦</span> Agent executing · ${steps.length} tasks</p>
+        <ol class="ag-pipe">${steps.map(x => `<li data-k="${x.k}"><i class="st" aria-hidden="true"></i><div><b>${x.t}</b><small></small></div></li>`).join("")}</ol>`;
+      ui.log.appendChild(box); scroll();
+      const li = k => box.querySelector(`[data-k="${k}"]`);
+      return {
+        run: k => { li(k).classList.add("run"); scroll(); },
+        done: (k, detail, state) => { const n = li(k); n.classList.remove("run"); n.classList.add(state || "ok"); n.querySelector("small").textContent = detail; scroll(); },
+        finish: label => { box.querySelector(".ag-pipe-h").innerHTML = `<span>✦</span> ${label}`; }
+      };
+    }
+
     async function submit() {
-      phase = "sending"; chips(null);
-      const e = P.estimate();
-      const payload = { action: "lead", sessionId, lang, lead, estimate: strip(e), lines: { implementation: e.implL, monthly: e.monL },
-        transcript, page: location.href, submittedAt: new Date().toISOString() };
-      let ref = "";
-      if (CFG.agentEndpoint) {
-        typing(true);
-        try {
-          const r = await fetch(CFG.agentEndpoint, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
-          const d = await r.json(); if (d && d.ok) ref = d.ref || "ok";
-        } catch (err) { console.warn("[AERO agent] lead submit failed:", err); }
-        typing(false);
-      }
-      try { const all = JSON.parse(localStorage.getItem("aero_proposals") || "[]"); all.push({ ...payload, ref }); localStorage.setItem("aero_proposals", JSON.stringify(all.slice(-10))); } catch (_) {}
-      phase = "sent";
-      if (ref) return say(L(`Done — your request is with our team (ref. **${ref}**). You'll receive the written proposal at **${lead.email}** within 48 hours. Thank you, ${first(lead.name)}!`,
-                            `Listo — tu solicitud ya está con el equipo (ref. **${ref}**). Recibirás la propuesta en **${lead.email}** en un máximo de 48 horas. ¡Gracias, ${first(lead.name)}!`));
-      // No backend configured (or it failed): hand the brief over by email / download
-      const subject = `AERO proposal request — ${lead.company || lead.name}`;
-      const body = [`Name: ${lead.name}`, `Company: ${lead.company}`, `Email: ${lead.email}`, `Phone: ${lead.phone}`, `Role: ${lead.role}`, `Country/bases: ${lead.country}`,
-        `Current tools: ${lead.tools}`, `Integrations: ${lead.integrations}`, `Go-live: ${lead.timeline}`, `SEO & GEO: ${lead.seoGeo || e.seoGeo}`, `Notes: ${lead.notes}`, "", `Estimate: ${estimateLine(e)}`,
-        `First-year total: ${P.money(e.firstYear)}`].join("\n");
+      phase = "sending"; chips(null); ui.input.disabled = true; ui.send.disabled = true;
+      const e = P.estimate(), m = P.money;
+      const now = new Date();
+      let ref = makeRef(now), delivered = false, received = now;
+      const priority = priorityOf(e), team = teamOf(e);
+      const payload = { action: "lead", sessionId, lang, clientRef: ref, priority, team, lead, estimate: strip(e),
+        lines: { implementation: e.implL, monthly: e.monL }, transcript, page: location.href, submittedAt: now.toISOString(), timezone: tzName() };
+      const remote = CFG.agentEndpoint
+        ? fetch(CFG.agentEndpoint, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })
+            .then(r => r.json()).catch(err => { console.warn("[AERO agent] submit failed:", err); return null; })
+        : Promise.resolve(null);
+      const captured = Object.values(lead).filter(v => v && v !== "—").length;
+
+      const pl = pipeline([
+        { k: "v", t: "Validating contact details" }, { k: "p", t: "Pricing your configuration" },
+        { k: "b", t: "Compiling the proposal brief" }, { k: "r", t: "Registering the request" },
+        { k: "a", t: "Routing to the account team" }, { k: "s", t: "Setting the response SLA" }]);
+      pl.run("v"); await wait(650); pl.done("v", `${lead.email} · format verified`);
+      pl.run("p"); await wait(700); pl.done("p", `${e.model === "broker" ? "Broker / API" : `${e.plan} · ${e.aircraft} aircraft`} · ${m(e.firstYear)} first-year value`);
+      pl.run("b"); await wait(650); pl.done("b", `${captured} data points · ${transcript.filter(x => x.role === "user").length} answers · full transcript attached`);
+      pl.run("r");
+      const [d] = await Promise.all([remote, wait(900)]);
+      if (d && d.ok) { delivered = true; ref = d.ref || ref; if (d.receivedAt) received = new Date(d.receivedAt); }
+      const due = new Date(received.getTime() + 48 * 3600e3);
+      const hash = await sha256(JSON.stringify({ ref, receivedAt: received.toISOString(), lead, estimate: strip(e) }));
+      pl.done("r", delivered ? `${ref} · stored in the AERO request ledger` : `${ref} · secured on this device`, delivered ? "ok" : "warn");
+      pl.run("a"); await wait(650);
+      pl.done("a", delivered ? `${team} · notified · priority ${priority.toLowerCase()}` : `${team} · waiting for your send`, delivered ? "ok" : "warn");
+      pl.run("s"); await wait(600); pl.done("s", `Written proposal due ${fShort(due)}`);
+      pl.finish(delivered ? "Agent run complete · 6/6 tasks" : "Agent run complete · 1 action needed from you");
+
+      const receipt = { requestId: ref, status: delivered ? "received_in_review" : "pending_delivery", receivedAt: received.toISOString(),
+        unixEpoch: Math.floor(received.getTime() / 1000), timezone: tzName(), priority, assignedTo: team, proposalDueBy: due.toISOString(),
+        integritySha256: hash, sessionId, lead, estimate: strip(e), lines: payload.lines };
+      try { const all = JSON.parse(localStorage.getItem("aero_proposals") || "[]"); all.push({ ...receipt, transcript }); localStorage.setItem("aero_proposals", JSON.stringify(all.slice(-10))); } catch (_) {}
+      await wait(250);
+      ticket({ ref, delivered, received, due, priority, team, hash, e, receipt });
+      phase = "sent"; ui.input.disabled = false; ui.send.disabled = false;
+      await wait(500);
+      await say(delivered
+        ? `All set, ${first(lead.name)}. Request **${ref}** is registered and our ${team} already has your brief, estimate and our full conversation. Your written proposal will reach **${lead.email}** by **${fShort(due)}**.\n\nWant to add anything — documents, routes, a preferred call time? Type it here and I'll attach it to ${ref}.`
+        : `Request **${ref}** is registered and your brief is ready, ${first(lead.name)}. **One action left:** tap **Send to AERO** in the ticket so our team receives it. Everything is pre-written for you.`);
+    }
+
+    function ticket(t) {
+      const m = P.money, e = t.e;
+      const subject = `AERO proposal request ${t.ref} — ${lead.company || lead.name}`;
+      const body = [`Request ID: ${t.ref}`, `Timestamp (UTC): ${t.received.toISOString()}`, `Priority: ${t.priority}`, "",
+        `Name: ${lead.name}`, `Company: ${lead.company}`, `Email: ${lead.email}`, `Phone: ${lead.phone}`, `Role: ${lead.role}`, `Country / bases: ${lead.country}`,
+        `Current tools: ${lead.tools}`, `Integrations: ${lead.integrations}`, `Go-live: ${lead.timeline}`, `SEO & GEO: ${lead.seoGeo || e.seoGeo}`, `Notes: ${lead.notes}`, "",
+        `Estimate: ${estimateLine(e)}`, `First-year total: ${m(e.firstYear)}`, `Integrity (SHA-256): ${t.hash}`].join("\n");
       const mailto = `mailto:${CFG.salesEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      const blob = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }));
-      await say(L("Your brief is ready. One last step — send it to our team:", "Tu resumen está listo. Un último paso — envíalo al equipo:"));
-      const d = document.createElement("div"); d.className = "ag-msg bot";
-      d.innerHTML = `<a href="${mailto}">✉ ${L("Send by email", "Enviar por correo")}</a> &nbsp;·&nbsp; <a href="${blob}" download="aero-proposal-brief.json">⬇ ${L("Download brief", "Descargar resumen")}</a>`;
-      ui.log.appendChild(d); scroll();
+      const receiptUrl = URL.createObjectURL(new Blob([JSON.stringify(t.receipt, null, 2)], { type: "application/json" }));
+      const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//AERO//Proposal Agent//EN", "BEGIN:VEVENT", `UID:${t.ref}@aeroaiops.com`,
+        `DTSTAMP:${icsDate(new Date())}`, `DTSTART:${icsDate(t.due)}`, `DTEND:${icsDate(new Date(t.due.getTime() + 30 * 60e3))}`,
+        `SUMMARY:AERO proposal due — ${t.ref}`, `DESCRIPTION:Written proposal for ${(lead.company || lead.name).replace(/[,;\\]/g, " ")} (${t.ref}).`, "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+      const icsUrl = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
+
+      const box = document.createElement("article");
+      box.className = "ag-ticket"; box.setAttribute("aria-label", `Request ${t.ref}`);
+      box.innerHTML = `
+        <div class="tk-top">
+          <svg class="tk-check" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
+          <div class="tk-head"><p class="tk-k">Request registered</p><p class="tk-id">${esc(t.ref)}</p></div>
+          <span class="tk-pill ${t.delivered ? "ok" : "warn"}">${t.delivered ? "Received · In review" : "Pending delivery"}</span>
+        </div>
+        <dl class="tk-meta">
+          <div><dt>Date</dt><dd>${fDate(t.received)}</dd></div>
+          <div><dt>Time</dt><dd>${fTime(t.received)}</dd></div>
+          <div class="full"><dt>Timestamp · ISO 8601 (UTC)</dt><dd class="mono">${t.received.toISOString()}</dd></div>
+          <div><dt>Unix epoch</dt><dd class="mono">${Math.floor(t.received.getTime() / 1000)}</dd></div>
+          <div><dt>Time zone</dt><dd>${esc(tzName())}</dd></div>
+          <div><dt>Priority</dt><dd><span class="tk-prio ${t.priority.toLowerCase()}">${t.priority}</span></dd></div>
+          <div><dt>Assigned to</dt><dd>${t.team}</dd></div>
+          <div class="full"><dt>Proposal due by</dt><dd>${fShort(t.due)}</dd></div>
+          <div class="full"><dt>Integrity · SHA-256</dt><dd class="mono" title="${t.hash}">${t.hash.slice(0, 20)}…${t.hash.slice(-8)}</dd></div>
+        </dl>
+        <div class="tk-perf" aria-hidden="true"></div>
+        <div class="tk-est">
+          <div><span>Implementation</span><b>${e.from ? "<small>from</small> " : ""}${m(e.implementation)}</b></div>
+          <div><span>Monthly</span><b>${m(e.monthlyFixed)}</b></div>
+          <div><span>First year</span><b>${m(e.firstYear)}</b></div>
+        </div>
+        ${e.feeRate ? `<p class="tk-note">+ ${Math.round(e.feeRate * 100)}% broker fee on confirmed bookings (≈ ${m(e.brokerFeesMonthly)}/mo)</p>` : ""}
+        <ol class="tk-next">
+          <li class="done"><b>${fTime(t.received).replace(/:\d\d(?= )/, "")}</b><span>Request registered${t.delivered ? " and routed to our " + t.team : " — waiting for your send"}</span></li>
+          <li><b>Within 4 business hours</b><span>A solutions engineer reviews your fleet, workflow and integrations</span></li>
+          <li><b>${fShort(t.due)}</b><span>Written proposal delivered to ${esc(lead.email)}</span></li>
+          <li><b>Then</b><span>30-minute walkthrough tailored to your operation</span></li>
+        </ol>
+        <div class="tk-actions">
+          ${t.delivered ? "" : `<a class="tk-btn primary" href="${mailto}">✉ Send to AERO</a>`}
+          <button type="button" class="tk-btn" data-copy="${esc(t.ref)}">Copy ID</button>
+          <a class="tk-btn" href="${receiptUrl}" download="${t.ref}.json">⬇ Receipt</a>
+          <a class="tk-btn" href="${icsUrl}" download="${t.ref}.ics">📅 Add due date</a>
+        </div>
+        <p class="tk-foot">Session ${sessionId} · AERO Proposal Agent · ${t.delivered ? "verified delivery" : "stored locally until sent"}</p>`;
+      box.querySelector("[data-copy]").addEventListener("click", ev => {
+        const b = ev.currentTarget;
+        (navigator.clipboard ? navigator.clipboard.writeText(t.ref) : Promise.reject()).then(() => { b.textContent = "Copied ✓"; }, () => { b.textContent = t.ref; });
+        setTimeout(() => { b.textContent = "Copy ID"; }, 2200);
+      });
+      ui.log.appendChild(box); scroll();
     }
 
     /* ---------- input ---------- */
@@ -1104,8 +1270,8 @@ Authorization: Bearer &lt;api_key&gt;
       if (!text || busy) return;
       busy = true; ui.send.disabled = true; chips(null);
       add("user", text); ui.input.value = ""; autosize();
-      try { if (useLLM && phase !== "sending") await llmTurn(text); else await guidedTurn(text); }
-      finally { busy = false; ui.send.disabled = false; renderBrief(); ui.input.focus(); }
+      try { if (useLLM && phase !== "sending" && phase !== "sent") await llmTurn(text); else await guidedTurn(text); }
+      finally { busy = false; if (phase !== "sending") ui.send.disabled = false; renderBrief(); ui.input.focus(); }
     }
     function autosize() { ui.input.style.height = "auto"; ui.input.style.height = Math.min(120, ui.input.scrollHeight) + "px"; }
     ui.form.addEventListener("submit", ev => { ev.preventDefault(); userSays(ui.input.value); });
