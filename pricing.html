@@ -139,6 +139,19 @@
       .pr-seg span { font-size:13px; padding:10px 4px; }
       .pr-form, .pr-sum, .pr-plan { padding:22px 18px; }
     }
+
+    /* ---------- Standalone behaviour (no app.js) ---------- */
+    .pr-rv { opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
+    .pr-rv.pr-in { opacity:1; transform:none; }
+    @media (prefers-reduced-motion: reduce) { .pr-rv { opacity:1; transform:none; transition:none; } }
+    .pr .site-header.pr-scrolled { background:rgba(8,19,33,.88); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--pr-line); }
+    @media (max-width: 900px) {
+      .pr .site-nav.pr-open { display:flex !important; flex-direction:column; align-items:stretch; gap:6px;
+        position:fixed; top:64px; left:16px; right:16px; padding:18px; border-radius:16px;
+        background:rgba(8,19,33,.97); border:1px solid var(--pr-line); z-index:60; }
+      .pr .site-nav.pr-open a { padding:10px 6px; }
+      .pr .site-nav.pr-open .btn { justify-content:center; margin-top:6px; }
+    }
   </style>
 </head>
 <body class="site pr" data-page="pricing" data-root=".">
@@ -166,10 +179,10 @@
     <!-- ===================== HERO ===================== -->
     <section class="pr-hero" aria-labelledby="pr-title">
       <div class="wrap">
-        <p class="eyebrow load-fade"><span class="dot" aria-hidden="true"></span>Pricing · Plans · Services</p>
-        <h1 id="pr-title" class="load-fade d1">Clear pricing, <em>sized to your fleet.</em></h1>
-        <p class="lede load-fade d2">A one-time implementation to get your aircraft, crews and workflows live — then a predictable monthly fee: a platform base plus a per-aircraft rate. No per-user seats, no surprises.</p>
-        <div class="pr-model load-fade d3" aria-label="Pricing model">
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Pricing · Plans · Services</p>
+        <h1 id="pr-title">Clear pricing, <em>sized to your fleet.</em></h1>
+        <p class="lede">A one-time implementation to get your aircraft, crews and workflows live — then a predictable monthly fee: a platform base plus a per-aircraft rate. No per-user seats, no surprises.</p>
+        <div class="pr-model" aria-label="Pricing model">
           <span><b>1×</b> Implementation fee</span>
           <span><b>+</b> Monthly platform base</span>
           <span><b>+</b> Per-aircraft monthly fee</span>
@@ -194,10 +207,10 @@
     <!-- ===================== MODULE MATRIX ===================== -->
     <section class="pr-section" id="modules" aria-labelledby="mod-title">
       <div class="wrap">
-        <p class="eyebrow" data-reveal>Modules</p>
-        <h2 class="pr-h2" id="mod-title" data-reveal data-reveal-delay="1">Twelve modules. <em>What each plan includes.</em></h2>
-        <p class="pr-lede" data-reveal data-reveal-delay="2">Modules not included in Essentials can be added individually. Add-on prices are per month for the whole fleet, plus a one-time setup.</p>
-        <div class="pr-table-wrap" data-reveal>
+        <p class="eyebrow">Modules</p>
+        <h2 class="pr-h2" id="mod-title">Twelve modules. <em>What each plan includes.</em></h2>
+        <p class="pr-lede">Modules not included in Essentials can be added individually. Add-on prices are per month for the whole fleet, plus a one-time setup.</p>
+        <div class="pr-table-wrap">
           <table class="pr-table" id="pr-matrix">
             <thead><tr><th scope="col">Module</th><th scope="col">Essentials</th><th scope="col">Operator</th><th scope="col">Enterprise</th></tr></thead>
             <tbody><!-- rendered by script --></tbody>
@@ -209,9 +222,9 @@
     <!-- ===================== ADD-ONS & SERVICES ===================== -->
     <section class="pr-section" id="services" aria-labelledby="svc-title">
       <div class="wrap">
-        <p class="eyebrow" data-reveal>Add-ons &amp; professional services</p>
-        <h2 class="pr-h2" id="svc-title" data-reveal data-reveal-delay="1">Extend the platform. <em>We do the heavy lifting.</em></h2>
-        <p class="pr-lede" data-reveal data-reveal-delay="2">Available on every plan. Each service shows its one-time cost and, where it applies, its monthly fee.</p>
+        <p class="eyebrow">Add-ons &amp; professional services</p>
+        <h2 class="pr-h2" id="svc-title">Extend the platform. <em>We do the heavy lifting.</em></h2>
+        <p class="pr-lede">Available on every plan. Each service shows its one-time cost and, where it applies, its monthly fee.</p>
         <div class="pr-grid2" id="pr-services"><!-- rendered by script --></div>
       </div>
     </section>
@@ -219,9 +232,9 @@
     <!-- ===================== ESTIMATOR ===================== -->
     <section class="pr-section" id="estimate" aria-labelledby="est-title">
       <div class="wrap">
-        <p class="eyebrow" data-reveal>Estimator</p>
-        <h2 class="pr-h2" id="est-title" data-reveal data-reveal-delay="1">Build your <em>estimate.</em></h2>
-        <p class="pr-lede" data-reveal data-reveal-delay="2">Pick a plan, set your fleet size and add what you need. The final proposal is confirmed after a discovery call.</p>
+        <p class="eyebrow">Estimator</p>
+        <h2 class="pr-h2" id="est-title">Build your <em>estimate.</em></h2>
+        <p class="pr-lede">Pick a plan, set your fleet size and add what you need. The final proposal is confirmed after a discovery call.</p>
 
         <div class="pr-est">
           <form class="pr-form" id="pr-form" onsubmit="return false">
@@ -277,14 +290,14 @@
     <!-- ===================== IMPLEMENTATION PROCESS ===================== -->
     <section class="pr-section" id="implementation" aria-labelledby="impl-title">
       <div class="wrap">
-        <p class="eyebrow" data-reveal>Implementation</p>
-        <h2 class="pr-h2" id="impl-title" data-reveal data-reveal-delay="1">What the implementation fee <em>pays for.</em></h2>
-        <p class="pr-lede" data-reveal data-reveal-delay="2">Typical go-live: 2–3 weeks on Essentials, 4–6 weeks on Operator, 8–12 weeks on Enterprise.</p>
+        <p class="eyebrow">Implementation</p>
+        <h2 class="pr-h2" id="impl-title">What the implementation fee <em>pays for.</em></h2>
+        <p class="pr-lede">Typical go-live: 2–3 weeks on Essentials, 4–6 weeks on Operator, 8–12 weeks on Enterprise.</p>
         <ol class="pr-steps">
-          <li data-reveal><b>Discovery</b><p>Workshop on your fleet, bases, crews, charter flow and owner reporting.</p><small>Week 1</small></li>
-          <li data-reveal data-reveal-delay="1"><b>Configuration</b><p>Workspace, aircraft profiles, rate cards, cost-floor rules, roles and approval gates.</p><small>Weeks 1–3</small></li>
-          <li data-reveal data-reveal-delay="2"><b>Data load</b><p>Aircraft, crew qualifications, maintenance due items and open trips imported from your files.</p><small>Weeks 2–4</small></li>
-          <li data-reveal data-reveal-delay="3"><b>Training &amp; go-live</b><p>Role-based remote training, then 30 days of hypercare support after launch.</p><small>Go-live + 30 days</small></li>
+          <li><b>Discovery</b><p>Workshop on your fleet, bases, crews, charter flow and owner reporting.</p><small>Week 1</small></li>
+          <li><b>Configuration</b><p>Workspace, aircraft profiles, rate cards, cost-floor rules, roles and approval gates.</p><small>Weeks 1–3</small></li>
+          <li><b>Data load</b><p>Aircraft, crew qualifications, maintenance due items and open trips imported from your files.</p><small>Weeks 2–4</small></li>
+          <li><b>Training &amp; go-live</b><p>Role-based remote training, then 30 days of hypercare support after launch.</p><small>Go-live + 30 days</small></li>
         </ol>
       </div>
     </section>
@@ -292,8 +305,8 @@
     <!-- ===================== FAQ ===================== -->
     <section class="pr-section" id="faq" aria-labelledby="faq-title">
       <div class="wrap">
-        <p class="eyebrow" data-reveal>FAQ</p>
-        <h2 class="pr-h2" id="faq-title" data-reveal data-reveal-delay="1">Questions, <em>answered.</em></h2>
+        <p class="eyebrow">FAQ</p>
+        <h2 class="pr-h2" id="faq-title">Questions, <em>answered.</em></h2>
         <div class="pr-faq">
           <details><summary>How is the monthly fee calculated?</summary><p>A fixed platform base for your plan plus a rate for each aircraft under management. Helicopters and jets are billed the same. Users are unlimited on every plan.</p></details>
           <details><summary>How is the implementation paid?</summary><p>50% when the agreement is signed and 50% at go-live. Monthly billing starts at go-live, not at signature.</p></details>
@@ -308,7 +321,7 @@
     <!-- ===================== CTA ===================== -->
     <section aria-labelledby="cta-title">
       <div class="wrap">
-        <div class="pr-cta" data-reveal>
+        <div class="pr-cta">
           <p class="eyebrow">Next step</p>
           <h2 class="pr-h2" id="cta-title">Get a proposal <em>for your fleet.</em></h2>
           <p class="pr-lede" style="margin:0 auto">30-minute call. We map your aircraft, bases and workflow and send a written proposal within 48 hours.</p>
@@ -331,7 +344,6 @@
     </div>
   </footer>
 
-  <script type="module" src="assets/js/app.js"></script>
   <script>
   (function () {
     /* ================= PRICE BOOK (edit here) ================= */
@@ -421,7 +433,7 @@
     /* ================= SERVICES CARDS ================= */
     function renderServices() {
       $("#pr-services").innerHTML = Object.values(SERVICES).map(s => `
-        <div class="pr-card" data-reveal>
+        <div class="pr-card">
           <h4>${s.name}</h4><p>${s.desc}</p>
           ${s.setup ? `<div class="pr-pp"><span>One-time</span><b>${money(s.setup)}${s.unit ? " " + s.unit : ""}</b></div>` : ""}
           ${s.monthly ? `<div class="pr-pp" style="${s.setup ? "border-top:0;padding-top:6px" : ""}"><span>Monthly</span><b>${money(s.monthly)}/mo${s.unit === "each" ? " each" : ""}</b></div>` : ""}
@@ -526,6 +538,44 @@
     });
 
     renderPlans(); renderMatrix(); renderServices(); refresh();
+  })();
+  </script>
+  <script>
+  (function () {
+    // Header: fondo al hacer scroll
+    var header = document.querySelector("[data-header]");
+    function onScroll() { if (header) header.classList.toggle("pr-scrolled", window.scrollY > 24); }
+    window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+    // Menú móvil
+    var toggle = document.getElementById("nav-toggle"), nav = document.getElementById("site-nav");
+    if (toggle && nav) {
+      toggle.addEventListener("click", function () {
+        var open = toggle.getAttribute("aria-expanded") !== "true";
+        toggle.setAttribute("aria-expanded", String(open));
+        toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        nav.classList.toggle("pr-open", open);
+      });
+      nav.addEventListener("click", function (e) {
+        if (e.target.closest("a")) { toggle.setAttribute("aria-expanded", "false"); nav.classList.remove("pr-open"); }
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && nav.classList.contains("pr-open")) { toggle.click(); toggle.focus(); }
+      });
+    }
+
+    // Reveal al entrar en pantalla
+    var targets = document.querySelectorAll(".pr-hero .wrap > *, .pr-section .eyebrow, .pr-h2, .pr-lede, .pr-plan, .pr-table-wrap, .pr-card, .pr-steps li, .pr-cta");
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("pr-in"); io.unobserve(en.target); } });
+      }, { rootMargin: "0px 0px -8% 0px" });
+      targets.forEach(function (el) { el.classList.add("pr-rv"); io.observe(el); });
+      // Las tarjetas se re-renderizan (toggle mensual/anual): mostrarlas siempre
+      new MutationObserver(function () {
+        document.querySelectorAll(".pr-plan, .pr-card").forEach(function (el) { el.classList.add("pr-rv", "pr-in"); });
+      }).observe(document.getElementById("pr-plans"), { childList: true });
+    }
   })();
   </script>
 </body>
