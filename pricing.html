@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AERO — Pricing &amp; Plans</title>
+  <meta name="description" content="AERO pricing: one-time implementation plus a monthly platform fee per aircraft. Plans for owners, Part 135 operators and enterprise fleets, with add-on modules and professional services." />
+  <meta name="theme-color" content="#081321" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/motion.css" />
+  <style>
+    /* ---------- Pricing page (self-contained; prefix pr-) ---------- */
+    .pr { --pr-navy:#081321; --pr-ink:#0d1b2e; --pr-card:rgba(244,241,234,.035); --pr-line:rgba(244,241,234,.12);
+          --pr-gold:#C9A76A; --pr-ivory:#F4F1EA; --pr-mute:#C8CFD8; --pr-dim:rgba(200,207,216,.7); }
+    .pr-hero { padding: 168px 0 56px; text-align:center; }
+    .pr-hero h1 { font-family:"Cormorant Garamond",serif; font-weight:300; font-size:clamp(40px,6vw,76px); line-height:1.02; margin:14px 0 18px; color:var(--pr-ivory); }
+    .pr-hero h1 em { color:var(--pr-gold); font-style:italic; }
+    .pr-hero p.lede { max-width:62ch; margin:0 auto; color:var(--pr-mute); }
+    .pr-model { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:32px; }
+    .pr-model span { border:1px solid var(--pr-line); border-radius:999px; padding:8px 16px; font-size:13px; color:var(--pr-mute); }
+    .pr-model b { color:var(--pr-ivory); font-weight:500; }
+
+    .pr-toggle { display:inline-flex; border:1px solid var(--pr-line); border-radius:999px; padding:4px; margin:36px auto 0; }
+    .pr-toggle button { background:none; border:0; color:var(--pr-mute); font:500 13px "DM Sans",sans-serif; padding:9px 18px; border-radius:999px; cursor:pointer; }
+    .pr-toggle button[aria-pressed="true"] { background:var(--pr-gold); color:var(--pr-navy); }
+    .pr-toggle small { font-size:11px; opacity:.8; margin-left:4px; }
+
+    .pr-plans { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; margin-top:40px; }
+    .pr-plan { position:relative; background:var(--pr-card); border:1px solid var(--pr-line); border-radius:18px; padding:32px 28px; display:flex; flex-direction:column; }
+    .pr-plan.featured { border-color:var(--pr-gold); background:linear-gradient(180deg,rgba(201,167,106,.09),rgba(244,241,234,.02)); }
+    .pr-badge { position:absolute; top:-12px; left:28px; background:var(--pr-gold); color:var(--pr-navy); font:600 11px "DM Sans",sans-serif; letter-spacing:.12em; text-transform:uppercase; padding:5px 10px; border-radius:999px; }
+    .pr-plan h3 { font-family:"Cormorant Garamond",serif; font-weight:400; font-size:32px; margin:6px 0 6px; color:var(--pr-ivory); }
+    .pr-plan .for { color:var(--pr-mute); font-size:14px; min-height:42px; }
+    .pr-fee { margin:22px 0 4px; display:flex; align-items:baseline; gap:6px; flex-wrap:wrap; }
+    .pr-fee b { font-family:"Cormorant Garamond",serif; font-weight:400; font-size:46px; color:var(--pr-ivory); line-height:1; }
+    .pr-fee span { color:var(--pr-mute); font-size:13px; }
+    .pr-sub { font-size:13px; color:var(--pr-dim); margin:0; }
+    .pr-impl { margin:18px 0 22px; padding:14px 16px; border:1px dashed var(--pr-line); border-radius:12px; display:flex; justify-content:space-between; gap:12px; align-items:center; }
+    .pr-impl span { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--pr-dim); }
+    .pr-impl b { color:var(--pr-gold); font-weight:500; font-size:18px; }
+    .pr-plan ul { list-style:none; padding:0; margin:0 0 26px; display:grid; gap:10px; font-size:14px; color:var(--pr-mute); }
+    .pr-plan li { display:flex; gap:10px; align-items:flex-start; }
+    .pr-plan li svg { flex:none; margin-top:3px; color:var(--pr-gold); }
+    .pr-plan .btn { margin-top:auto; justify-content:center; }
+
+    .pr-section { padding:96px 0 0; }
+    .pr-h2 { font-family:"Cormorant Garamond",serif; font-weight:300; font-size:clamp(32px,4vw,52px); color:var(--pr-ivory); margin:10px 0 12px; }
+    .pr-h2 em { color:var(--pr-gold); font-style:italic; }
+    .pr-lede { color:var(--pr-mute); max-width:64ch; margin:0 0 32px; }
+
+    .pr-table-wrap { overflow-x:auto; border:1px solid var(--pr-line); border-radius:16px; }
+    .pr-table { width:100%; border-collapse:collapse; min-width:720px; font-size:14px; }
+    .pr-table th, .pr-table td { padding:14px 18px; border-bottom:1px solid var(--pr-line); text-align:center; color:var(--pr-mute); }
+    .pr-table th:first-child, .pr-table td:first-child { text-align:left; }
+    .pr-table thead th { color:var(--pr-ivory); font-weight:500; background:rgba(244,241,234,.03); position:sticky; top:0; }
+    .pr-table td:first-child b { color:var(--pr-ivory); font-weight:500; display:block; }
+    .pr-table td:first-child small { color:var(--pr-dim); }
+    .pr-table tr:last-child td { border-bottom:0; }
+    .pr-yes { color:var(--pr-gold) !important; font-size:16px; }
+    .pr-add { font-size:12px; color:var(--pr-mute); white-space:nowrap; }
+    .pr-no { color:rgba(200,207,216,.35) !important; }
+
+    .pr-grid2 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+    .pr-card { background:var(--pr-card); border:1px solid var(--pr-line); border-radius:14px; padding:22px; }
+    .pr-card h4 { margin:0 0 6px; font:500 16px "DM Sans",sans-serif; color:var(--pr-ivory); }
+    .pr-card p { margin:0 0 14px; font-size:13px; color:var(--pr-mute); }
+    .pr-card .pr-pp { display:flex; justify-content:space-between; gap:10px; font-size:13px; border-top:1px solid var(--pr-line); padding-top:12px; }
+    .pr-card .pr-pp span { color:var(--pr-dim); }
+    .pr-card .pr-pp b { color:var(--pr-gold); font-weight:500; text-align:right; }
+
+    /* Estimator */
+    .pr-est { display:grid; grid-template-columns:1.3fr 1fr; gap:24px; align-items:start; }
+    .pr-form { background:var(--pr-card); border:1px solid var(--pr-line); border-radius:18px; padding:28px; display:grid; gap:24px; }
+    .pr-form fieldset { border:0; padding:0; margin:0; }
+    .pr-form legend { font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--pr-dim); margin-bottom:10px; }
+    .pr-seg { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .pr-seg label { cursor:pointer; }
+    .pr-seg input { position:absolute; opacity:0; pointer-events:none; }
+    .pr-seg span { display:block; text-align:center; border:1px solid var(--pr-line); border-radius:10px; padding:11px 8px; font-size:14px; color:var(--pr-mute); }
+    .pr-seg input:checked + span { border-color:var(--pr-gold); color:var(--pr-ivory); background:rgba(201,167,106,.1); }
+    .pr-seg input:focus-visible + span { outline:2px solid var(--pr-gold); outline-offset:2px; }
+    .pr-range { display:flex; align-items:center; gap:16px; }
+    .pr-range input { flex:1; accent-color:var(--pr-gold); }
+    .pr-range output { font:400 30px "Cormorant Garamond",serif; color:var(--pr-ivory); min-width:3ch; text-align:right; }
+    .pr-hint { font-size:12px; color:var(--pr-dim); margin:6px 0 0; }
+    .pr-checks { display:grid; gap:8px; }
+    .pr-check { display:flex; align-items:center; gap:12px; padding:11px 14px; border:1px solid var(--pr-line); border-radius:10px; cursor:pointer; font-size:14px; color:var(--pr-mute); }
+    .pr-check input { accent-color:var(--pr-gold); width:16px; height:16px; flex:none; }
+    .pr-check em { margin-left:auto; font-style:normal; font-size:12px; color:var(--pr-dim); text-align:right; }
+    .pr-check.is-incl { opacity:.55; cursor:default; }
+    .pr-stepper { display:inline-flex; align-items:center; border:1px solid var(--pr-line); border-radius:10px; }
+    .pr-stepper button { background:none; border:0; color:var(--pr-ivory); width:38px; height:38px; font-size:18px; cursor:pointer; }
+    .pr-stepper output { min-width:2.5ch; text-align:center; color:var(--pr-ivory); }
+
+    .pr-sum { position:sticky; top:96px; background:linear-gradient(180deg,rgba(201,167,106,.1),rgba(244,241,234,.02)); border:1px solid var(--pr-gold); border-radius:18px; padding:28px; }
+    .pr-sum h3 { margin:0 0 18px; font:500 13px "DM Sans",sans-serif; letter-spacing:.12em; text-transform:uppercase; color:var(--pr-gold); }
+    .pr-big { display:grid; gap:18px; margin-bottom:20px; }
+    .pr-big div span { display:block; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--pr-dim); }
+    .pr-big div b { font:400 40px "Cormorant Garamond",serif; color:var(--pr-ivory); line-height:1.1; }
+    .pr-big div small { color:var(--pr-mute); font-size:12px; }
+    .pr-lines { list-style:none; padding:14px 0 0; margin:0 0 20px; border-top:1px solid var(--pr-line); display:grid; gap:8px; font-size:13px; }
+    .pr-lines li { display:flex; justify-content:space-between; gap:12px; color:var(--pr-mute); }
+    .pr-lines li b { color:var(--pr-ivory); font-weight:500; white-space:nowrap; }
+    .pr-lines li.h { color:var(--pr-dim); font-size:11px; letter-spacing:.12em; text-transform:uppercase; padding-top:6px; }
+    .pr-sum .btn { width:100%; justify-content:center; }
+    .pr-sum .pr-hint { margin-top:12px; }
+
+    .pr-steps { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; counter-reset:s; }
+    .pr-steps li { list-style:none; background:var(--pr-card); border:1px solid var(--pr-line); border-radius:14px; padding:22px; }
+    .pr-steps li::before { counter-increment:s; content:"0" counter(s); display:block; font:400 28px "Cormorant Garamond",serif; color:var(--pr-gold); margin-bottom:8px; }
+    .pr-steps b { display:block; color:var(--pr-ivory); font-weight:500; margin-bottom:4px; }
+    .pr-steps p { margin:0; font-size:13px; color:var(--pr-mute); }
+    .pr-steps small { display:block; margin-top:10px; font-size:12px; color:var(--pr-dim); }
+
+    .pr-faq { display:grid; gap:10px; max-width:860px; }
+    .pr-faq details { border:1px solid var(--pr-line); border-radius:12px; padding:0 20px; background:var(--pr-card); }
+    .pr-faq summary { cursor:pointer; padding:18px 0; color:var(--pr-ivory); font-weight:500; list-style:none; display:flex; justify-content:space-between; gap:16px; }
+    .pr-faq summary::-webkit-details-marker { display:none; }
+    .pr-faq summary::after { content:"+"; color:var(--pr-gold); font-size:20px; line-height:1; }
+    .pr-faq details[open] summary::after { content:"–"; }
+    .pr-faq details p { margin:0 0 18px; color:var(--pr-mute); font-size:14px; }
+
+    .pr-cta { margin:96px 0 0; text-align:center; border:1px solid var(--pr-line); border-radius:22px; padding:56px 24px; background:radial-gradient(ellipse at top,rgba(201,167,106,.14),transparent 70%); }
+    .pr-cta .row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:24px; }
+
+    @media (max-width: 980px) {
+      .pr-plans, .pr-grid2 { grid-template-columns:1fr; }
+      .pr-est { grid-template-columns:1fr; }
+      .pr-sum { position:static; }
+      .pr-steps { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width: 560px) {
+      .pr-hero { padding-top:132px; }
+      .pr-steps { grid-template-columns:1fr; }
+      .pr-seg span { font-size:13px; padding:10px 4px; }
+      .pr-form, .pr-sum, .pr-plan { padding:22px 18px; }
+    }
+  </style>
+</head>
+<body class="site pr" data-page="pricing" data-root=".">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="site-header" data-header>
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="AERO home"><span aria-hidden="true">✦</span>AERO</a>
+      <button class="btn btn-ghost btn-icon nav-toggle" id="nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a href="index.html#product" class="accent-line">Product</a>
+        <a href="index.html#solutions" class="accent-line">Solutions</a>
+        <a href="#plans" class="accent-line" aria-current="page">Pricing</a>
+        <a href="aeroflow.html" class="accent-line">AeroFlow</a>
+        <a href="platform/dashboard.html" class="accent-line">Open Demo Workspace</a>
+        <a href="index.html#demo" class="btn btn-primary">Request Demo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ===================== HERO ===================== -->
+    <section class="pr-hero" aria-labelledby="pr-title">
+      <div class="wrap">
+        <p class="eyebrow load-fade"><span class="dot" aria-hidden="true"></span>Pricing · Plans · Services</p>
+        <h1 id="pr-title" class="load-fade d1">Clear pricing, <em>sized to your fleet.</em></h1>
+        <p class="lede load-fade d2">A one-time implementation to get your aircraft, crews and workflows live — then a predictable monthly fee: a platform base plus a per-aircraft rate. No per-user seats, no surprises.</p>
+        <div class="pr-model load-fade d3" aria-label="Pricing model">
+          <span><b>1×</b> Implementation fee</span>
+          <span><b>+</b> Monthly platform base</span>
+          <span><b>+</b> Per-aircraft monthly fee</span>
+          <span><b>∞</b> Unlimited users</span>
+        </div>
+        <div class="pr-toggle" role="group" aria-label="Billing period">
+          <button type="button" data-billing="monthly" aria-pressed="true">Monthly</button>
+          <button type="button" data-billing="annual" aria-pressed="false">Annual <small>· 2 months free</small></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PLANS ===================== -->
+    <section id="plans" aria-labelledby="plans-title">
+      <div class="wrap">
+        <h2 id="plans-title" class="sr-only">Plans</h2>
+        <div class="pr-plans" id="pr-plans"><!-- rendered by script --></div>
+        <p class="pr-hint" style="text-align:center;margin-top:18px">Prices in USD, excluding taxes (VAT/IVA) and third-party fees (payment processing, data providers). Minimum term 12 months.</p>
+      </div>
+    </section>
+
+    <!-- ===================== MODULE MATRIX ===================== -->
+    <section class="pr-section" id="modules" aria-labelledby="mod-title">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Modules</p>
+        <h2 class="pr-h2" id="mod-title" data-reveal data-reveal-delay="1">Twelve modules. <em>What each plan includes.</em></h2>
+        <p class="pr-lede" data-reveal data-reveal-delay="2">Modules not included in Essentials can be added individually. Add-on prices are per month for the whole fleet, plus a one-time setup.</p>
+        <div class="pr-table-wrap" data-reveal>
+          <table class="pr-table" id="pr-matrix">
+            <thead><tr><th scope="col">Module</th><th scope="col">Essentials</th><th scope="col">Operator</th><th scope="col">Enterprise</th></tr></thead>
+            <tbody><!-- rendered by script --></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ADD-ONS & SERVICES ===================== -->
+    <section class="pr-section" id="services" aria-labelledby="svc-title">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Add-ons &amp; professional services</p>
+        <h2 class="pr-h2" id="svc-title" data-reveal data-reveal-delay="1">Extend the platform. <em>We do the heavy lifting.</em></h2>
+        <p class="pr-lede" data-reveal data-reveal-delay="2">Available on every plan. Each service shows its one-time cost and, where it applies, its monthly fee.</p>
+        <div class="pr-grid2" id="pr-services"><!-- rendered by script --></div>
+      </div>
+    </section>
+
+    <!-- ===================== ESTIMATOR ===================== -->
+    <section class="pr-section" id="estimate" aria-labelledby="est-title">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Estimator</p>
+        <h2 class="pr-h2" id="est-title" data-reveal data-reveal-delay="1">Build your <em>estimate.</em></h2>
+        <p class="pr-lede" data-reveal data-reveal-delay="2">Pick a plan, set your fleet size and add what you need. The final proposal is confirmed after a discovery call.</p>
+
+        <div class="pr-est">
+          <form class="pr-form" id="pr-form" onsubmit="return false">
+            <fieldset>
+              <legend>Plan</legend>
+              <div class="pr-seg" id="est-plan"><!-- rendered --></div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Aircraft under management</legend>
+              <div class="pr-range">
+                <input type="range" id="est-ac" min="1" max="40" value="5" aria-label="Number of aircraft" />
+                <output id="est-ac-out" for="est-ac">5</output>
+              </div>
+              <p class="pr-hint" id="est-ac-hint"></p>
+            </fieldset>
+
+            <fieldset>
+              <legend>Add-on modules</legend>
+              <div class="pr-checks" id="est-addons"><!-- rendered --></div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Services</legend>
+              <div class="pr-checks" id="est-services"><!-- rendered --></div>
+              <div class="pr-check" style="cursor:default;margin-top:8px">
+                <span>Third-party integrations</span>
+                <div class="pr-stepper" role="group" aria-label="Number of integrations" style="margin-left:auto">
+                  <button type="button" data-int="-1" aria-label="Fewer integrations">−</button>
+                  <output id="est-int-out" aria-live="polite">0</output>
+                  <button type="button" data-int="1" aria-label="More integrations">+</button>
+                </div>
+              </div>
+              <p class="pr-hint" id="est-int-hint"></p>
+            </fieldset>
+          </form>
+
+          <aside class="pr-sum" aria-labelledby="sum-title" aria-live="polite">
+            <h3 id="sum-title">Your estimate</h3>
+            <div class="pr-big">
+              <div><span>Implementation · one-time</span><b id="sum-impl">—</b></div>
+              <div><span id="sum-fee-label">Monthly fee</span><b id="sum-fee">—</b><small id="sum-fee-note"></small></div>
+              <div><span>First-year total</span><b id="sum-year" style="font-size:30px">—</b></div>
+            </div>
+            <ul class="pr-lines" id="sum-lines"></ul>
+            <a class="btn btn-primary" id="sum-cta" href="index.html#demo">Request this proposal</a>
+            <p class="pr-hint">Indicative estimate in USD, excluding taxes. Not a binding quote.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== IMPLEMENTATION PROCESS ===================== -->
+    <section class="pr-section" id="implementation" aria-labelledby="impl-title">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Implementation</p>
+        <h2 class="pr-h2" id="impl-title" data-reveal data-reveal-delay="1">What the implementation fee <em>pays for.</em></h2>
+        <p class="pr-lede" data-reveal data-reveal-delay="2">Typical go-live: 2–3 weeks on Essentials, 4–6 weeks on Operator, 8–12 weeks on Enterprise.</p>
+        <ol class="pr-steps">
+          <li data-reveal><b>Discovery</b><p>Workshop on your fleet, bases, crews, charter flow and owner reporting.</p><small>Week 1</small></li>
+          <li data-reveal data-reveal-delay="1"><b>Configuration</b><p>Workspace, aircraft profiles, rate cards, cost-floor rules, roles and approval gates.</p><small>Weeks 1–3</small></li>
+          <li data-reveal data-reveal-delay="2"><b>Data load</b><p>Aircraft, crew qualifications, maintenance due items and open trips imported from your files.</p><small>Weeks 2–4</small></li>
+          <li data-reveal data-reveal-delay="3"><b>Training &amp; go-live</b><p>Role-based remote training, then 30 days of hypercare support after launch.</p><small>Go-live + 30 days</small></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===================== FAQ ===================== -->
+    <section class="pr-section" id="faq" aria-labelledby="faq-title">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>FAQ</p>
+        <h2 class="pr-h2" id="faq-title" data-reveal data-reveal-delay="1">Questions, <em>answered.</em></h2>
+        <div class="pr-faq">
+          <details><summary>How is the monthly fee calculated?</summary><p>A fixed platform base for your plan plus a rate for each aircraft under management. Helicopters and jets are billed the same. Users are unlimited on every plan.</p></details>
+          <details><summary>How is the implementation paid?</summary><p>50% when the agreement is signed and 50% at go-live. Monthly billing starts at go-live, not at signature.</p></details>
+          <details><summary>What happens if I add or remove aircraft?</summary><p>Aircraft can be added at any time and are prorated in the next invoice. Reductions apply at the next renewal. Adding aircraft beyond your plan's range moves you to the next plan.</p></details>
+          <details><summary>Is there a discount for annual billing?</summary><p>Yes — paying the monthly fee annually in advance gives you two months free (about 17% off). The implementation fee is not affected.</p></details>
+          <details><summary>Can I move from Essentials to Operator later?</summary><p>Yes. Upgrades only charge the difference in implementation, and any add-on modules you already pay for are absorbed into the new plan.</p></details>
+          <details><summary>Are integrations included?</summary><p>Enterprise includes up to three authorized integrations. On other plans each integration (scheduling, flight tracking, maintenance tracking, payments or CRM) is quoted as a one-time build plus a small monthly maintenance fee.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CTA ===================== -->
+    <section aria-labelledby="cta-title">
+      <div class="wrap">
+        <div class="pr-cta" data-reveal>
+          <p class="eyebrow">Next step</p>
+          <h2 class="pr-h2" id="cta-title">Get a proposal <em>for your fleet.</em></h2>
+          <p class="pr-lede" style="margin:0 auto">30-minute call. We map your aircraft, bases and workflow and send a written proposal within 48 hours.</p>
+          <div class="row"><a class="btn btn-primary" href="index.html#demo">Request a demo</a><a class="btn" href="platform/dashboard.html">Explore the workspace</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div><a class="brand" href="index.html"><span aria-hidden="true">✦</span>AERO</a><p class="muted" style="margin-top:14px;max-width:34ch;font-size:14px">One Platform. Every Aircraft. Every Opportunity.</p></div>
+        <div><h4>Operate</h4><ul><li><a href="platform/dashboard.html">Command Center</a></li><li><a href="platform/fleet.html">Fleet</a></li><li><a href="platform/operations.html">Operations</a></li><li><a href="platform/crew.html">Crew</a></li><li><a href="platform/maintenance.html">Maintenance</a></li></ul></div>
+        <div><h4>Revenue &amp; insight</h4><ul><li><a href="platform/empty-legs.html">Empty-Leg Engine</a></li><li><a href="platform/charter-crm.html">Charter CRM</a></li><li><a href="platform/marketplace.html">Marketplace</a></li><li><a href="platform/finance.html">Finance</a></li><li><a href="platform/analytics.html">Analytics</a></li><li><a href="platform/ai-copilot.html">AI Copilot</a></li></ul></div>
+        <div><h4>Company</h4><ul><li><a href="#plans">Pricing</a></li><li><a href="aeroflow.html">AeroFlow — empty legs</a></li><li><a href="platform/owner-portal.html">Owner Portal</a></li><li><a href="portal/passenger.html">Passenger Portal</a></li><li><a href="index.html#demo">Request Demo</a></li></ul></div>
+      </div>
+      <p class="disclaimer">Prices shown are indicative, in USD, and exclude taxes and third-party fees. Final pricing is set in a written proposal. AERO is a software prototype; it is not an FAA-approved dispatch system, maintenance release, or regulatory compliance authority.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/app.js"></script>
+  <script>
+  (function () {
+    /* ================= PRICE BOOK (edit here) ================= */
+    const PLANS = {
+      essentials: { name: "Essentials", tag: "Owner & Part 91", for: "Owners and flight departments with 1–3 aircraft.",
+        base: 490, perAc: 390, impl: 4500, min: 1, max: 3, go: "2–3 weeks",
+        bullets: ["7 core modules: Command Center, Fleet, Operations, Crew, Maintenance, Owner Portal, Analytics", "Remote implementation & data load", "2 role-based training sessions", "Email support · next business day"] },
+      operator: { name: "Operator", tag: "Part 135 charter", for: "Charter operators and managed fleets with 4–15 aircraft.", featured: true,
+        base: 1490, perAc: 590, impl: 14500, min: 4, max: 15, go: "4–6 weeks",
+        bullets: ["All 12 modules incl. Empty-Leg Engine, Marketplace, Charter CRM, Finance & AI Copilot", "Rate cards, cost-floor rules & approval gates configured", "4 training sessions + 30-day hypercare", "Priority support · 8×5 with 4 h response"] },
+      enterprise: { name: "Enterprise", tag: "Fleets & networks", for: "Large fleets, multi-base operators and broker networks (16+ aircraft).",
+        base: 3900, perAc: 450, impl: 38000, min: 16, max: 40, go: "8–12 weeks", from: true,
+        bullets: ["Everything in Operator", "Up to 3 authorized integrations included", "SSO, tenancy isolation & audit exports", "24/7 support SLA + dedicated success manager"] }
+    };
+
+    // [key, name, short description, essentials, operator, enterprise]  (true = included, "addon" = available as add-on)
+    const MODULES = [
+      ["command", "Command Center", "Availability, flights, alerts", true, true, true],
+      ["fleet", "Fleet", "Directory, status, utilization", true, true, true],
+      ["ops", "Operations", "Scheduling & conflict detection", true, true, true],
+      ["crew", "Crew", "Roster, qualifications, duty inputs", true, true, true],
+      ["mx", "Maintenance", "Due items & grounding indicators", true, true, true],
+      ["owner", "Owner Portal", "Statements & approval inbox", true, true, true],
+      ["analytics", "Analytics", "Utilization, profitability, CSV", true, true, true],
+      ["emptylegs", "Empty-Leg Engine + Marketplace", "Detect, price & publish repositioning", "addon", true, true],
+      ["crm", "Charter CRM", "Pipeline & quote builder", "addon", true, true],
+      ["finance", "Finance", "Aircraft P&L, invoices, commissions", "addon", true, true],
+      ["copilot", "AI Copilot", "Evidence-based answers & drafts", "addon", true, true]
+    ];
+
+    const ADDONS = {
+      emptylegs: { name: "Empty-Leg Engine + Marketplace", monthly: 790, setup: 3500 },
+      crm:       { name: "Charter CRM", monthly: 490, setup: 2500 },
+      finance:   { name: "Finance", monthly: 390, setup: 2000 },
+      copilot:   { name: "AI Copilot", monthly: 590, setup: 3000 }
+    };
+
+    const SERVICES = {
+      aeroflow: { name: "AeroFlow booking portal", desc: "White-label passenger site to search and request empty legs and charter, under your brand and domain.", setup: 7500, monthly: 990, est: true },
+      migration: { name: "Data migration", desc: "Historic trips, owner statements and maintenance records imported from spreadsheets or a legacy system.", setup: 3500, est: true },
+      support: { name: "Premium support 24/7", desc: "24/7 phone & chat with 1-hour critical response. Included in Enterprise.", monthly: 690, est: true, inclIn: "enterprise" },
+      onsite: { name: "On-site training", desc: "In-person training at your base for dispatch, crews and owners.", setup: 1800, unit: "per day + travel", est: true },
+      integration: { name: "Integrations", desc: "Scheduling, flight tracking, maintenance tracking, payments or CRM — built, tested and maintained.", setup: 4000, monthly: 150, unit: "each" },
+      reports: { name: "Custom reports & dashboards", desc: "Bespoke owner reports, KPIs or exports designed with your team.", setup: 1200, unit: "each" }
+    };
+
+    /* ================= HELPERS ================= */
+    const $ = (s, r = document) => r.querySelector(s);
+    const money = n => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+    const check = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+    let billing = "monthly";
+    const ANNUAL = 10 / 12; // 2 months free
+
+    /* ================= PLAN CARDS ================= */
+    function renderPlans() {
+      $("#pr-plans").innerHTML = Object.entries(PLANS).map(([k, p]) => {
+        const f = billing === "annual" ? ANNUAL : 1;
+        return `<article class="pr-plan${p.featured ? " featured" : ""}">
+          ${p.featured ? '<span class="pr-badge">Most popular</span>' : ""}
+          <p class="eyebrow">${p.name}</p><h3>${p.tag}</h3>
+          <p class="for">${p.for}</p>
+          <div class="pr-fee"><b>${money(Math.round(p.perAc * f))}</b><span>/ aircraft / month</span></div>
+          <p class="pr-sub">${p.from ? "from " : ""}+ ${money(Math.round(p.base * f))} / month platform base${billing === "annual" ? " · billed annually" : ""}</p>
+          <div class="pr-impl"><span>Implementation</span><b>${p.from ? "from " : ""}${money(p.impl)}</b></div>
+          <ul>${p.bullets.map(b => `<li>${check}<span>${b}</span></li>`).join("")}<li>${check}<span>Go-live in ${p.go}</span></li></ul>
+          <a class="btn${p.featured ? " btn-primary" : ""}" href="#estimate" data-pick="${k}">Estimate ${p.name}</a>
+        </article>`;
+      }).join("");
+    }
+
+    /* ================= MODULE MATRIX ================= */
+    function renderMatrix() {
+      const cell = (v, key) => v === true ? '<td class="pr-yes" aria-label="Included">●</td>'
+        : v === "addon" ? `<td class="pr-add">+ ${money(ADDONS[key].monthly)}/mo<br><span style="opacity:.7">${money(ADDONS[key].setup)} setup</span></td>`
+        : '<td class="pr-no" aria-label="Not available">—</td>';
+      const extra = [
+        ["Users", "Unlimited on every plan", "Unlimited", "Unlimited", "Unlimited"],
+        ["Integrations included", "Scheduling, tracking, MX, payments, CRM", "—", "—", "Up to 3"],
+        ["SSO & audit exports", "SAML/OIDC, tenancy isolation", "—", "—", "●"],
+        ["Support", "Response target", "Next business day", "8×5 · 4 h", "24/7 · 1 h"]
+      ];
+      $("#pr-matrix tbody").innerHTML =
+        MODULES.map(m => `<tr><td><b>${m[1]}</b><small>${m[2]}</small></td>${cell(m[3], m[0])}${cell(m[4], m[0])}${cell(m[5], m[0])}</tr>`).join("") +
+        extra.map(e => `<tr><td><b>${e[0]}</b><small>${e[1]}</small></td>${e.slice(2).map(v => v === "●" ? '<td class="pr-yes">●</td>' : v === "—" ? '<td class="pr-no">—</td>' : `<td>${v}</td>`).join("")}</tr>`).join("");
+    }
+
+    /* ================= SERVICES CARDS ================= */
+    function renderServices() {
+      $("#pr-services").innerHTML = Object.values(SERVICES).map(s => `
+        <div class="pr-card" data-reveal>
+          <h4>${s.name}</h4><p>${s.desc}</p>
+          ${s.setup ? `<div class="pr-pp"><span>One-time</span><b>${money(s.setup)}${s.unit ? " " + s.unit : ""}</b></div>` : ""}
+          ${s.monthly ? `<div class="pr-pp" style="${s.setup ? "border-top:0;padding-top:6px" : ""}"><span>Monthly</span><b>${money(s.monthly)}/mo${s.unit === "each" ? " each" : ""}</b></div>` : ""}
+        </div>`).join("");
+    }
+
+    /* ================= ESTIMATOR ================= */
+    const state = { plan: "operator", ac: 6, addons: new Set(), services: new Set(), integrations: 0, onsiteDays: 2 };
+
+    function renderEstimatorControls() {
+      $("#est-plan").innerHTML = Object.entries(PLANS).map(([k, p]) =>
+        `<label><input type="radio" name="est-plan" value="${k}" ${k === state.plan ? "checked" : ""}/><span>${p.name}</span></label>`).join("");
+
+      $("#est-addons").innerHTML = Object.entries(ADDONS).map(([k, a]) => {
+        const incl = state.plan !== "essentials";
+        return `<label class="pr-check${incl ? " is-incl" : ""}"><input type="checkbox" data-addon="${k}" ${incl ? "checked disabled" : state.addons.has(k) ? "checked" : ""}/>
+          <span>${a.name}</span><em>${incl ? "Included" : `${money(a.monthly)}/mo · ${money(a.setup)} setup`}</em></label>`;
+      }).join("");
+
+      $("#est-services").innerHTML = Object.entries(SERVICES).filter(([, s]) => s.est).map(([k, s]) => {
+        const incl = s.inclIn === state.plan;
+        const price = [s.setup ? money(s.setup) + (k === "onsite" ? " (2 days)" : "") : "", s.monthly ? money(s.monthly) + "/mo" : ""].filter(Boolean).join(" · ");
+        return `<label class="pr-check${incl ? " is-incl" : ""}"><input type="checkbox" data-svc="${k}" ${incl ? "checked disabled" : state.services.has(k) ? "checked" : ""}/>
+          <span>${s.name}</span><em>${incl ? "Included" : price}</em></label>`;
+      }).join("");
+    }
+
+    function clampAircraft() {
+      const p = PLANS[state.plan];
+      state.ac = Math.min(Math.max(state.ac, p.min), p.max);
+      const r = $("#est-ac"); r.min = p.min; r.max = p.max; r.value = state.ac;
+      $("#est-ac-out").textContent = state.ac;
+      $("#est-ac-hint").textContent = `${p.name} covers ${p.min}–${p.max}${state.plan === "enterprise" ? "+" : ""} aircraft.`;
+    }
+
+    function compute() {
+      const p = PLANS[state.plan];
+      const f = billing === "annual" ? ANNUAL : 1;
+      const lines = [];
+      let impl = p.impl, monthly = p.base + p.perAc * state.ac;
+
+      lines.push(["h", "Implementation"]);
+      lines.push([`${p.name} implementation`, money(p.impl)]);
+      const monthlyLines = [[`Platform base`, money(p.base)], [`${state.ac} aircraft × ${money(p.perAc)}`, money(p.perAc * state.ac)]];
+
+      if (state.plan === "essentials") {
+        state.addons.forEach(k => { const a = ADDONS[k]; impl += a.setup; monthly += a.monthly;
+          lines.push([`${a.name} setup`, money(a.setup)]); monthlyLines.push([a.name, money(a.monthly)]); });
+      }
+      state.services.forEach(k => {
+        const s = SERVICES[k]; if (s.inclIn === state.plan) return;
+        const setup = k === "onsite" ? s.setup * state.onsiteDays : (s.setup || 0);
+        if (setup) { impl += setup; lines.push([s.name + (k === "onsite" ? ` (${state.onsiteDays} days)` : ""), money(setup)]); }
+        if (s.monthly) { monthly += s.monthly; monthlyLines.push([s.name, money(s.monthly)]); }
+      });
+      const includedInt = state.plan === "enterprise" ? 3 : 0;
+      const paidInt = Math.max(0, state.integrations - includedInt);
+      if (state.integrations) {
+        const i = SERVICES.integration;
+        if (paidInt) { impl += i.setup * paidInt; lines.push([`${paidInt} integration${paidInt > 1 ? "s" : ""} build`, money(i.setup * paidInt)]); }
+        if (state.integrations - paidInt) lines.push([`${state.integrations - paidInt} integration${state.integrations - paidInt > 1 ? "s" : ""}`, "Included"]);
+        if (paidInt) { monthly += i.monthly * paidInt; monthlyLines.push([`Integration maintenance × ${paidInt}`, money(i.monthly * paidInt)]); }
+      }
+      $("#est-int-hint").textContent = state.plan === "enterprise" ? "Enterprise includes up to 3 integrations." : `${money(SERVICES.integration.setup)} one-time + ${money(SERVICES.integration.monthly)}/mo each.`;
+
+      const fee = monthly * f;
+      $("#sum-impl").textContent = (p.from ? "from " : "") + money(impl);
+      $("#sum-fee").textContent = money(Math.round(fee));
+      $("#sum-fee-label").textContent = billing === "annual" ? "Monthly fee · billed annually" : "Monthly fee";
+      $("#sum-fee-note").textContent = billing === "annual" ? `${money(Math.round(monthly * 10))} per year (2 months free)` : `${money(Math.round(monthly / state.ac))} effective per aircraft`;
+      $("#sum-year").textContent = money(Math.round(impl + fee * 12));
+
+      $("#sum-lines").innerHTML = lines.concat([["h", "Monthly (list price)"]], monthlyLines)
+        .map(l => l[0] === "h" ? `<li class="h">${l[1]}</li>` : `<li><span>${l[0]}</span><b>${l[1]}</b></li>`).join("");
+
+      const subject = encodeURIComponent(`AERO proposal — ${p.name}, ${state.ac} aircraft`);
+      $("#sum-cta").href = `index.html?plan=${state.plan}&aircraft=${state.ac}#demo`;
+      $("#sum-cta").dataset.subject = subject;
+    }
+
+    function refresh() { clampAircraft(); renderEstimatorControls(); compute(); }
+
+    /* ================= EVENTS ================= */
+    document.addEventListener("change", e => {
+      const t = e.target;
+      if (t.name === "est-plan") { state.plan = t.value; state.addons.clear(); refresh(); }
+      else if (t.dataset.addon) { t.checked ? state.addons.add(t.dataset.addon) : state.addons.delete(t.dataset.addon); compute(); }
+      else if (t.dataset.svc) { t.checked ? state.services.add(t.dataset.svc) : state.services.delete(t.dataset.svc); compute(); }
+    });
+    $("#est-ac").addEventListener("input", e => { state.ac = +e.target.value; $("#est-ac-out").textContent = state.ac; compute(); });
+    document.addEventListener("click", e => {
+      const step = e.target.closest("[data-int]");
+      if (step) { state.integrations = Math.min(10, Math.max(0, state.integrations + +step.dataset.int)); $("#est-int-out").textContent = state.integrations; compute(); }
+      const pick = e.target.closest("[data-pick]");
+      if (pick) { state.plan = pick.dataset.pick; state.addons.clear(); refresh(); }
+      const bill = e.target.closest("[data-billing]");
+      if (bill) {
+        billing = bill.dataset.billing;
+        document.querySelectorAll("[data-billing]").forEach(b => b.setAttribute("aria-pressed", String(b === bill)));
+        renderPlans(); compute();
+      }
+    });
+
+    renderPlans(); renderMatrix(); renderServices(); refresh();
+  })();
+  </script>
+</body>
+</html>
